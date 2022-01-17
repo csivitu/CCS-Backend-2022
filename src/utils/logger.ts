@@ -1,28 +1,51 @@
-import pino from "pino";
-import dayjs from "dayjs";
+import winston from "winston";
+import config from "config";
 
-// const log = logger({
-// //   prettyPrint: true,
-//   base: {
-//     pid: false,
-//   },
-//   timestamp: () => `,"time":"${dayjs().format()}"`,
-// });
+const logger = winston.createLogger({
+  level: "info",
+  format: winston.format.combine(
+    winston.format.simple(),
+    winston.format.colorize(),
+    winston.format.prettyPrint(),
+    winston.format.errors({ stack: true })
+  ),
 
-const logger = pino(
-  {
-    transport: {
-      target: "pino-pretty",
-      options: {
-        colorize: true,
-      },
-    },
-    base: {
-      pid: false,
-    },
-    timestamp: () => `,"time":"${dayjs().format()}"`,
-  },
-  pino.destination(`${__dirname}/logger.log`)
-);
+  transports: [
+    new winston.transports.File({
+      filename: "logs/error.log",
+      level: "error",
+      format: winston.format.combine(
+        winston.format.timestamp({
+          format: "YYYY-MM-DD HH:mm:ss",
+        }),
+        winston.format.simple(),
+        winston.format.json(),
+        winston.format.prettyPrint(),
+        winston.format.errors({ stack: true })
+      ),
+    }),
+    new winston.transports.File({
+      filename: "logs/combined.log",
+      level: "info",
+      format: winston.format.combine(
+        winston.format.timestamp({
+          format: "YYYY-MM-DD HH:mm:ss",
+        }),
+        winston.format.simple(),
+        winston.format.json(),
+        winston.format.prettyPrint(),
+        winston.format.errors({ stack: true })
+      ),
+    }),
+  ],
+});
+
+if (config.get<string>("enviornment") !== "production") {
+  logger.add(
+    new winston.transports.Console({
+      format: winston.format.simple(),
+    })
+  );
+}
 
 export default logger;
