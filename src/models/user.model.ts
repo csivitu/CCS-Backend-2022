@@ -6,7 +6,7 @@ export interface UserInput {
   name: string;
   username: string;
   email: string;
-  mobile: string;
+  phone: string;
   password: string;
   regNo: string;
   gender: string;
@@ -40,7 +40,7 @@ const userSchema = new mongoose.Schema(
       unique: true,
       index: true,
     },
-    mobile: {
+    phone: {
       type: Number,
       required: true,
     },

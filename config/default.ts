@@ -21,4 +21,5 @@ RKFTmnwHce1nU4vIGwLXrFuXdoT6kKY89lSaUUVgtSAhtLD74FNo210f3EINk/zO
 f7nAWWlOhIzawxMKZwIDAQAB
 -----END PUBLIC KEY-----`,
   refreshTokenTtl: process.env.RT_TTL,
+  API_KEY: process.env.API_KEY,
 };

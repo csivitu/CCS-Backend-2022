@@ -1,6 +1,6 @@
 import { boolean, object, string, TypeOf } from "zod";
 import parsePhoneNumber from "libphonenumber-js";
-import constants from "../../tools/constants";
+import constants from "../tools/constants";
 
 export const createUserSchema = object({
   body: object({
@@ -30,6 +30,9 @@ export const createUserSchema = object({
       required_error: "Vitian or not is required",
     }),
     regNo: string(),
+    gender: string({
+      required_error: "Gender is required",
+    }),
   })
     .refine((data) => data.password === data.passwordConfirmation, {
       message: "Passwords do not match",
@@ -54,6 +57,10 @@ export const createUserSchema = object({
     .refine((data) => data.isVitian && constants.regNoRegex.test(data.regNo), {
       message: "Invalid registration number",
       path: ["regNo"],
+    })
+    .refine((data) => data.gender === "M" || data.gender === "F", {
+      message: "Invalid value of gender",
+      path: ["gender"],
     }),
 });
 
