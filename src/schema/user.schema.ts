@@ -1,8 +1,8 @@
-import { boolean, object, string, TypeOf } from "zod";
+import { boolean, object, string } from "zod";
 import parsePhoneNumber from "libphonenumber-js";
 import constants from "../tools/constants";
 
-export const createUserSchema = object({
+const createUserSchema = object({
   body: object({
     name: string({
       required_error: "Name is required",
@@ -54,17 +54,22 @@ export const createUserSchema = object({
         path: ["email"],
       }
     )
-    .refine((data) => data.isVitian && constants.regNoRegex.test(data.regNo), {
-      message: "Invalid registration number",
-      path: ["regNo"],
-    })
+    .refine(
+      (data) => {
+        if (data.isVitian) {
+          return constants.regNoRegex.test(data.regNo);
+        }
+        return true;
+      },
+      {
+        message: "Invalid registration number",
+        path: ["regNo"],
+      }
+    )
     .refine((data) => data.gender === "M" || data.gender === "F", {
       message: "Invalid value of gender",
       path: ["gender"],
     }),
 });
 
-export type CreateUserInput = Omit<
-  TypeOf<typeof createUserSchema>,
-  "body.passwordConfirmation"
->;
+export default createUserSchema;

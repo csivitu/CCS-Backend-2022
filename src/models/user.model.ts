@@ -5,20 +5,21 @@ import config from "config";
 export interface UserInput {
   name: string;
   username: string;
+  isVitian: boolean;
   email: string;
   phone: string;
   password: string;
   regNo: string;
   gender: string;
-  emailVerificationToken: string;
-  verificationStatus: string;
-  passwordResetToken: string;
-  scope: string[];
 }
 
 export interface UserDocument extends UserInput, mongoose.Document {
   createdAt: Date;
   updatedAt: Date;
+  emailVerificationToken: string;
+  verificationStatus: string;
+  passwordResetToken: string;
+  scope: string[];
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
@@ -41,7 +42,7 @@ const userSchema = new mongoose.Schema(
       index: true,
     },
     phone: {
-      type: Number,
+      type: String,
       required: true,
     },
     password: {
@@ -70,6 +71,7 @@ const userSchema = new mongoose.Schema(
     passwordResetToken: {
       type: String,
       required: true,
+      default: "default",
     },
     scope: {
       type: [String],
