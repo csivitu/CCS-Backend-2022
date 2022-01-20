@@ -16,6 +16,10 @@ export async function createUserSessionHandler(req: Request, res: Response) {
     return res.status(401).send("Invalid email or password");
   }
 
+  if (!user.verificationStatus) {
+    return res.status(401).send("Email not verified");
+  }
+
   // create a session
   const session = await createSession(user._id, req.get("user-agent") || "");
 

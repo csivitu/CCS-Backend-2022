@@ -1,12 +1,6 @@
 import { FilterQuery } from "mongoose";
 import { omit } from "lodash";
-// import url from "url";
-// import rp from "request-promise";
 import crypto from "crypto";
-
-// import { constants } from "../tools/constants";
-
-// import generateToken from "../tools/tokenGenerator";
 import UserModel, { UserDocument, UserInput } from "../models/user.model";
 import constants from "../tools/constants";
 import { sendVerificationMail } from "../tools/sendMail";
@@ -52,7 +46,6 @@ export async function createUser(input: UserInput) {
     }
     const emailVerificationToken = crypto.randomBytes(32).toString("hex");
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const user = await UserModel.create({
       ...input,
       emailVerificationToken,
@@ -62,9 +55,8 @@ export async function createUser(input: UserInput) {
     jsonResponse.success = true;
     jsonResponse.message = constants.registrationSuccess;
     return jsonResponse;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (e: any) {
-    throw new Error(e);
+  } catch (e: unknown) {
+    throw new Error(e as string);
   }
 }
 

@@ -17,9 +17,7 @@ export function verifyJwt(
   token: string,
   keyName: "accessTokenPublicKey" | "refreshTokenPublicKey"
 ) {
-  const publicKey = Buffer.from(config.get<string>(keyName), "base64").toString(
-    "ascii"
-  );
+  const publicKey = config.get<string>(keyName);
 
   try {
     const decoded = jwt.verify(token, publicKey);
