@@ -88,6 +88,22 @@ export async function validatePassword({
   return omit(user.toJSON(), "password");
 }
 
+export async function verifyEmail(token: string) {
+  const participant = await UserModel.findOneAndUpdate(
+    {
+      emailVerificationToken: token,
+    },
+    {
+      verificationStatus: true,
+    }
+  );
+
+  if (!participant) {
+    return { verified: false, email: participant.email };
+  }
+  return { verified: true, email: participant.email };
+}
+
 export async function findUser(query: FilterQuery<UserDocument>) {
   return UserModel.findOne(query).lean();
 }
