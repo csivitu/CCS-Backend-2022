@@ -33,6 +33,7 @@ const hb = create({
 export const sendVerificationMail = async (participant: UserDocument) => {
   const verifyLink = new url.URL(config.get("verify_link"));
   verifyLink.searchParams.append("token", participant.emailVerificationToken);
+  verifyLink.searchParams.append("user", participant._id);
   const renderedHtml = await hb.render("src/templates/verify.hbs", {
     name: participant.name,
     verifyLink: verifyLink.href,

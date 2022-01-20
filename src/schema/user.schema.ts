@@ -1,8 +1,8 @@
-import { boolean, object, string } from "zod";
+import { boolean, object, string, TypeOf } from "zod";
 import parsePhoneNumber from "libphonenumber-js";
 import constants from "../tools/constants";
 
-const createUserSchema = object({
+export const createUserSchema = object({
   body: object({
     name: string({
       required_error: "Name is required",
@@ -72,4 +72,40 @@ const createUserSchema = object({
     }),
 });
 
-export default createUserSchema;
+export const emailVerifySchema = object({
+  params: object({
+    id: string(),
+    token: string(),
+  }),
+});
+
+export const forgotPasswordSchema = object({
+  body: object({
+    email: string({ required_error: "email is required" }).email(
+      "not a valid email"
+    ),
+  }),
+});
+export const resetPasswordSchema = object({
+  params: object({
+    id: string(),
+    passwordResetCode: string(),
+  }),
+  body: object({
+    password: string({
+      required_error: "Password is required",
+    })
+      .min(8, "Password is too short - should be min 8 chars")
+      .max(50, "Password too long - should be 50 chars maximum"),
+    passwordConfirmation: string({
+      required_error: "Password confirmation is required",
+    }),
+  }).refine((data) => data.password === data.passwordConfirmation, {
+    message: "Passwords do not match",
+    path: ["passwordConfirmation"],
+  }),
+});
+
+export type EmailVerifyInput = TypeOf<typeof emailVerifySchema>["params"];
+export type ForgotPasswordInput = TypeOf<typeof forgotPasswordSchema>["body"];
+export type ResetPasswordInput = TypeOf<typeof resetPasswordSchema>;

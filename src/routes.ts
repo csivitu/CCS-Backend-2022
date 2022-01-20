@@ -1,15 +1,20 @@
 import { Express, Request, Response } from "express";
 // import config from "config";
 // import url from "url";
-import { createUserHandler } from "./controller/user.controller";
-import requireUser from "./middleware/requireUser";
 import {
-  createUserSessionHandler,
-  getUserSessionsHandler,
-  deleteSessionHandler,
-} from "./controller/session.controller";
+  createUserHandler,
+  forgotPasswordHandler,
+  resetPasswordHandler,
+  verifyEmailHandler,
+} from "./controller/user.controller";
+import createUserSessionHandler from "./controller/session.controller";
 import validateResource from "./middleware/validateResource";
-import createUserSchema from "./schema/user.schema";
+import {
+  createUserSchema,
+  emailVerifySchema,
+  forgotPasswordSchema,
+  resetPasswordSchema,
+} from "./schema/user.schema";
 import { createSessionSchema } from "./schema/session.schema";
 // import sendMail from "./tools/sendMail";
 // import constants from "./tools/constants";
@@ -26,8 +31,23 @@ function routes(app: Express) {
     createUserSessionHandler
   );
 
-  app.get("/api/sessions", requireUser, getUserSessionsHandler);
-  app.delete("/api/sessions", requireUser, deleteSessionHandler);
+  app.post(
+    "/api/users/verify/:id/:token",
+    validateResource(emailVerifySchema),
+    verifyEmailHandler
+  );
+
+  app.post(
+    "/api/users/forgotPassword",
+    validateResource(forgotPasswordSchema),
+    forgotPasswordHandler
+  );
+
+  app.post(
+    "/api/users/resetPassword/:id/:passwordResetCode",
+    validateResource(resetPasswordSchema),
+    resetPasswordHandler
+  );
 }
 
 export default routes;

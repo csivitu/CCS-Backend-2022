@@ -70,8 +70,7 @@ const userSchema = new mongoose.Schema(
     },
     passwordResetToken: {
       type: String,
-      required: true,
-      default: "default",
+      default: null,
     },
     scope: {
       type: [String],

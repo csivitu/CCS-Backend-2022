@@ -80,22 +80,50 @@ export async function validatePassword({
   return omit(user.toJSON(), "password");
 }
 
-export async function verifyEmail(token: string) {
-  const participant = await UserModel.findOneAndUpdate(
-    {
-      emailVerificationToken: token,
-    },
-    {
-      verificationStatus: true,
-    }
-  );
-
-  if (!participant) {
-    return { verified: false, email: participant.email };
-  }
-  return { verified: true, email: participant.email };
-}
-
 export async function findUser(query: FilterQuery<UserDocument>) {
   return UserModel.findOne(query).lean();
+}
+
+export async function verifyEmail(id: string, token: string) {
+  const participant = await findUser({ _id: id });
+
+  if (!participant) {
+    return {
+      verified: false,
+      email: participant.email,
+      message: "cannot verify",
+    };
+  }
+
+  if (participant.verificationStatus) {
+    return {
+      verified: true,
+      email: participant.email,
+      message: "already verified",
+    };
+  }
+
+  if (participant.emailVerificationToken === token) {
+    await UserModel.findOneAndUpdate(
+      { _id: participant._id },
+      { verificationStatus: true }
+    );
+    return {
+      verified: true,
+      email: participant.email,
+      message: "succesfully verified",
+    };
+  }
+  return {
+    verified: false,
+    email: participant.email,
+    message: "wrong verification token",
+  };
+}
+
+export async function findUserByEmail(email: string) {
+  return UserModel.findOne({ email });
+}
+export async function findUserById(id: string) {
+  return UserModel.findOne({ _id: id });
 }
