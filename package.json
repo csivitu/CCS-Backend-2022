@@ -53,6 +53,7 @@
     "express": "^4.17.2",
     "express-handlebars": "^6.0.2",
     "express-handler": "^0.2.0",
+    "hbs": "^4.2.0",
     "jsonwebtoken": "^8.5.1",
     "libphonenumber-js": "^1.9.44",
     "lodash": "^4.17.21",

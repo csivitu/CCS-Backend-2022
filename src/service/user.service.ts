@@ -9,7 +9,7 @@ import crypto from "crypto";
 // import generateToken from "../tools/tokenGenerator";
 import UserModel, { UserDocument, UserInput } from "../models/user.model";
 import constants from "../tools/constants";
-// import { sendVerificationMail } from "../routes";
+import { sendVerificationMail } from "../tools/sendMail";
 
 export async function createUser(input: UserInput) {
   try {
@@ -58,7 +58,7 @@ export async function createUser(input: UserInput) {
       emailVerificationToken,
       scope: ["user"],
     });
-    // sendVerificationMail(user);
+    sendVerificationMail(user);
     jsonResponse.success = true;
     jsonResponse.message = constants.registrationSuccess;
     return jsonResponse;

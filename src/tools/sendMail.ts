@@ -1,10 +1,10 @@
 import axios from "axios";
 import config from "config";
 // import rp from "request-promise";
-// import url from "url";
-// import hbs from "express-handlebars";
-// import { constants } from "./constants";
-// import { UserDocument } from "../models/user.model";
+import url from "url";
+import { create } from "express-handlebars";
+import { constants } from "./constants";
+import { UserDocument } from "../models/user.model";
 import logger from "../utils/logger";
 
 const SENGRID_API_KEY = config.get("sengrid_api_key");
@@ -27,6 +27,23 @@ export const sendMail = async (
   }
 };
 
+const hb = create({
+  extname: ".hbs",
+});
+export const sendVerificationMail = async (participant: UserDocument) => {
+  const verifyLink = new url.URL(config.get("verify_link"));
+  verifyLink.searchParams.append("token", participant.emailVerificationToken);
+  const renderedHtml = await hb.render("src/templates/verify.hbs", {
+    name: participant.name,
+    verifyLink: verifyLink.href,
+  });
+  await sendMail(
+    participant.email,
+    constants.sendVerificationMailSubject,
+    renderedHtml
+  );
+};
+
 // export const verifyRecaptcha = async (response: string) => {
 //   const recaptcha = await rp({
 //     method: "POST",
@@ -40,4 +57,4 @@ export const sendMail = async (
 //   return recaptcha.success === true;
 // };
 
-export default sendMail;
+export default { sendMail, sendVerificationMail };
