@@ -5,6 +5,7 @@ const ccsUserSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
+    index: true,
   },
   domainsAttempted: [
     {
@@ -16,11 +17,11 @@ const ccsUserSchema = new mongoose.Schema({
     {
       quesId: {
         type: Number,
-        // required: true,
+        required: true,
       },
       answer: {
         type: String,
-        // required: true,
+        required: true,
       },
     },
   ],
@@ -28,11 +29,11 @@ const ccsUserSchema = new mongoose.Schema({
     {
       quesId: {
         type: Number,
-        // required: true,
+        required: true,
       },
       answer: {
         type: String,
-        // required: true,
+        required: true,
       },
     },
   ],
@@ -40,7 +41,7 @@ const ccsUserSchema = new mongoose.Schema({
     {
       quesId: {
         type: Number,
-        // required: true,
+        required: true,
       },
       answer: {
         type: String,
@@ -89,7 +90,7 @@ const ccsUserSchema = new mongoose.Schema({
 
 export interface ccsUserInterface extends mongoose.Document {
   username: string;
-  domainsAttempted: string[];
+  domainsAttempted: ("Tech" | "Design" | "Management")[];
   techAttempted: {
     quesId: number;
     answer: string;
@@ -102,7 +103,7 @@ export interface ccsUserInterface extends mongoose.Document {
     quesId: number;
     answer: string;
   }[];
-  round: number;
+  round: 1 | 2 | 3;
   questionLoaded: {
     quesId: number;
     question: {

@@ -5,6 +5,7 @@ const QuestionSchema = new mongoose.Schema({
     type: Number,
     required: true,
     unique: true,
+    index: true,
   },
   question: {
     text: {
@@ -41,8 +42,8 @@ export interface QuestionInterface extends mongoose.Document {
     img: string[];
     links: string[];
   };
-  difficulty: string;
-  domain: string;
+  difficulty: "Easy" | "Medium" | "Hard";
+  domain: "Tech" | "Design" | "Management";
 }
 
 export default QuestionSchema;
