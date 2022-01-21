@@ -1,5 +1,6 @@
 import { boolean, object, string, TypeOf } from "zod";
 import parsePhoneNumber from "libphonenumber-js";
+import config from "config";
 import constants from "../tools/constants";
 
 export const createUserSchema = object({
@@ -103,6 +104,14 @@ export const resetPasswordSchema = object({
   }).refine((data) => data.password === data.passwordConfirmation, {
     message: "Passwords do not match",
     path: ["passwordConfirmation"],
+  }),
+});
+
+export const ccsUserSchema = object({
+  body: object({
+    questions: object({})
+      .array()
+      .length(config.get<number>("number_of_questions")),
   }),
 });
 

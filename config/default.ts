@@ -23,4 +23,5 @@ f7nAWWlOhIzawxMKZwIDAQAB
   refreshTokenTtl: process.env.RT_TTL,
   sengrid_api_key: process.env.SENGRID_API_KEY,
   verify_link: process.env.VERIFY_LINK,
+  number_of_questions: 10,
 };

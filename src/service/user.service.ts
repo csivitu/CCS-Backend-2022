@@ -65,9 +65,9 @@ export async function validatePassword({
   password,
   username,
 }: {
-  email: string;
+  email: string | undefined;
   password: string;
-  username: string;
+  username: string | undefined;
 }) {
   const user = await UserModel.findOne({
     $or: [{ email }, { username }],

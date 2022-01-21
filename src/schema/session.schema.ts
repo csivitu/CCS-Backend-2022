@@ -10,6 +10,6 @@ export const createSessionSchema = object({
     }),
   }).refine((data) => data.username || data.email, {
     message: "Username or email is required",
-    path: ["password"],
+    path: ["email", "username"],
   }),
 });
