@@ -10,10 +10,10 @@ import deserializeUser from "./middleware/deserializeUser";
 const port = config.get<number>("port");
 
 const app = express();
-app.use(deserializeUser);
 // const templateFolder = path.join(__dirname, "templates");
 
 app.use(express.json());
+app.use(deserializeUser);
 // app.set("views", path.join(__dirname, "templates"));
 
 // app.engine(
