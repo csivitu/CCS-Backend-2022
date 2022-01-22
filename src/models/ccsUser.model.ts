@@ -115,4 +115,6 @@ export interface ccsUserInterface extends mongoose.Document {
   startTime: Date;
   endTime: Date;
 }
-export default ccsUserSchema;
+
+const ccsUserModel = mongoose.model<ccsUserInterface>("CcsUser", ccsUserSchema);
+export default ccsUserModel;

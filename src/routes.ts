@@ -8,6 +8,7 @@ import {
   verifyEmailHandler,
 } from "./controller/user.controller";
 import createUserSessionHandler from "./controller/session.controller";
+import startHandler from "./controller/start.controller";
 import validateResource from "./middleware/validateResource";
 import {
   createUserSchema,
@@ -16,6 +17,8 @@ import {
   resetPasswordSchema,
 } from "./schema/user.schema";
 import { createSessionSchema } from "./schema/session.schema";
+import { startSchema } from "./schema/start.schema";
+import requireUser from "./middleware/requireUser";
 // import sendMail from "./tools/sendMail";
 // import constants from "./tools/constants";
 // import { UserDocument } from "./models/user.model";
@@ -48,6 +51,8 @@ function routes(app: Express) {
     validateResource(resetPasswordSchema),
     resetPasswordHandler
   );
+
+  app.post("/start", requireUser, validateResource(startSchema), startHandler);
 }
 
 export default routes;

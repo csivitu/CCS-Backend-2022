@@ -57,6 +57,7 @@
     "jsonwebtoken": "^8.5.1",
     "libphonenumber-js": "^1.9.44",
     "lodash": "^4.17.21",
+    "moment": "^2.29.1",
     "mongoose": "^6.1.6",
     "nanoid": "^3.2.0",
     "pino-pretty": "^7.3.0",
