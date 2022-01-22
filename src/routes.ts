@@ -19,6 +19,8 @@ import {
 import { createSessionSchema } from "./schema/session.schema";
 import { startSchema } from "./schema/start.schema";
 import requireUser from "./middleware/requireUser";
+import { submitSchema } from "./schema/submit.schema";
+import submitHandler from "./controller/submit.controller";
 // import sendMail from "./tools/sendMail";
 // import constants from "./tools/constants";
 // import { UserDocument } from "./models/user.model";
@@ -53,6 +55,13 @@ function routes(app: Express) {
   );
 
   app.post("/start", requireUser, validateResource(startSchema), startHandler);
+
+  app.post(
+    "/submit",
+    requireUser,
+    validateResource(submitSchema),
+    submitHandler
+  );
 }
 
 export default routes;

@@ -21,7 +21,7 @@ RKFTmnwHce1nU4vIGwLXrFuXdoT6kKY89lSaUUVgtSAhtLD74FNo210f3EINk/zO
 f7nAWWlOhIzawxMKZwIDAQAB
 -----END PUBLIC KEY-----`,
   refreshTokenTtl: process.env.RT_TTL,
-  sengrid_api_key: process.env.SENGRID_API_KEY,
+  emailer_api_key: process.env.EMAILER_API_KEY,
   verify_link: process.env.VERIFY_LINK,
   number_of_questions: 10,
 };

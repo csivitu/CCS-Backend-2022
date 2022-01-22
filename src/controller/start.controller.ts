@@ -1,16 +1,10 @@
 import { Request, Response } from "express";
 import moment from "moment";
 import ccsUserModel from "../models/ccsUser.model";
-import { getUser } from "../service/ccsUser.service";
-// import logger from "../utils/logger";
-// import {
-//   error_codes,
-//   logical_errors,
-//   success_codes,
-// } from "../tools/constants";
+import { getCcsUserByUsername } from "../service/ccsUser.service";
 
 export default async function startHandler(req: Request, res: Response) {
-  const user = await getUser(res.locals.user.username);
+  const user = await getCcsUserByUsername(res.locals.user.username);
   const { domain } = req.body;
   const start: Date = new Date();
   const end: Date = moment(start).add(process.env.DURATION, "m").toDate();

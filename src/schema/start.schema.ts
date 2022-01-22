@@ -12,7 +12,16 @@ export const startSchema = object({
     domain: string({
       required_error: "domain is required",
     }),
-  }),
+  }).refine(
+    (data) =>
+      data.domain === "Tech" ||
+      data.domain === "Management" ||
+      data.domain === "Design",
+    {
+      message: "wrong values",
+      path: ["domain"],
+    }
+  ),
 });
 
 // export default startSchema;
