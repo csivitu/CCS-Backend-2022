@@ -4,6 +4,8 @@ import crypto from "crypto";
 import UserModel, { UserDocument, UserInput } from "../models/user.model";
 import constants from "../tools/constants";
 import { sendVerificationMail } from "../tools/sendMail";
+import { createCcsUser } from "./ccsUser.service";
+import logger from "../utils/logger";
 
 export async function createUser(input: UserInput) {
   try {
@@ -50,6 +52,11 @@ export async function createUser(input: UserInput) {
       ...input,
       emailVerificationToken,
       scope: ["user"],
+    });
+    const newUser = await createCcsUser(user.username);
+    logger.info({
+      username: newUser.username,
+      message: "User created in accounts and ccs DB",
     });
     sendVerificationMail(user);
     jsonResponse.success = true;

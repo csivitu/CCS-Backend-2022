@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { SubmitInput } from "../schema/submit.schema";
-import { checkTime, getCcsUserByUsername } from "../service/ccsUser.service";
+import { getCcsUserByUsername } from "../service/ccsUser.service";
 import logger from "../utils/logger";
 
 export default async function submitHandler(
@@ -16,10 +16,6 @@ export default async function submitHandler(
     if (!user) {
       return res.status(404).send("user not found");
     }
-    checkTime(user);
-
-    // user.ques.quesId = ques.quesId
-    // user.domainsAttempted.push(domainsAttempted)
 
     switch (domain) {
       case "Tech":

@@ -24,4 +24,6 @@ export const startSchema = object({
   ),
 });
 
+export type StartInput = { domain: "Tech" | "Management" | "Design" };
+
 // export default startSchema;

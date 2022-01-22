@@ -21,6 +21,7 @@ import { startSchema } from "./schema/start.schema";
 import requireUser from "./middleware/requireUser";
 import { submitSchema } from "./schema/submit.schema";
 import submitHandler from "./controller/submit.controller";
+import requireTime from "./middleware/requireTime";
 // import sendMail from "./tools/sendMail";
 // import constants from "./tools/constants";
 // import { UserDocument } from "./models/user.model";
@@ -59,6 +60,7 @@ function routes(app: Express) {
   app.post(
     "/submit",
     requireUser,
+    requireTime,
     validateResource(submitSchema),
     submitHandler
   );
