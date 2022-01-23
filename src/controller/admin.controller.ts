@@ -1,16 +1,16 @@
 import { Request, Response } from "express";
 import { AdminPostInput } from "../schema/adminPost.schema";
 import { getAllUsers, getCcsUserByUsername } from "../service/ccsUser.service";
+import errorObject from "../utils/errorObject";
 import logger from "../utils/logger";
 
-// eslint-disable-next-line import/prefer-default-export
 export async function getUsersHandler(req: Request, res: Response) {
   try {
     const users = await getAllUsers();
-    return res.send(users);
+    return res.send(errorObject(200, "", users));
   } catch (e) {
     logger.error(e);
-    return res.status(409).send(e.message);
+    return res.status(404).send(errorObject(404, e));
   }
 }
 export async function changeRoundHandler(
@@ -21,9 +21,9 @@ export async function changeRoundHandler(
     const user = await getCcsUserByUsername(req.body.username);
     user.round = req.body.round;
     user.save();
-    return res.send("user round successfully saved");
+    return res.send(errorObject(200, "user round successfully saved"));
   } catch (e) {
     logger.error(e);
-    return res.status(409).send(e.message);
+    return res.status(404).send(errorObject(404, e));
   }
 }

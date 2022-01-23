@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { StartInput } from "../schema/start.schema";
 import { getCcsUserByUsername } from "../service/ccsUser.service";
 import getQuestion from "../service/question.service";
+import errorObject from "../utils/errorObject";
 
 export default async function questionHandler(
   req: Request<Record<string, never>, Record<string, never>, StartInput>,
@@ -12,18 +13,10 @@ export default async function questionHandler(
 
   try {
     if (!user.domainsAttempted.includes(domain)) {
-      //   logger.warn(logical_errors.L6, { username: username });
-      return res.json({
-        code: "L6",
-      });
+      return res.status(403).send(errorObject(403, "domain already attempted"));
     }
     if (user.questionLoaded) {
-      //   const questionIds = user.questionLoaded.map((ques) => ques.quesId);
-      //   logger.info(success_codes.S2, { questionIds: questionIds });
-      return res.json({
-        code: "S2",
-        question: user.questionLoaded,
-      });
+      return res.send(errorObject(200, "", user.questionLoaded));
     }
     const easyquestions = await getQuestion(domain, "Easy");
     const mediumquestions = await getQuestion(domain, "Medium");
@@ -45,11 +38,13 @@ export default async function questionHandler(
     user.save();
     // const questionIds = user.questionLoaded.map((ques) => ques.quesId);
     // logger.info(success_codes.S2, { questionIds: questionIds });
-    return res.send({
-      questions: selected,
-    });
+    return res.send(
+      errorObject(200, "", {
+        questions: selected,
+      })
+    );
   } catch (e) {
     // logger.error(error_codes.E0);
-    return res.status(500).send(e);
+    return res.status(500).send(errorObject(500, e));
   }
 }

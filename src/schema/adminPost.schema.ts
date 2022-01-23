@@ -1,6 +1,5 @@
 import { number, object, string } from "zod";
 
-// eslint-disable-next-line import/prefer-default-export
 export const adminPostSchema = object({
   body: object({
     username: string({ required_error: "username is required" }),

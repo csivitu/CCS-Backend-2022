@@ -67,6 +67,14 @@ export const createUserSchema = object({
         path: ["regNo"],
       }
     )
+    .refine((data) => constants.usernameRegex.test(data.username), {
+      message: "invalid username",
+      path: ["username"],
+    })
+    .refine((data) => constants.passwordRegex.test(data.password), {
+      message: "invalid password",
+      path: ["password"],
+    })
     .refine((data) => data.gender === "M" || data.gender === "F", {
       message: "Invalid value of gender",
       path: ["gender"],

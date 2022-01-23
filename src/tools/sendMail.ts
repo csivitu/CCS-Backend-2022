@@ -1,6 +1,5 @@
 import axios from "axios";
 import config from "config";
-// import rp from "request-promise";
 import url from "url";
 import { create } from "express-handlebars";
 import { constants } from "./constants";
@@ -44,18 +43,5 @@ export const sendVerificationMail = async (participant: UserDocument) => {
     renderedHtml
   );
 };
-
-// export const verifyRecaptcha = async (response: string) => {
-//   const recaptcha = await rp({
-//     method: "POST",
-//     uri: "https://www.google.com/recaptcha/api/siteverify",
-//     form: {
-//       secret: process.env.RECAPTCHA_SECRET,
-//       response,
-//     },
-//     json: true,
-//   });
-//   return recaptcha.success === true;
-// };
 
 export default { sendMail, sendVerificationMail };

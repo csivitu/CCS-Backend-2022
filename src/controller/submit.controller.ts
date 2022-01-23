@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { SubmitInput } from "../schema/submit.schema";
 import { getCcsUserByUsername } from "../service/ccsUser.service";
+import errorObject from "../utils/errorObject";
 import logger from "../utils/logger";
 
 export default async function submitHandler(
@@ -14,7 +15,7 @@ export default async function submitHandler(
 
     const user = await getCcsUserByUsername(decodedUser.username);
     if (!user) {
-      return res.status(404).send("user not found");
+      return res.status(404).send(errorObject(404, "user not found"));
     }
 
     switch (domain) {
@@ -39,9 +40,9 @@ export default async function submitHandler(
     user.save();
 
     logger.info({ username: user.username, message: "autosaved" });
-    return res.send("autosaved");
-  } catch (e: unknown) {
+    return res.send(errorObject(200, "autosaved"));
+  } catch (e) {
     logger.error(e);
-    return res.status(500).send(e);
+    return res.status(500).send(errorObject(500, e));
   }
 }

@@ -1,15 +1,13 @@
 import { Express, Request, Response } from "express";
-// import config from "config";
-// import url from "url";
 import {
   createUserHandler,
   forgotPasswordHandler,
+  resendEmailHandler,
   resetPasswordHandler,
   verifyEmailHandler,
 } from "./controller/user.controller";
 import createUserSessionHandler from "./controller/session.controller";
 import startHandler from "./controller/start.controller";
-// import questionHandler from "./controller/question.controller";
 import validateResource from "./middleware/validateResource";
 import {
   createUserSchema,
@@ -30,41 +28,55 @@ import {
 } from "./controller/admin.controller";
 import { adminPostSchema } from "./schema/adminPost.schema";
 import questionHandler from "./controller/question.controller";
-// import sendMail from "./tools/sendMail";
-// import constants from "./tools/constants";
-// import { UserDocument } from "./models/user.model";
+import {
+  apiLimiter,
+  createAccountLimiter,
+  emailVerifyLimiter,
+  forgotPasswordLimiter,
+} from "./utils/limiters";
+import { resendEmailSchema } from "./schema/resendEmail.schema";
 
 function routes(app: Express) {
   app.get("/healthcheck", (req: Request, res: Response) => res.sendStatus(200));
 
-  app.post("/api/users", validateResource(createUserSchema), createUserHandler);
+  app.post(
+    "/api/users",
+    validateResource(createUserSchema),
+    createAccountLimiter,
+    createUserHandler
+  );
 
   app.post(
     "/api/sessions",
+    apiLimiter,
     validateResource(createSessionSchema),
     createUserSessionHandler
   );
 
   app.post(
     "/api/users/verify/:id/:token",
+    apiLimiter,
     validateResource(emailVerifySchema),
     verifyEmailHandler
   );
 
   app.post(
     "/api/users/forgotPassword",
+    forgotPasswordLimiter,
     validateResource(forgotPasswordSchema),
     forgotPasswordHandler
   );
 
   app.post(
     "/api/users/resetPassword/:id/:passwordResetCode",
+    apiLimiter,
     validateResource(resetPasswordSchema),
     resetPasswordHandler
   );
 
   app.post(
     "/api/start",
+    apiLimiter,
     requireUser,
     validateResource(startSchema),
     startHandler
@@ -72,15 +84,18 @@ function routes(app: Express) {
 
   app.post(
     "/api/submit",
+    apiLimiter,
     requireUser,
     requireTime,
     validateResource(submitSchema),
     submitHandler
   );
 
-  app.get("/api/admin", requireAdmin, getUsersHandler);
+  app.get("/api/admin", apiLimiter, requireAdmin, getUsersHandler);
+
   app.post(
     "/api/admin",
+    apiLimiter,
     requireAdmin,
     validateResource(adminPostSchema),
     changeRoundHandler
@@ -88,10 +103,18 @@ function routes(app: Express) {
 
   app.post(
     "/api/questions",
+    apiLimiter,
     requireUser,
     requireTime,
     validateResource(startSchema),
     questionHandler
+  );
+
+  app.get(
+    "/api/resendEmailVerificaton",
+    emailVerifyLimiter,
+    validateResource(resendEmailSchema),
+    resendEmailHandler
   );
 }
 

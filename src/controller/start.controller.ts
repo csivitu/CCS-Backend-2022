@@ -7,6 +7,7 @@ import {
   getCcsUserByUsername,
 } from "../service/ccsUser.service";
 import logger from "../utils/logger";
+import errorObject from "../utils/errorObject";
 
 export default async function startHandler(
   req: Request<Record<string, never>, Record<string, never>, StartInput>,
@@ -33,9 +34,9 @@ export default async function startHandler(
       });
     } else {
       if (user.domainsAttempted.includes(domain)) {
-        // console.log("in")
-        // logger.warn(logical_errors.L2, { username: username });
-        return res.status(403).send("Domain already attempted");
+        return res
+          .status(403)
+          .send(errorObject(403, "Domain already attempted"));
       }
       user.domainsAttempted.push(domain);
       user.startTime = start;
@@ -47,9 +48,9 @@ export default async function startHandler(
         message: `Started domain ${domain}`,
       });
     }
-    return res.send(`succesfully started domain ${domain}`);
-  } catch (error: unknown) {
-    logger.error({ username: res.locals.user.username, error });
-    return res.status(500).send(error);
+    return res.send(errorObject(200, `succesfully started domain ${domain}`));
+  } catch (e) {
+    logger.error({ username: res.locals.user.username, e });
+    return res.status(500).send(errorObject(500, e));
   }
 }

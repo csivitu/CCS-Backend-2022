@@ -10,6 +10,7 @@ import constants from "../tools/constants";
 import { sendVerificationMail } from "../tools/sendMail";
 import { createCcsUser } from "./ccsUser.service";
 import logger from "../utils/logger";
+import { SessionInput } from "../schema/session.schema";
 
 export async function createUser(input: UserInput) {
   try {
@@ -57,17 +58,17 @@ export async function createUser(input: UserInput) {
       emailVerificationToken,
       scope: ["user"],
     });
-    const newUser = await createCcsUser(user.username, user._id);
+    const ccsUser = await createCcsUser(user.username, user._id);
     logger.info({
-      username: newUser.username,
+      username: ccsUser.username,
       message: "User created in accounts and ccs DB",
     });
     sendVerificationMail(user);
     jsonResponse.success = true;
     jsonResponse.message = constants.registrationSuccess;
     return jsonResponse;
-  } catch (e: unknown) {
-    throw new Error(e as string);
+  } catch (e) {
+    throw new Error(e);
   }
 }
 
@@ -75,24 +76,24 @@ export async function validatePassword({
   email,
   password,
   username,
-}: {
-  email: string | undefined;
-  password: string;
-  username: string | undefined;
-}) {
-  const user = await UserModel.findOne({
-    $or: [{ email }, { username }],
-  });
+}: SessionInput) {
+  try {
+    const user = await UserModel.findOne({
+      $or: [{ email }, { username }],
+    });
 
-  if (!user) {
-    return false;
+    if (!user) {
+      return false;
+    }
+
+    const isValid = await user.comparePassword(password);
+
+    if (!isValid) return false;
+
+    return omit(user.toJSON(), privateFields);
+  } catch (e) {
+    throw new Error(e);
   }
-
-  const isValid = await user.comparePassword(password);
-
-  if (!isValid) return false;
-
-  return omit(user.toJSON(), privateFields);
 }
 
 export async function findUser(query: FilterQuery<UserDocument>) {
@@ -100,40 +101,44 @@ export async function findUser(query: FilterQuery<UserDocument>) {
 }
 
 export async function verifyEmail(id: string, token: string) {
-  const participant = await findUser({ _id: id });
+  try {
+    const participant = await findUser({ _id: id });
 
-  if (!participant) {
+    if (!participant) {
+      return {
+        verified: false,
+        email: participant.email,
+        message: "cannot verify",
+      };
+    }
+
+    if (participant.verificationStatus) {
+      return {
+        verified: true,
+        email: participant.email,
+        message: "already verified",
+      };
+    }
+
+    if (participant.emailVerificationToken === token) {
+      await UserModel.findOneAndUpdate(
+        { _id: participant._id },
+        { verificationStatus: true }
+      );
+      return {
+        verified: true,
+        email: participant.email,
+        message: "succesfully verified",
+      };
+    }
     return {
       verified: false,
       email: participant.email,
-      message: "cannot verify",
+      message: "wrong verification token",
     };
+  } catch (e) {
+    throw new Error(e);
   }
-
-  if (participant.verificationStatus) {
-    return {
-      verified: true,
-      email: participant.email,
-      message: "already verified",
-    };
-  }
-
-  if (participant.emailVerificationToken === token) {
-    await UserModel.findOneAndUpdate(
-      { _id: participant._id },
-      { verificationStatus: true }
-    );
-    return {
-      verified: true,
-      email: participant.email,
-      message: "succesfully verified",
-    };
-  }
-  return {
-    verified: false,
-    email: participant.email,
-    message: "wrong verification token",
-  };
 }
 
 export async function findUserByEmail(email: string) {

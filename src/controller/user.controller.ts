@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { nanoid } from "nanoid";
 import { UserInput } from "../models/user.model";
+import { ResendEmailInput } from "../schema/resendEmail.schema";
 import {
   EmailVerifyInput,
   ForgotPasswordInput,
@@ -12,6 +13,8 @@ import {
   findUserById,
   verifyEmail,
 } from "../service/user.service";
+import { sendVerificationMail } from "../tools/sendMail";
+import errorObject from "../utils/errorObject";
 import logger from "../utils/logger";
 
 export async function createUserHandler(
@@ -20,10 +23,10 @@ export async function createUserHandler(
 ) {
   try {
     const response = await createUser(req.body);
-    return res.send(response);
-  } catch (e: unknown) {
+    return res.send(errorObject(200, "", response));
+  } catch (e) {
     logger.error(e);
-    return res.status(409).send((e as Error).message);
+    return res.status(409).send(errorObject(409, e));
   }
 }
 
@@ -33,10 +36,10 @@ export async function verifyEmailHandler(
 ) {
   try {
     const response = await verifyEmail(req.params.id, req.params.token);
-    return res.send(response);
-  } catch (e: unknown) {
+    return res.send(errorObject(200, "", response));
+  } catch (e) {
     logger.error(e);
-    return res.status(409).send((e as Error).message);
+    return res.status(404).send(errorObject(404, e));
   }
 }
 
@@ -48,17 +51,22 @@ export async function forgotPasswordHandler(
   >,
   res: Response
 ) {
-  const message =
-    "If a user with that email is registered and verified you will receive a password reset email";
-  const user = await findUserByEmail(req.body.email);
-  if (user && user.verificationStatus) {
-    // send forgot password mail
-    const passwordResetCode = nanoid();
-    user.passwordResetToken = passwordResetCode;
-    console.log(passwordResetCode);
-    user.save();
+  try {
+    const message =
+      "If a user with that email is registered and verified you will receive a password reset email";
+    const user = await findUserByEmail(req.body.email);
+    if (user && user.verificationStatus) {
+      const passwordResetCode = nanoid();
+      user.passwordResetToken = passwordResetCode;
+      // send forgot password mail
+      console.log(passwordResetCode);
+      user.save();
+    }
+    return res.send(errorObject(200, message));
+  } catch (e) {
+    logger.error(e);
+    return res.status(404).send(errorObject(404, e));
   }
-  return res.send(message);
 }
 export async function resetPasswordHandler(
   req: Request<
@@ -68,23 +76,44 @@ export async function resetPasswordHandler(
   >,
   res: Response
 ) {
-  const { id, passwordResetCode } = req.params;
-  const { password } = req.body;
-  const user = await findUserById(id);
+  try {
+    const { id, passwordResetCode } = req.params;
+    const { password } = req.body;
+    const user = await findUserById(id);
 
-  if (
-    !user ||
-    !user.passwordResetToken ||
-    user.passwordResetToken !== passwordResetCode
-  ) {
-    return res.status(400).send("Could not reset user password");
+    if (
+      !user ||
+      !user.passwordResetToken ||
+      user.passwordResetToken !== passwordResetCode
+    ) {
+      return res
+        .status(400)
+        .send(errorObject(400, "Could not reset user password"));
+    }
+
+    user.passwordResetToken = null;
+
+    user.password = password;
+
+    await user.save();
+
+    return res.send(errorObject(200, "Successfully updated password"));
+  } catch (e) {
+    logger.error(e);
+    return res.status(404).send((e as Error).message);
   }
+}
 
-  user.passwordResetToken = null;
-
-  user.password = password;
-
-  await user.save();
-
-  return res.send("Successfully updated password");
+export async function resendEmailHandler(
+  req: Request<Record<string, never>, Record<string, never>, ResendEmailInput>,
+  res: Response
+) {
+  try {
+    const user = await findUserByEmail(req.body.email);
+    sendVerificationMail(user);
+    return res.send(errorObject(200, "Successfully sent mail again"));
+  } catch (e) {
+    logger.error(e);
+    return res.status(404).send(errorObject(404, e));
+  }
 }

@@ -16,11 +16,9 @@ export default async function reIssueAccessToken(refreshToken: string) {
 
   if (!userFromDB) return false;
 
-  const accessToken = signJwt(
-    user,
-    "accessTokenPrivateKey",
-    { expiresIn: config.get("accessTokenTtl") } // 15 minutes
-  );
+  const accessToken = signJwt(user, "accessTokenPrivateKey", {
+    expiresIn: config.get("accessTokenTtl"),
+  });
 
   return accessToken;
 }
