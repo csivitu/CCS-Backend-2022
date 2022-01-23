@@ -1,3 +1,4 @@
+import { Schema } from "mongoose";
 import ccsUserModel from "../models/ccsUser.model";
 import logger from "../utils/logger";
 
@@ -25,11 +26,13 @@ export async function checkTime(username: string) {
 
 export async function createCcsUser(
   username: string,
+  userId: Schema.Types.ObjectId,
   domain?: "Tech" | "Management" | "Design",
   start?: Date,
   end?: Date
 ) {
   const newUser = await ccsUserModel.create({
+    userId,
     username,
     domainsAttempted: domain ? [domain] : [],
     techAttempted: [],
@@ -40,4 +43,18 @@ export async function createCcsUser(
     round: 1,
   });
   return newUser;
+}
+
+export async function getAllUsers() {
+  const users = await ccsUserModel
+    .find({})
+    .populate("userId", [
+      "-password",
+      "-createdAt",
+      "-updatedAt",
+      "-emailVerificationToken",
+      "-passwordResetToken",
+      "-verificationStatus",
+    ]);
+  return users;
 }

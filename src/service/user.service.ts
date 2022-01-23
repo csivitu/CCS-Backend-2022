@@ -57,7 +57,7 @@ export async function createUser(input: UserInput) {
       emailVerificationToken,
       scope: ["user"],
     });
-    const newUser = await createCcsUser(user.username);
+    const newUser = await createCcsUser(user.username, user._id);
     logger.info({
       username: newUser.username,
       message: "User created in accounts and ccs DB",
@@ -141,7 +141,4 @@ export async function findUserByEmail(email: string) {
 }
 export async function findUserById(id: string) {
   return UserModel.findOne({ _id: id });
-}
-export async function findAllUsers() {
-  // const users = await UserModel.find({});
 }

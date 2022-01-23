@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 
 const ccsUserSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
   username: {
     type: String,
     required: true,
@@ -58,7 +62,7 @@ const ccsUserSchema = new mongoose.Schema({
   round: {
     type: Number,
     required: true,
-    enum: [1, 2, 3],
+    enum: [0, 1, 2, 3],
     default: 1,
   },
   questionLoaded: [
@@ -90,6 +94,7 @@ const ccsUserSchema = new mongoose.Schema({
 
 export interface ccsUserInterface extends mongoose.Document {
   username: string;
+  userId: mongoose.Schema.Types.ObjectId;
   domainsAttempted: ("Tech" | "Design" | "Management")[];
   techAttempted: {
     quesId: number;
@@ -103,7 +108,7 @@ export interface ccsUserInterface extends mongoose.Document {
     quesId: number;
     answer: string;
   }[];
-  round: 1 | 2 | 3;
+  round: 0 | 1 | 2 | 3;
   questionLoaded: {
     quesId: number;
     question: {

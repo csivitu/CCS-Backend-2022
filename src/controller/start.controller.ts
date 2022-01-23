@@ -19,6 +19,7 @@ export default async function startHandler(
     if (!user) {
       const newUser = await createCcsUser(
         res.locals.user.username as string,
+        res.locals.user._id,
         domain,
         start,
         end

@@ -8,7 +8,6 @@ import { UserDocument } from "../models/user.model";
 import logger from "../utils/logger";
 
 const emailerApiKey = config.get("emailer_api_key");
-console.log(emailerApiKey);
 
 export const sendMail = async (
   email: string,

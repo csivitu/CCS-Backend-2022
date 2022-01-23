@@ -26,7 +26,7 @@ export interface UserDocument extends UserInput, mongoose.Document {
   createdAt: Date;
   updatedAt: Date;
   emailVerificationToken: string;
-  verificationStatus: string;
+  verificationStatus: boolean;
   passwordResetToken: string;
   scope: string[];
   comparePassword(candidatePassword: string): Promise<boolean>;
@@ -73,7 +73,7 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
     verificationStatus: {
-      type: String,
+      type: Boolean,
       default: false,
       required: true,
     },

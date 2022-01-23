@@ -23,7 +23,11 @@ import { submitSchema } from "./schema/submit.schema";
 import submitHandler from "./controller/submit.controller";
 import requireTime from "./middleware/requireTime";
 import requireAdmin from "./middleware/requireAdmin";
-import { getUsersHandler } from "./controller/admin.controller";
+import {
+  changeRoundHandler,
+  getUsersHandler,
+} from "./controller/admin.controller";
+import { adminPostSchema } from "./schema/adminPost.schema";
 // import sendMail from "./tools/sendMail";
 // import constants from "./tools/constants";
 // import { UserDocument } from "./models/user.model";
@@ -73,6 +77,12 @@ function routes(app: Express) {
   );
 
   app.get("/api/admin", requireAdmin, getUsersHandler);
+  app.post(
+    "/api/admin",
+    requireAdmin,
+    validateResource(adminPostSchema),
+    changeRoundHandler
+  );
 }
 
 export default routes;

@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import config from "config";
+import { omit } from "lodash";
 import { validatePassword } from "../service/user.service";
 import { signJwt } from "../utils/jwt.utils";
 
@@ -21,7 +22,7 @@ export default async function createUserSessionHandler(
   // create an access token
 
   const accessToken = signJwt(
-    user,
+    omit(user, "verificationStatus"),
     "accessTokenPrivateKey",
     { expiresIn: config.get("accessTokenTtl") } // 15 minutes,
   );
