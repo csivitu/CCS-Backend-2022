@@ -13,26 +13,18 @@ export function signJwt(
   });
 }
 
-export function verifyJwt(
+export function verifyJwt<T>(
   token: string,
   keyName: "accessTokenPublicKey" | "refreshTokenPublicKey"
-) {
+): T | null {
+  // console.log(token)
   const publicKey = config.get<string>(keyName);
 
   try {
-    const decoded = jwt.verify(token, publicKey);
-    return {
-      valid: true,
-      expired: false,
-      decoded,
-    };
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (e: any) {
+    const decoded = jwt.verify(token, publicKey) as T;
+    return decoded;
+  } catch (e) {
     console.error(e);
-    return {
-      valid: false,
-      expired: e.message === "jwt expired",
-      decoded: null,
-    };
+    return null;
   }
 }

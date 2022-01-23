@@ -13,6 +13,15 @@ export interface UserInput {
   gender: string;
 }
 
+export const privateFields = [
+  "password",
+  "createdAt",
+  "updatedAt",
+  "emailVerificationToken",
+  "passwordResetToken",
+  "scope",
+];
+
 export interface UserDocument extends UserInput, mongoose.Document {
   createdAt: Date;
   updatedAt: Date;

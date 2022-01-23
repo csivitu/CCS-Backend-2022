@@ -1,9 +1,15 @@
 import { FilterQuery } from "mongoose";
 import { omit } from "lodash";
 import crypto from "crypto";
-import UserModel, { UserDocument, UserInput } from "../models/user.model";
+import UserModel, {
+  privateFields,
+  UserDocument,
+  UserInput,
+} from "../models/user.model";
 import constants from "../tools/constants";
 import { sendVerificationMail } from "../tools/sendMail";
+import { createCcsUser } from "./ccsUser.service";
+import logger from "../utils/logger";
 
 export async function createUser(input: UserInput) {
   try {
@@ -51,6 +57,11 @@ export async function createUser(input: UserInput) {
       emailVerificationToken,
       scope: ["user"],
     });
+    const newUser = await createCcsUser(user.username);
+    logger.info({
+      username: newUser.username,
+      message: "User created in accounts and ccs DB",
+    });
     sendVerificationMail(user);
     jsonResponse.success = true;
     jsonResponse.message = constants.registrationSuccess;
@@ -81,11 +92,11 @@ export async function validatePassword({
 
   if (!isValid) return false;
 
-  return omit(user.toJSON(), "password");
+  return omit(user.toJSON(), privateFields);
 }
 
 export async function findUser(query: FilterQuery<UserDocument>) {
-  return UserModel.findOne(query).lean();
+  return UserModel.findOne(query);
 }
 
 export async function verifyEmail(id: string, token: string) {
@@ -130,4 +141,7 @@ export async function findUserByEmail(email: string) {
 }
 export async function findUserById(id: string) {
   return UserModel.findOne({ _id: id });
+}
+export async function findAllUsers() {
+  // const users = await UserModel.find({});
 }

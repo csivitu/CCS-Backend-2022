@@ -1,59 +1,51 @@
 import { Request, Response } from "express";
 import moment from "moment";
-import ccsUserModel from "../models/ccsUser.model";
-import { getUser } from "../service/ccsUser.service";
-// import logger from "../utils/logger";
-// import {
-//   error_codes,
-//   logical_errors,
-//   success_codes,
-// } from "../tools/constants";
+import { StartInput } from "../schema/start.schema";
+import {
+  createCcsUser,
+  getCcsUserByUsername,
+} from "../service/ccsUser.service";
+import logger from "../utils/logger";
 
-export default async function startHandler(req: Request, res: Response) {
-  const user = await getUser(res.locals.user.username);
+export default async function startHandler(
+  req: Request<Record<string, never>, Record<string, never>, StartInput>,
+  res: Response
+) {
+  const user = await getCcsUserByUsername(res.locals.user.username);
   const { domain } = req.body;
   const start: Date = new Date();
   const end: Date = moment(start).add(process.env.DURATION, "m").toDate();
   try {
     if (!user) {
-      console.log("user doesnot exist");
-      // eslint-disable-next-line new-cap
-      const newUser = new ccsUserModel({
-        username: res.locals.user.username,
-        domainsAttempted: [domain],
-        techAttempted: [],
-        managementAttempted: [],
-        designAttempted: [],
-        startTime: start,
-        endTime: end,
-        round: 1,
+      const newUser = await createCcsUser(
+        res.locals.user.username as string,
+        domain,
+        start,
+        end
+      );
+      logger.info({
+        username: newUser.username,
+        message: "User created in ccs DB",
       });
-      newUser.save();
     } else {
-      console.log("user exists");
       if (user.domainsAttempted.includes(domain)) {
         // console.log("in")
         // logger.warn(logical_errors.L2, { username: username });
-        return res.json({
-          //   code: "L2",
-          message: "Domain added",
-        });
+        return res.status(403).send("Domain already attempted");
       }
       user.domainsAttempted.push(domain);
       user.startTime = start;
       user.endTime = end;
       user.questionLoaded = null;
       user.save();
+      logger.info({
+        username: user.username,
+        message: `Started domain ${domain}`,
+      });
     }
-    return res.json({
-      //   code: "S4",
-      message: "success",
-    });
-  } catch (error) {
-    // logger.error(error_codes.E0);
-    return res.status(500).json({
-      //   code: "E0",
-      message: error,
-    });
+    return res.send(`succesfully started domain ${domain}`);
+  } catch (error: unknown) {
+    logger.error({ username: res.locals.user.username, error });
+    return res.status(500).send(error);
   }
 }

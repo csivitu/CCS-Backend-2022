@@ -7,7 +7,8 @@ import { constants } from "./constants";
 import { UserDocument } from "../models/user.model";
 import logger from "../utils/logger";
 
-const SENGRID_API_KEY = config.get("sengrid_api_key");
+const emailerApiKey = config.get("emailer_api_key");
+console.log(emailerApiKey);
 
 export const sendMail = async (
   email: string,
@@ -15,11 +16,11 @@ export const sendMail = async (
   content: string
 ) => {
   try {
-    await axios.post("https://emailer-api.csivit.com/email", {
+    await axios.post("http://localhost:5001/email", {
       html: content,
       subject,
       to: email,
-      auth: SENGRID_API_KEY,
+      auth: emailerApiKey,
     });
     logger.info(`Mail sent to ${email} successfully`);
   } catch (e) {
