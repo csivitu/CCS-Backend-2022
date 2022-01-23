@@ -17,23 +17,6 @@ export default async function questionHandler(
         code: "L6",
       });
     }
-    if (!user.endTime) {
-      // console.log("test not started or time over");
-      //   loggerStartEnd.warn(logical_errors.L4, { username: username });
-      return res.json({
-        code: "L4",
-      });
-    }
-    if (user.endTime < new Date()) {
-      //   console.log("time over");
-      user.startTime = null;
-      user.endTime = null;
-      user.save();
-      //   loggerStartEnd.warn(logical_errors.L3, { username: username });
-      return res.json({
-        code: "L3",
-      });
-    }
     if (user.questionLoaded) {
       //   const questionIds = user.questionLoaded.map((ques) => ques.quesId);
       //   logger.info(success_codes.S2, { questionIds: questionIds });

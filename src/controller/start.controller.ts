@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import moment from "moment";
+import config from "config";
 import { StartInput } from "../schema/start.schema";
 import {
   createCcsUser,
@@ -14,7 +15,9 @@ export default async function startHandler(
   const user = await getCcsUserByUsername(res.locals.user.username);
   const { domain } = req.body;
   const start: Date = new Date();
-  const end: Date = moment(start).add(process.env.DURATION, "m").toDate();
+  const end: Date = moment(start)
+    .add(config.get<number>("test_duration"), "m")
+    .toDate();
   try {
     if (!user) {
       const newUser = await createCcsUser(

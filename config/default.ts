@@ -24,4 +24,5 @@ f7nAWWlOhIzawxMKZwIDAQAB
   emailer_api_key: process.env.EMAILER_API_KEY,
   verify_link: process.env.VERIFY_LINK,
   number_of_questions: 10,
+  test_duration: 60,
 };

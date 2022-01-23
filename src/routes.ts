@@ -29,6 +29,7 @@ import {
   getUsersHandler,
 } from "./controller/admin.controller";
 import { adminPostSchema } from "./schema/adminPost.schema";
+import questionHandler from "./controller/question.controller";
 // import sendMail from "./tools/sendMail";
 // import constants from "./tools/constants";
 // import { UserDocument } from "./models/user.model";
@@ -83,6 +84,14 @@ function routes(app: Express) {
     requireAdmin,
     validateResource(adminPostSchema),
     changeRoundHandler
+  );
+
+  app.post(
+    "/api/questions",
+    requireUser,
+    requireTime,
+    validateResource(startSchema),
+    questionHandler
   );
 }
 
