@@ -22,6 +22,8 @@ import requireUser from "./middleware/requireUser";
 import { submitSchema } from "./schema/submit.schema";
 import submitHandler from "./controller/submit.controller";
 import requireTime from "./middleware/requireTime";
+import requireAdmin from "./middleware/requireAdmin";
+import { getUsersHandler } from "./controller/admin.controller";
 // import sendMail from "./tools/sendMail";
 // import constants from "./tools/constants";
 // import { UserDocument } from "./models/user.model";
@@ -55,15 +57,22 @@ function routes(app: Express) {
     resetPasswordHandler
   );
 
-  app.post("/start", requireUser, validateResource(startSchema), startHandler);
+  app.post(
+    "/api/start",
+    requireUser,
+    validateResource(startSchema),
+    startHandler
+  );
 
   app.post(
-    "/submit",
+    "/api/submit",
     requireUser,
     requireTime,
     validateResource(submitSchema),
     submitHandler
   );
+
+  app.get("/api/admin", requireAdmin, getUsersHandler);
 }
 
 export default routes;
