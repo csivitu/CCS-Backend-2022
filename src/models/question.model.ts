@@ -46,4 +46,8 @@ export interface QuestionInterface extends mongoose.Document {
   domain: "Tech" | "Design" | "Management";
 }
 
-export default QuestionSchema;
+const QuestionModel = mongoose.model<QuestionInterface>(
+  "Question",
+  QuestionSchema
+);
+export default QuestionModel;

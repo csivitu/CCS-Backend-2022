@@ -4,3 +4,6 @@ import ccsUserModel from "../models/ccsUser.model";
 export async function getUser(username: string) {
   return ccsUserModel.findOne({ username });
 }
+export async function getQuestion(username: string) {
+  return ccsUserModel.findOne({ username });
+}

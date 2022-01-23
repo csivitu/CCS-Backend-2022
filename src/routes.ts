@@ -9,6 +9,7 @@ import {
 } from "./controller/user.controller";
 import createUserSessionHandler from "./controller/session.controller";
 import startHandler from "./controller/start.controller";
+// import questionHandler from "./controller/question.controller";
 import validateResource from "./middleware/validateResource";
 import {
   createUserSchema,
@@ -53,6 +54,13 @@ function routes(app: Express) {
   );
 
   app.post("/start", requireUser, validateResource(startSchema), startHandler);
+
+  app.post(
+    "/question",
+    requireUser,
+    validateResource(startSchema),
+    questionHandler
+  );
 }
 
 export default routes;
