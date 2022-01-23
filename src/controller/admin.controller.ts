@@ -19,7 +19,22 @@ export async function changeRoundHandler(
 ) {
   try {
     const user = await getCcsUserByUsername(req.body.username);
-    user.round = req.body.round;
+    switch (req.body.domain) {
+      case "Tech":
+        user.techRound = req.body.round;
+        break;
+      case "Management":
+        user.managementRound = req.body.round;
+        break;
+      case "Design":
+        user.designRound = req.body.round;
+        break;
+      case "Video":
+        user.videoRound = req.body.round;
+        break;
+      default:
+        break;
+    }
     user.save();
     return res.send(errorObject(200, "user round successfully saved"));
   } catch (e) {

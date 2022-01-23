@@ -9,7 +9,8 @@ export const startSchema = object({
     (data) =>
       data.domain === "Tech" ||
       data.domain === "Management" ||
-      data.domain === "Design",
+      data.domain === "Design" ||
+      data.domain === "Video",
     {
       message: "wrong values",
       path: ["domain"],
@@ -17,4 +18,4 @@ export const startSchema = object({
   ),
 });
 
-export type StartInput = { domain: "Tech" | "Management" | "Design" };
+export type StartInput = { domain: "Tech" | "Management" | "Design" | "Video" };

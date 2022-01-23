@@ -1,4 +1,4 @@
-const errorObject = (code: number, message?: Error | string, obj?: unknown) => {
+const errorObject = (code: number, message?: Error | string, obj?) => {
   if (code !== 200) {
     return {
       success: false,

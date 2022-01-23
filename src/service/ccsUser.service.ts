@@ -40,7 +40,6 @@ export async function createCcsUser(
     designAttempted: [],
     startTime: start || null,
     endTime: end || null,
-    round: 1,
   });
   return newUser;
 }
@@ -57,4 +56,18 @@ export async function getAllUsers() {
       "-verificationStatus",
     ]);
   return users;
+}
+
+export async function getCcsUserInfoByEmail(email: string) {
+  const user = await ccsUserModel
+    .find({ email })
+    .populate("userId", [
+      "-password",
+      "-createdAt",
+      "-updatedAt",
+      "-emailVerificationToken",
+      "-passwordResetToken",
+      "-verificationStatus",
+    ]);
+  return user;
 }

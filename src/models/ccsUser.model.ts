@@ -14,7 +14,7 @@ const ccsUserSchema = new mongoose.Schema({
   domainsAttempted: [
     {
       type: String,
-      enum: ["Tech", "Design", "Management"],
+      enum: ["Tech", "Design", "Management", "Video"],
     },
   ],
   techAttempted: [
@@ -52,13 +52,42 @@ const ccsUserSchema = new mongoose.Schema({
       },
     },
   ],
+  videoAttempted: [
+    {
+      quesId: {
+        type: Number,
+        required: true,
+      },
+      answer: {
+        type: String,
+      },
+    },
+  ],
   startTime: {
     type: Date,
   },
   endTime: {
     type: Date,
   },
-  round: {
+  techRound: {
+    type: Number,
+    required: true,
+    enum: [0, 1, 2, 3],
+    default: 1,
+  },
+  managementRound: {
+    type: Number,
+    required: true,
+    enum: [0, 1, 2, 3],
+    default: 1,
+  },
+  designRound: {
+    type: Number,
+    required: true,
+    enum: [0, 1, 2, 3],
+    default: 1,
+  },
+  videoRound: {
     type: Number,
     required: true,
     enum: [0, 1, 2, 3],
@@ -94,12 +123,8 @@ const ccsUserSchema = new mongoose.Schema({
 export interface ccsUserInterface extends mongoose.Document {
   username: string;
   userId: mongoose.Schema.Types.ObjectId;
-  domainsAttempted: ("Tech" | "Design" | "Management")[];
+  domainsAttempted: ("Tech" | "Design" | "Management" | "Video")[];
   techAttempted: {
-    quesId: number;
-    answer: string;
-  }[];
-  designAttempted: {
     quesId: number;
     answer: string;
   }[];
@@ -107,7 +132,18 @@ export interface ccsUserInterface extends mongoose.Document {
     quesId: number;
     answer: string;
   }[];
-  round: 0 | 1 | 2 | 3;
+  designAttempted: {
+    quesId: number;
+    answer: string;
+  }[];
+  videoAttempted: {
+    quesId: number;
+    answer: string;
+  }[];
+  techRound: 0 | 1 | 2 | 3;
+  managementRound: 0 | 1 | 2 | 3;
+  designRound: 0 | 1 | 2 | 3;
+  videoRound: 0 | 1 | 2 | 3;
   questionLoaded: {
     quesId: number;
     question: {

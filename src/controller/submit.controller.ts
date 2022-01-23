@@ -28,6 +28,9 @@ export default async function submitHandler(
       case "Design":
         user.designAttempted = questions;
         break;
+      case "Video":
+        user.videoAttempted = questions;
+        break;
       default:
         break;
     }

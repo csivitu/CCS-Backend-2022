@@ -22,7 +22,8 @@ export const submitSchema = object({
     (data) =>
       data.domain === "Tech" ||
       data.domain === "Management" ||
-      data.domain === "Design",
+      data.domain === "Design" ||
+      data.domain === "Video",
     {
       message: "wrong values",
       path: ["domain"],
@@ -32,7 +33,7 @@ export const submitSchema = object({
 
 export type SubmitInput = {
   finalSubmit: boolean;
-  domain: "Tech" | "Management" | "Design";
+  domain: "Tech" | "Management" | "Design" | "Video";
   questions: {
     quesId: number;
     answer: string;

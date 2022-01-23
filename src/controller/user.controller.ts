@@ -7,6 +7,7 @@ import {
   ForgotPasswordInput,
   ResetPasswordInput,
 } from "../schema/user.schema";
+import { getCcsUserInfoByEmail } from "../service/ccsUser.service";
 import {
   createUser,
   findUserByEmail,
@@ -112,6 +113,17 @@ export async function resendEmailHandler(
     const user = await findUserByEmail(req.body.email);
     sendVerificationMail(user);
     return res.send(errorObject(200, "Successfully sent mail again"));
+  } catch (e) {
+    logger.error(e);
+    return res.status(404).send(errorObject(404, e));
+  }
+}
+
+export async function getUserHandler(req: Request, res: Response) {
+  try {
+    const { email } = res.locals.user;
+    const user = await getCcsUserInfoByEmail(email);
+    return res.send(errorObject(200, "", user));
   } catch (e) {
     logger.error(e);
     return res.status(404).send(errorObject(404, e));

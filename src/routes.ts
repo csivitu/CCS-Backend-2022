@@ -2,6 +2,7 @@ import { Express, Request, Response } from "express";
 import {
   createUserHandler,
   forgotPasswordHandler,
+  getUserHandler,
   resendEmailHandler,
   resetPasswordHandler,
   verifyEmailHandler,
@@ -116,6 +117,8 @@ function routes(app: Express) {
     validateResource(resendEmailSchema),
     resendEmailHandler
   );
+
+  app.get("/api/getUser", apiLimiter, requireUser, getUserHandler);
 }
 
 export default routes;
