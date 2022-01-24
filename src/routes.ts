@@ -54,8 +54,8 @@ function routes(app: Express) {
     createUserSessionHandler
   );
 
-  app.post(
-    "/api/users/verify/:id/:token",
+  app.get(
+    "/api/users/verify/:token/:user",
     apiLimiter,
     validateResource(emailVerifySchema),
     verifyEmailHandler

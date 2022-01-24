@@ -83,7 +83,7 @@ export const createUserSchema = object({
 
 export const emailVerifySchema = object({
   params: object({
-    id: string(),
+    user: string(),
     token: string(),
   }),
 });

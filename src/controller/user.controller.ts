@@ -36,7 +36,7 @@ export async function verifyEmailHandler(
   res: Response
 ) {
   try {
-    const response = await verifyEmail(req.params.id, req.params.token);
+    const response = await verifyEmail(req.params.user, req.params.token);
     return res.send(errorObject(200, "", response));
   } catch (e) {
     logger.error(e);

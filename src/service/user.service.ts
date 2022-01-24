@@ -107,7 +107,6 @@ export async function verifyEmail(id: string, token: string) {
     if (!participant) {
       return {
         verified: false,
-        email: participant.email,
         message: "cannot verify",
       };
     }
