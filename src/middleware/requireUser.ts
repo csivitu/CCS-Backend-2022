@@ -1,10 +1,11 @@
 import { Request, Response, NextFunction } from "express";
+import errorObject from "../utils/errorObject";
 
 const requireUser = (req: Request, res: Response, next: NextFunction) => {
   const { user } = res.locals;
 
   if (!user) {
-    return res.sendStatus(403);
+    return res.status(403).send(errorObject(403, "not logged in"));
   }
 
   return next();

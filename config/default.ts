@@ -25,4 +25,8 @@ f7nAWWlOhIzawxMKZwIDAQAB
   verify_link: process.env.VERIFY_LINK,
   number_of_questions: 10,
   test_duration: 60,
+  mailgun_api_key: process.env.MAILGUN_API_KEY,
+  email_domain: process.env.EMAIL_DOMAIN,
+  mailgun_host: process.env.MAILGUN_HOST,
+  sender_email: process.env.SENDER_EMAIL,
 };
