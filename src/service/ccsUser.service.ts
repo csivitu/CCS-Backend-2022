@@ -27,7 +27,7 @@ export async function checkTime(username: string) {
 export async function createCcsUser(
   username: string,
   userId: Schema.Types.ObjectId,
-  domain?: "Tech" | "Management" | "Design",
+  domain?: "Tech" | "Management" | "Design" | "Video",
   start?: Date,
   end?: Date
 ) {
