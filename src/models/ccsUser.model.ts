@@ -98,7 +98,6 @@ const ccsUserSchema = new mongoose.Schema({
       quesId: {
         type: Number,
         required: true,
-        unique: true,
       },
       question: {
         text: {
