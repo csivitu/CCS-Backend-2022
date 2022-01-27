@@ -1,5 +1,6 @@
 import express from "express";
 import config from "config";
+import cors from "cors";
 // import hbs from "express-handlebars";
 // import path from "path";
 import connect from "./utils/connect";
@@ -11,7 +12,7 @@ const port = config.get<number>("port");
 
 const app = express();
 // const templateFolder = path.join(__dirname, "templates");
-
+app.use(cors());
 app.use(express.json());
 app.use(deserializeUser);
 // app.set("views", path.join(__dirname, "templates"));
