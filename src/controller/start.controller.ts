@@ -8,6 +8,7 @@ import {
 } from "../service/ccsUser.service";
 import logger from "../utils/logger";
 import errorObject from "../utils/errorObject";
+import standardizeObject from "../utils/standardizeObject";
 
 export default async function startHandler(
   req: Request<Record<string, never>, Record<string, never>, StartInput>,
@@ -50,7 +51,10 @@ export default async function startHandler(
     }
     return res.send(errorObject(200, `succesfully started domain ${domain}`));
   } catch (e) {
-    logger.error({ username: res.locals.user.username, e });
-    return res.status(500).send(errorObject(500, e));
+    logger.error({
+      username: res.locals.user.username,
+      error: standardizeObject(e),
+    });
+    return res.status(500).send(errorObject(500, standardizeObject(e)));
   }
 }

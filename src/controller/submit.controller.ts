@@ -3,6 +3,7 @@ import { SubmitInput } from "../schema/submit.schema";
 import { getCcsUserByUsername } from "../service/ccsUser.service";
 import errorObject from "../utils/errorObject";
 import logger from "../utils/logger";
+import standardizeObject from "../utils/standardizeObject";
 
 export default async function submitHandler(
   req: Request<Record<string, never>, Record<string, never>, SubmitInput>,
@@ -45,7 +46,10 @@ export default async function submitHandler(
     logger.info({ username: user.username, message: "autosaved" });
     return res.send(errorObject(200, "autosaved"));
   } catch (e) {
-    logger.error(e);
-    return res.status(500).send(errorObject(500, e));
+    logger.error({
+      username: res.locals.user.username,
+      error: standardizeObject(e),
+    });
+    return res.status(500).send(errorObject(500, standardizeObject(e)));
   }
 }

@@ -17,6 +17,7 @@ import {
 import { sendVerificationMail } from "../tools/sendMail";
 import errorObject from "../utils/errorObject";
 import logger from "../utils/logger";
+import standardizeObject from "../utils/standardizeObject";
 
 export async function createUserHandler(
   req: Request<Record<string, never>, Record<string, never>, UserInput>,
@@ -26,8 +27,8 @@ export async function createUserHandler(
     const response = await createUser(req.body);
     return res.send(errorObject(200, "", response));
   } catch (e) {
-    logger.error(e);
-    return res.status(409).send(errorObject(409, e));
+    logger.error(standardizeObject(e));
+    return res.status(409).send(errorObject(409, standardizeObject(e)));
   }
 }
 
@@ -39,8 +40,8 @@ export async function verifyEmailHandler(
     const response = await verifyEmail(req.params.user, req.params.token);
     return res.send(errorObject(200, "", response));
   } catch (e) {
-    logger.error(e);
-    return res.status(404).send(errorObject(404, e));
+    logger.error(standardizeObject(e));
+    return res.status(404).send(errorObject(404, standardizeObject(e)));
   }
 }
 
@@ -65,8 +66,8 @@ export async function forgotPasswordHandler(
     }
     return res.send(errorObject(200, message));
   } catch (e) {
-    logger.error(e);
-    return res.status(404).send(errorObject(404, e));
+    logger.error(standardizeObject(e));
+    return res.status(404).send(errorObject(404, standardizeObject(e)));
   }
 }
 export async function resetPasswordHandler(
@@ -100,8 +101,8 @@ export async function resetPasswordHandler(
 
     return res.send(errorObject(200, "Successfully updated password"));
   } catch (e) {
-    logger.error(e);
-    return res.status(404).send((e as Error).message);
+    logger.error(standardizeObject(e));
+    return res.status(404).send(errorObject(404, standardizeObject(e)));
   }
 }
 
@@ -114,8 +115,8 @@ export async function resendEmailHandler(
     sendVerificationMail(user);
     return res.send(errorObject(200, "Successfully sent mail again"));
   } catch (e) {
-    logger.error(e);
-    return res.status(404).send(errorObject(404, e));
+    logger.error(standardizeObject(e));
+    return res.status(404).send(errorObject(404, standardizeObject(e)));
   }
 }
 
@@ -125,7 +126,7 @@ export async function getUserHandler(req: Request, res: Response) {
     const user = await getCcsUserInfoByEmail(email);
     return res.send(errorObject(200, "", user));
   } catch (e) {
-    logger.error(e);
-    return res.status(404).send(errorObject(404, e));
+    logger.error(standardizeObject(e));
+    return res.status(404).send(errorObject(404, standardizeObject(e)));
   }
 }

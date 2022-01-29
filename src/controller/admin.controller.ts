@@ -3,6 +3,7 @@ import { AdminPostInput } from "../schema/adminPost.schema";
 import { getAllUsers, getCcsUserByUsername } from "../service/ccsUser.service";
 import errorObject from "../utils/errorObject";
 import logger from "../utils/logger";
+import standardizeObject from "../utils/standardizeObject";
 
 export async function getUsersHandler(req: Request, res: Response) {
   try {
@@ -38,7 +39,7 @@ export async function changeRoundHandler(
     user.save();
     return res.send(errorObject(200, "user round successfully saved"));
   } catch (e) {
-    logger.error(e);
-    return res.status(404).send(errorObject(404, e));
+    logger.error(standardizeObject(e));
+    return res.status(404).send(errorObject(404, standardizeObject(e)));
   }
 }
