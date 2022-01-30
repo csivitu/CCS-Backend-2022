@@ -2,6 +2,12 @@ import { boolean, object, string, TypeOf } from "zod";
 import parsePhoneNumber from "libphonenumber-js";
 import config from "config";
 import constants from "../tools/constants";
+import {
+  designSubdomains,
+  designSubDomainsType,
+  techSubdomains,
+  techSubDomainsType,
+} from "../types/subdomainTypes";
 
 export const createUserSchema = object({
   body: object({
@@ -133,10 +139,26 @@ export const AddUserInfoSchema = object({
   }),
 });
 
+export const AddUserTaskSchema = object({
+  body: object({
+    subdomain: string({ required_error: "sub domain is required" }),
+    task: string({ required_error: "task link is required" }),
+  }).refine(
+    (data) =>
+      techSubdomains.includes(data.subdomain) ||
+      designSubdomains.includes(data.subdomain),
+    { message: "wrong subdomain value", path: ["subdomain"] }
+  ),
+});
+
 export type EmailVerifyInput = TypeOf<typeof emailVerifySchema>["params"];
 export type ForgotPasswordInput = TypeOf<typeof forgotPasswordSchema>["body"];
 export type ResetPasswordInput = TypeOf<typeof resetPasswordSchema>;
 export type AddUserInfoInput = {
   description?: string;
   portfolio?: string;
+};
+export type AddUserTaskInput = {
+  subdomain: techSubDomainsType | designSubDomainsType;
+  task: string;
 };

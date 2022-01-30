@@ -29,4 +29,5 @@ f7nAWWlOhIzawxMKZwIDAQAB
   email_domain: process.env.EMAIL_DOMAIN,
   mailgun_host: process.env.MAILGUN_HOST,
   sender_email: process.env.SENDER_EMAIL,
+  taskSubmissionDate: process.env.TASK_SUBMISSION_DATE,
 };

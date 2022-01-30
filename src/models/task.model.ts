@@ -1,4 +1,10 @@
 import mongoose from "mongoose";
+import {
+  designSubdomains,
+  designSubDomainsType,
+  techSubdomains,
+  techSubDomainsType,
+} from "../types/subdomainTypes";
 
 const TaskSchema = new mongoose.Schema({
   taskId: {
@@ -25,11 +31,12 @@ const TaskSchema = new mongoose.Schema({
   },
   domain: {
     type: String,
-    enum: ["Tech", "Design", "Management", "Video"],
+    enum: ["Tech", "Design"],
     required: true,
   },
   subDomain: {
     type: String,
+    enum: techSubdomains.concat(designSubdomains),
   },
 });
 
@@ -40,8 +47,8 @@ export interface TaskInterface extends mongoose.Document {
     img: string[];
     links: string[];
   };
-  difficulty: "Easy" | "Medium" | "Hard";
-  domain: "Tech" | "Design" | "Management";
+  domain: "Tech" | "Design";
+  subDomain: techSubDomainsType | designSubDomainsType;
 }
 
 const TaskModel = mongoose.model<TaskInterface>("Task", TaskSchema);

@@ -1,9 +1,11 @@
 import { Express, Request, Response } from "express";
 import {
   addUserInfoHandler,
+  addUserTaskHandler,
   createUserHandler,
   forgotPasswordHandler,
   getUserHandler,
+  getUserTaskHandler,
   resendEmailHandler,
   resetPasswordHandler,
   verifyEmailHandler,
@@ -12,6 +14,8 @@ import createUserSessionHandler from "./controller/session.controller";
 import startHandler from "./controller/start.controller";
 import validateResource from "./middleware/validateResource";
 import {
+  AddUserInfoSchema,
+  AddUserTaskSchema,
   createUserSchema,
   emailVerifySchema,
   forgotPasswordSchema,
@@ -39,6 +43,7 @@ import {
   forgotPasswordLimiter,
 } from "./utils/limiters";
 import { resendEmailSchema } from "./schema/resendEmail.schema";
+import requireTaskTime from "./middleware/requireTaskTime";
 
 function routes(app: Express) {
   app.get("/healthcheck", (req: Request, res: Response) => res.sendStatus(200));
@@ -123,7 +128,24 @@ function routes(app: Express) {
 
   app.get("/api/getUser", apiLimiter, requireUser, getUserHandler);
 
-  app.put("/api/user/info", apiLimiter, requireUser, addUserInfoHandler);
+  app.put(
+    "/api/users/info",
+    apiLimiter,
+    validateResource(AddUserInfoSchema),
+    requireUser,
+    addUserInfoHandler
+  );
+
+  app.put(
+    "api/users/task",
+    apiLimiter,
+    validateResource(AddUserTaskSchema),
+    requireUser,
+    requireTaskTime,
+    addUserTaskHandler
+  );
+
+  app.get("api/users/task", apiLimiter, requireUser, getUserTaskHandler);
 }
 
 export default routes;

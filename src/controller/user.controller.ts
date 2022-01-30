@@ -1,10 +1,12 @@
 import { Request, Response } from "express";
 import { nanoid } from "nanoid";
 import ccsUserModel from "../models/ccsUser.model";
+import TaskModel from "../models/task.model";
 import { UserInput } from "../models/user.model";
 import { ResendEmailInput } from "../schema/resendEmail.schema";
 import {
   AddUserInfoInput,
+  AddUserTaskInput,
   EmailVerifyInput,
   ForgotPasswordInput,
   ResetPasswordInput,
@@ -146,9 +148,50 @@ export async function addUserInfoHandler(
     if (req.body.portfolio) {
       user.portfolio = req.body.portfolio;
     }
+    user.save();
     return res.send(errorObject(200, "successfully updated user"));
   } catch (e) {
     logger.error(standardizeObject(e));
     return res.status(404).send(errorObject(404, standardizeObject(e)));
+  }
+}
+export async function addUserTaskHandler(
+  req: Request<Record<string, never>, Record<string, never>, AddUserTaskInput>,
+  res: Response
+) {
+  try {
+    const { _id } = res.locals.user;
+    const user = await ccsUserModel.findOne({ _id });
+    if (
+      !user.taskSubmitted
+        .map((tsk) => tsk.subdomain)
+        .includes(req.body.subdomain)
+    ) {
+      user.taskSubmitted.push({
+        subdomain: req.body.subdomain,
+        task: req.body.task,
+      });
+    } else {
+      user.taskSubmitted[
+        user.taskSubmitted
+          .map((tsk) => tsk.subdomain)
+          .indexOf(req.body.subdomain)
+      ].task = req.body.task;
+    }
+    user.save();
+    return res.send(errorObject(200, "successfully updated user task"));
+  } catch (e) {
+    logger.error(standardizeObject(e));
+    return res.status(404).send(errorObject(404, standardizeObject(e)));
+  }
+}
+
+export async function getUserTaskHandler(req: Request, res: Response) {
+  try {
+    const tasks = await TaskModel.find({});
+    return res.send(errorObject(200, "", tasks));
+  } catch (e) {
+    logger.error(standardizeObject(e));
+    return res.status(500).send(errorObject(500, standardizeObject(e)));
   }
 }

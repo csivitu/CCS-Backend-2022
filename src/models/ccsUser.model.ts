@@ -1,4 +1,10 @@
 import mongoose from "mongoose";
+import {
+  designSubdomains,
+  designSubDomainsType,
+  techSubdomains,
+  techSubDomainsType,
+} from "../types/subdomainTypes";
 
 const ccsUserSchema = new mongoose.Schema({
   userId: {
@@ -168,9 +174,15 @@ const ccsUserSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Task",
   },
-  taskSubmitted: {
-    type: String,
-  },
+  taskSubmitted: [
+    {
+      subdomain: {
+        type: String,
+        enum: techSubdomains.concat(designSubdomains),
+      },
+      task: String,
+    },
+  ],
   portfolio: {
     type: String,
   },
@@ -224,7 +236,10 @@ export interface ccsUserInterface extends mongoose.Document {
   };
   description: string;
   taskAssigned: mongoose.Schema.Types.ObjectId;
-  taskSubmitted: string;
+  taskSubmitted: {
+    subdomain: techSubDomainsType | designSubDomainsType;
+    task: string;
+  }[];
   portfolio: string;
 }
 

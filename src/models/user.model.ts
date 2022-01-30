@@ -91,8 +91,7 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-// eslint-disable-next-line func-names
-userSchema.pre("save", async function (next) {
+userSchema.pre("save", async function hashPassword(next) {
   const user = this as UserDocument;
 
   if (!user.isModified("password")) {
@@ -100,15 +99,14 @@ userSchema.pre("save", async function (next) {
   }
   const salt = await bcrypt.genSalt(config.get<number>("saltWorkFactor"));
 
-  const hash = await bcrypt.hashSync(user.password, salt);
+  const hash = bcrypt.hashSync(user.password, salt);
 
   user.password = hash;
 
   return next();
 });
 
-// eslint-disable-next-line func-names
-userSchema.methods.comparePassword = async function (
+userSchema.methods.comparePassword = async function compare(
   candidatePassword: string
 ): Promise<boolean> {
   const user = this as UserDocument;
