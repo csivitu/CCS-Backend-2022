@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
-const QuestionSchema = new mongoose.Schema({
-  quesId: {
+const TaskSchema = new mongoose.Schema({
+  taskId: {
     type: Number,
     required: true,
     unique: true,
@@ -23,31 +23,26 @@ const QuestionSchema = new mongoose.Schema({
       },
     ],
   },
-  difficulty: {
-    type: String,
-    enum: ["Easy", "Medium", "Hard"],
-    required: true,
-  },
   domain: {
     type: String,
     enum: ["Tech", "Design", "Management", "Video"],
     required: true,
   },
+  subDomain: {
+    type: String,
+  },
 });
 
-export interface QuestionInterface extends mongoose.Document {
-  quesId: number;
+export interface TaskInterface extends mongoose.Document {
+  taskId: number;
   question: {
     text: string;
     img: string[];
     links: string[];
   };
   difficulty: "Easy" | "Medium" | "Hard";
-  domain: "Tech" | "Design" | "Management" | "Video";
+  domain: "Tech" | "Design" | "Management";
 }
 
-const QuestionModel = mongoose.model<QuestionInterface>(
-  "Question",
-  QuestionSchema
-);
-export default QuestionModel;
+const TaskModel = mongoose.model<TaskInterface>("Task", TaskSchema);
+export default TaskModel;

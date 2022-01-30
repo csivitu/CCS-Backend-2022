@@ -1,8 +1,10 @@
 import { Request, Response } from "express";
 import { nanoid } from "nanoid";
+import ccsUserModel from "../models/ccsUser.model";
 import { UserInput } from "../models/user.model";
 import { ResendEmailInput } from "../schema/resendEmail.schema";
 import {
+  AddUserInfoInput,
   EmailVerifyInput,
   ForgotPasswordInput,
   ResetPasswordInput,
@@ -125,6 +127,26 @@ export async function getUserHandler(req: Request, res: Response) {
     const { email } = res.locals.user;
     const user = await getCcsUserInfoByEmail(email);
     return res.send(errorObject(200, "", user));
+  } catch (e) {
+    logger.error(standardizeObject(e));
+    return res.status(404).send(errorObject(404, standardizeObject(e)));
+  }
+}
+
+export async function addUserInfoHandler(
+  req: Request<Record<string, never>, Record<string, never>, AddUserInfoInput>,
+  res: Response
+) {
+  try {
+    const { _id } = res.locals.user;
+    const user = await ccsUserModel.findOne({ _id });
+    if (req.body.description) {
+      user.description = req.body.description;
+    }
+    if (req.body.portfolio) {
+      user.portfolio = req.body.portfolio;
+    }
+    return res.send(errorObject(200, "successfully updated user"));
   } catch (e) {
     logger.error(standardizeObject(e));
     return res.status(404).send(errorObject(404, standardizeObject(e)));

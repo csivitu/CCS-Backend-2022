@@ -161,6 +161,19 @@ const ccsUserSchema = new mongoose.Schema({
       max: 10,
     },
   },
+  description: {
+    type: String,
+  },
+  taskAssigned: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Task",
+  },
+  taskSubmitted: {
+    type: String,
+  },
+  portfolio: {
+    type: String,
+  },
 });
 
 export interface ccsUserInterface extends mongoose.Document {
@@ -209,6 +222,10 @@ export interface ccsUserInterface extends mongoose.Document {
     design: number;
     video: number;
   };
+  description: string;
+  taskAssigned: mongoose.Schema.Types.ObjectId;
+  taskSubmitted: string;
+  portfolio: string;
 }
 
 const ccsUserModel = mongoose.model<ccsUserInterface>("CcsUser", ccsUserSchema);

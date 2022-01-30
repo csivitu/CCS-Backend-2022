@@ -1,5 +1,6 @@
 import { Express, Request, Response } from "express";
 import {
+  addUserInfoHandler,
   createUserHandler,
   forgotPasswordHandler,
   getUserHandler,
@@ -121,6 +122,8 @@ function routes(app: Express) {
   );
 
   app.get("/api/getUser", apiLimiter, requireUser, getUserHandler);
+
+  app.put("/api/user/info", apiLimiter, requireUser, addUserInfoHandler);
 }
 
 export default routes;

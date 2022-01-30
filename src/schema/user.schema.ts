@@ -123,6 +123,20 @@ export const ccsUserSchema = object({
   }),
 });
 
+export const AddUserInfoSchema = object({
+  body: object({
+    description: string().optional(),
+    portfolio: string().optional(),
+  }).refine((data) => data.description || data.portfolio, {
+    message: "atleast one required",
+    path: ["description", "portfolio"],
+  }),
+});
+
 export type EmailVerifyInput = TypeOf<typeof emailVerifySchema>["params"];
 export type ForgotPasswordInput = TypeOf<typeof forgotPasswordSchema>["body"];
 export type ResetPasswordInput = TypeOf<typeof resetPasswordSchema>;
+export type AddUserInfoInput = {
+  description?: string;
+  portfolio?: string;
+};
