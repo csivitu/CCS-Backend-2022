@@ -3,10 +3,15 @@ import { number, object, string } from "zod";
 export const adminPostSchema = object({
   body: object({
     username: string({ required_error: "username is required" }),
-    round: number({ required_error: "round is required" }),
+    round: number().optional(),
     domain: string({
       required_error: "domain is required",
     }),
+    comment: string().optional(),
+    mark: number()
+      .min(0, "Marks cannot be negative")
+      .max(10, "marks cannot be greater than 10")
+      .optional(),
   })
     .refine(
       (data) =>
@@ -19,8 +24,13 @@ export const adminPostSchema = object({
         path: ["domain"],
       }
     )
+    .refine((data) => data.comment || data.mark || data.round, {
+      message: "atleast one required",
+      path: ["comment", "mark", "round"],
+    })
     .refine(
       (data) =>
+        !data.round ||
         data.round === 0 ||
         data.round === 1 ||
         data.round === 2 ||
@@ -34,6 +44,8 @@ export const adminPostSchema = object({
 
 export type AdminPostInput = {
   username: string;
-  round: 0 | 1 | 2 | 3;
+  round?: 0 | 1 | 2 | 3;
   domain: "Tech" | "Management" | "Design" | "Video";
+  comment?: string;
+  mark?: number;
 };

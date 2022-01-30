@@ -26,8 +26,8 @@ import requireAdmin from "./middleware/requireAdmin";
 import {
   adminjs,
   adminRouter,
-  changeRoundHandler,
   getUsersHandler,
+  updateCcsUserHandler,
 } from "./controller/admin.controller";
 import { adminPostSchema } from "./schema/adminPost.schema";
 import questionHandler from "./controller/question.controller";
@@ -101,7 +101,7 @@ function routes(app: Express) {
     apiLimiter,
     requireAdmin,
     validateResource(adminPostSchema),
-    changeRoundHandler
+    updateCcsUserHandler
   );
 
   app.post(
