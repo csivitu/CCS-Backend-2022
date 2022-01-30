@@ -24,6 +24,8 @@ import submitHandler from "./controller/submit.controller";
 import requireTime from "./middleware/requireTime";
 import requireAdmin from "./middleware/requireAdmin";
 import {
+  adminjs,
+  adminRouter,
   changeRoundHandler,
   getUsersHandler,
 } from "./controller/admin.controller";
@@ -39,7 +41,7 @@ import { resendEmailSchema } from "./schema/resendEmail.schema";
 
 function routes(app: Express) {
   app.get("/healthcheck", (req: Request, res: Response) => res.sendStatus(200));
-
+  app.use(adminjs.options.rootPath, adminRouter);
   app.post(
     "/api/users",
     validateResource(createUserSchema),
