@@ -1,4 +1,6 @@
 import { Request, Response } from "express";
+import mongoose from "mongoose";
+import QuestionModel from "../models/question.model";
 import { SubmitInput } from "../schema/submit.schema";
 import { getCcsUserByUsername } from "../service/ccsUser.service";
 import errorObject from "../utils/errorObject";
@@ -19,18 +21,27 @@ export default async function submitHandler(
       return res.status(404).send(errorObject(404, "user not found"));
     }
 
+    const populatedQuestions = await Promise.all(
+      questions.map(async (question) => ({
+        quesId: (
+          await QuestionModel.findOne({ quesId: question.quesId })
+        )._id as mongoose.Schema.Types.ObjectId,
+        answer: question.answer,
+      }))
+    );
+
     switch (domain) {
       case "Tech":
-        user.techAttempted = questions;
+        user.techAttempted = populatedQuestions;
         break;
       case "Management":
-        user.managementAttempted = questions;
+        user.managementAttempted = populatedQuestions;
         break;
       case "Design":
-        user.designAttempted = questions;
+        user.designAttempted = populatedQuestions;
         break;
       case "Video":
-        user.videoAttempted = questions;
+        user.videoAttempted = populatedQuestions;
         break;
       default:
         break;

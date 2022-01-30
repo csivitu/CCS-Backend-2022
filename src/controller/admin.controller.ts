@@ -10,11 +10,12 @@ import standardizeObject from "../utils/standardizeObject";
 import ccsUserModel from "../models/ccsUser.model";
 import QuestionModel from "../models/question.model";
 import UserModel from "../models/user.model";
+import TaskModel from "../models/task.model";
 
 AdminJS.registerAdapter(AdminJSMongoose);
 
 const adminJsOptions = {
-  resources: [ccsUserModel, QuestionModel, UserModel],
+  resources: [ccsUserModel, QuestionModel, UserModel, TaskModel],
   rootPath: "/admin",
 };
 
@@ -24,16 +25,24 @@ const creds = {
 };
 
 export const adminjs = new AdminJS(adminJsOptions);
-export const adminRouter = AdminJSExpress.buildAuthenticatedRouter(adminjs, {
-  cookieName: process.env.ADMIN_COOKIE_NAME || "fridayaapancho",
-  cookiePassword: process.env.ADMIN_COOKIE_PASS || "fudiyanfado",
-  authenticate: async (email, password) => {
-    if (email === creds.email && password === creds.password) {
-      return creds;
-    }
-    return null;
+export const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
+  adminjs,
+  {
+    cookieName: process.env.ADMIN_COOKIE_NAME || "fridayaapancho",
+    cookiePassword: process.env.ADMIN_COOKIE_PASS || "fudiyanfado",
+    authenticate: async (email, password) => {
+      if (email === creds.email && password === creds.password) {
+        return creds;
+      }
+      return null;
+    },
   },
-});
+  null,
+  {
+    resave: false,
+    saveUninitialized: true,
+  }
+);
 
 export async function getUsersHandler(req: Request, res: Response) {
   try {

@@ -27,14 +27,7 @@ import requireUser from "./middleware/requireUser";
 import { submitSchema } from "./schema/submit.schema";
 import submitHandler from "./controller/submit.controller";
 import requireTime from "./middleware/requireTime";
-import requireAdmin from "./middleware/requireAdmin";
-import {
-  adminjs,
-  adminRouter,
-  getUsersHandler,
-  updateCcsUserHandler,
-} from "./controller/admin.controller";
-import { adminPostSchema } from "./schema/adminPost.schema";
+import { adminjs, adminRouter } from "./controller/admin.controller";
 import questionHandler from "./controller/question.controller";
 import {
   apiLimiter,
@@ -47,7 +40,9 @@ import requireTaskTime from "./middleware/requireTaskTime";
 
 function routes(app: Express) {
   app.get("/healthcheck", (req: Request, res: Response) => res.sendStatus(200));
+
   app.use(adminjs.options.rootPath, adminRouter);
+
   app.post(
     "/api/users",
     validateResource(createUserSchema),
@@ -100,15 +95,15 @@ function routes(app: Express) {
     submitHandler
   );
 
-  app.get("/api/admin", apiLimiter, requireAdmin, getUsersHandler);
+  // app.get("/api/admin", apiLimiter, requireAdmin, getUsersHandler);
 
-  app.post(
-    "/api/admin",
-    apiLimiter,
-    requireAdmin,
-    validateResource(adminPostSchema),
-    updateCcsUserHandler
-  );
+  // app.post(
+  //   "/api/admin",
+  //   apiLimiter,
+  //   requireAdmin,
+  //   validateResource(adminPostSchema),
+  //   updateCcsUserHandler
+  // );
 
   app.post(
     "/api/questions",

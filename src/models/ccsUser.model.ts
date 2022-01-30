@@ -26,7 +26,8 @@ const ccsUserSchema = new mongoose.Schema({
   techAttempted: [
     {
       quesId: {
-        type: Number,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Question",
         required: true,
       },
       answer: {
@@ -38,7 +39,8 @@ const ccsUserSchema = new mongoose.Schema({
   managementAttempted: [
     {
       quesId: {
-        type: Number,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Question",
         required: true,
       },
       answer: {
@@ -50,7 +52,8 @@ const ccsUserSchema = new mongoose.Schema({
   designAttempted: [
     {
       quesId: {
-        type: Number,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Question",
         required: true,
       },
       answer: {
@@ -61,7 +64,8 @@ const ccsUserSchema = new mongoose.Schema({
   videoAttempted: [
     {
       quesId: {
-        type: Number,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Question",
         required: true,
       },
       answer: {
@@ -193,19 +197,19 @@ export interface ccsUserInterface extends mongoose.Document {
   userId: mongoose.Schema.Types.ObjectId;
   domainsAttempted: ("Tech" | "Design" | "Management" | "Video")[];
   techAttempted: {
-    quesId: number;
+    quesId: mongoose.Schema.Types.ObjectId;
     answer: string;
   }[];
   managementAttempted: {
-    quesId: number;
+    quesId: mongoose.Schema.Types.ObjectId;
     answer: string;
   }[];
   designAttempted: {
-    quesId: number;
+    quesId: mongoose.Schema.Types.ObjectId;
     answer: string;
   }[];
   videoAttempted: {
-    quesId: number;
+    quesId: mongoose.Schema.Types.ObjectId;
     answer: string;
   }[];
   techRound: 0 | 1 | 2 | 3;
