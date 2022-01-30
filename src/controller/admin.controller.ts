@@ -14,7 +14,7 @@ export async function getUsersHandler(req: Request, res: Response) {
     return res.status(404).send(errorObject(404, e));
   }
 }
-export async function changeRoundHandler(
+export async function updateCcsUserHandler(
   req: Request<Record<string, never>, Record<string, never>, AdminPostInput>,
   res: Response
 ) {
@@ -22,16 +22,48 @@ export async function changeRoundHandler(
     const user = await getCcsUserByUsername(req.body.username);
     switch (req.body.domain) {
       case "Tech":
-        user.techRound = req.body.round;
+        if (req.body.round) {
+          user.techRound = req.body.round;
+        }
+        if (req.body.comment) {
+          user.comments.tech.push(req.body.comment);
+        }
+        if (req.body.mark) {
+          user.marks.tech = req.body.mark;
+        }
         break;
       case "Management":
-        user.managementRound = req.body.round;
+        if (req.body.round) {
+          user.managementRound = req.body.round;
+        }
+        if (req.body.comment) {
+          user.comments.management.push(req.body.comment);
+        }
+        if (req.body.mark) {
+          user.marks.management = req.body.mark;
+        }
         break;
       case "Design":
-        user.designRound = req.body.round;
+        if (req.body.round) {
+          user.designRound = req.body.round;
+        }
+        if (req.body.comment) {
+          user.comments.design.push(req.body.comment);
+        }
+        if (req.body.mark) {
+          user.marks.design = req.body.mark;
+        }
         break;
       case "Video":
-        user.videoRound = req.body.round;
+        if (req.body.round) {
+          user.videoRound = req.body.round;
+        }
+        if (req.body.comment) {
+          user.comments.video.push(req.body.comment);
+        }
+        if (req.body.mark) {
+          user.marks.video = req.body.mark;
+        }
         break;
       default:
         break;

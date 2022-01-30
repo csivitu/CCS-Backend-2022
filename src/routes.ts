@@ -24,7 +24,7 @@ import submitHandler from "./controller/submit.controller";
 import requireTime from "./middleware/requireTime";
 import requireAdmin from "./middleware/requireAdmin";
 import {
-  changeRoundHandler,
+  updateCcsUserHandler,
   getUsersHandler,
 } from "./controller/admin.controller";
 import { adminPostSchema } from "./schema/adminPost.schema";
@@ -99,7 +99,7 @@ function routes(app: Express) {
     apiLimiter,
     requireAdmin,
     validateResource(adminPostSchema),
-    changeRoundHandler
+    updateCcsUserHandler
   );
 
   app.post(
