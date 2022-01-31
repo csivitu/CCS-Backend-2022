@@ -19,7 +19,7 @@ import {
   findUserById,
   verifyEmail,
 } from "../service/user.service";
-import { sendVerificationMail } from "../tools/sendMail";
+import { sendResetPasswordMail, sendVerificationMail } from "../tools/sendMail";
 import errorObject from "../utils/errorObject";
 import logger from "../utils/logger";
 import standardizeObject from "../utils/standardizeObject";
@@ -68,6 +68,7 @@ export async function forgotPasswordHandler(
       // send forgot password mail
       console.log(passwordResetCode);
       user.save();
+      await sendResetPasswordMail(user);
     }
     return res.send(errorObject(200, message));
   } catch (e) {

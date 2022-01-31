@@ -23,6 +23,7 @@ f7nAWWlOhIzawxMKZwIDAQAB
   refreshTokenTtl: process.env.RT_TTL,
   emailer_api_key: process.env.EMAILER_API_KEY,
   verify_link: process.env.VERIFY_LINK,
+  reset_link: process.env.RESET_LINK,
   number_of_questions: 10,
   test_duration: 60,
   mailgun_api_key: process.env.MAILGUN_API_KEY,
