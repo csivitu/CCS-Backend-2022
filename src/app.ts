@@ -22,6 +22,15 @@ if (cluster.isPrimary) {
   for (let i = 0; i < cpus; i += 1) {
     cluster.fork();
   }
+  cluster.on("exit", (worker, code, signal) => {
+    if (code !== 0 && !worker.exitedAfterDisconnect) {
+      logger.error(
+        `Worker ${worker.id} crashed due to ${signal}. `,
+        "Starting a new worker..."
+      );
+      cluster.fork();
+    }
+  });
 } else {
   app.listen(port, async () => {
     logger.info(
