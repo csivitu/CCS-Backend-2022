@@ -15,15 +15,17 @@ const deserializeUser = async (
 
   const refreshToken = get(req, "headers.x-refresh");
 
-  if (!accessToken) {
+  if (!accessToken && !refreshToken) {
     return next();
   }
 
-  const decoded = verifyJwt(accessToken, "accessTokenPublicKey");
+  if (accessToken) {
+    const decoded = verifyJwt(accessToken, "accessTokenPublicKey");
 
-  if (decoded) {
-    res.locals.user = decoded;
-    return next();
+    if (decoded) {
+      res.locals.user = decoded;
+      return next();
+    }
   }
 
   if (refreshToken) {
