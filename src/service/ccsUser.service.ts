@@ -58,9 +58,9 @@ export async function getAllUsers() {
   return users;
 }
 
-export async function getCcsUserInfoByEmail(email: string) {
+export async function getCcsUserInfo(_id: Schema.Types.ObjectId) {
   const user = await ccsUserModel
-    .find({ email })
+    .findOne({ _id })
     .populate("userId", [
       "-password",
       "-createdAt",

@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { nanoid } from "nanoid";
+import { Schema } from "mongoose";
 import ccsUserModel from "../models/ccsUser.model";
 import TaskModel from "../models/task.model";
 import { UserInput } from "../models/user.model";
@@ -11,7 +12,7 @@ import {
   ForgotPasswordInput,
   ResetPasswordInput,
 } from "../schema/user.schema";
-import { getCcsUserInfoByEmail } from "../service/ccsUser.service";
+import { getCcsUserInfo } from "../service/ccsUser.service";
 import {
   createUser,
   findUserByEmail,
@@ -126,8 +127,8 @@ export async function resendEmailHandler(
 
 export async function getUserHandler(req: Request, res: Response) {
   try {
-    const { email } = res.locals.user;
-    const user = await getCcsUserInfoByEmail(email);
+    const _id = res.locals.user._id as Schema.Types.ObjectId;
+    const user = await getCcsUserInfo(_id);
     return res.send(errorObject(200, "", user));
   } catch (e) {
     logger.error(standardizeObject(e));
