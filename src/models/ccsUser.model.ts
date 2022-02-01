@@ -19,8 +19,11 @@ const ccsUserSchema = new mongoose.Schema({
   },
   domainsAttempted: [
     {
-      type: String,
-      enum: ["Tech", "Design", "Management", "Video"],
+      domain: {
+        type: String,
+        enum: ["Tech", "Design", "Management", "Video"],
+      },
+      endTime: Date,
     },
   ],
   techAttempted: [
@@ -195,7 +198,10 @@ const ccsUserSchema = new mongoose.Schema({
 export interface ccsUserInterface extends mongoose.Document {
   username: string;
   userId: mongoose.Schema.Types.ObjectId;
-  domainsAttempted: ("Tech" | "Design" | "Management" | "Video")[];
+  domainsAttempted: {
+    domain: "Tech" | "Design" | "Management" | "Video";
+    endTime: Date;
+  }[];
   techAttempted: {
     quesId: mongoose.Schema.Types.ObjectId;
     answer: string;

@@ -21,6 +21,20 @@ export default async function submitHandler(
       return res.status(404).send(errorObject(404, "user not found"));
     }
 
+    if (!user.domainsAttempted.map((obj) => obj.domain).includes(domain)) {
+      return res.status(403).send(errorObject(403, "domain not started"));
+    }
+
+    if (
+      user.domainsAttempted[
+        user.domainsAttempted.map((obj) => obj.domain).indexOf(domain)
+      ].endTime < new Date()
+    ) {
+      return res
+        .status(403)
+        .send(errorObject(403, `test over for domain ${domain}`));
+    }
+
     const populatedQuestions = await Promise.all(
       questions.map(async (question) => ({
         quesId: (

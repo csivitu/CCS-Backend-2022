@@ -34,12 +34,12 @@ export default async function startHandler(
         message: "User created in ccs DB",
       });
     } else {
-      if (user.domainsAttempted.includes(domain)) {
+      if (user.domainsAttempted.map((obj) => obj.domain).includes(domain)) {
         return res
           .status(403)
           .send(errorObject(403, "Domain already attempted"));
       }
-      user.domainsAttempted.push(domain);
+      user.domainsAttempted.push({ domain, endTime: end });
       user.startTime = start;
       user.endTime = end;
       user.questionLoaded = null;

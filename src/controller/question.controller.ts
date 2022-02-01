@@ -14,11 +14,27 @@ export default async function questionHandler(
   const { domain } = req.body;
 
   try {
-    if (!user.domainsAttempted.includes(domain)) {
-      return res.status(403).send(errorObject(403, "domain already attempted"));
+    if (!user.domainsAttempted.map((obj) => obj.domain).includes(domain)) {
+      return res.status(403).send(errorObject(403, "domain not started"));
     }
+
+    if (
+      user.domainsAttempted[
+        user.domainsAttempted.map((obj) => obj.domain).indexOf(domain)
+      ].endTime < new Date()
+    ) {
+      return res
+        .status(403)
+        .send(errorObject(403, `test over for domain ${domain}`));
+    }
+
     if (user.questionLoaded) {
-      return res.status(200).send(errorObject(200, "", user.questionLoaded));
+      return res.status(200).send(
+        errorObject(200, "", {
+          questions: user.questionLoaded,
+          endTime: user.endTime,
+        })
+      );
     }
     const easyquestions = await getQuestion(domain, "Easy");
     const mediumquestions = await getQuestion(domain, "Medium");
@@ -43,6 +59,7 @@ export default async function questionHandler(
     return res.status(200).send(
       errorObject(200, "", {
         questions: selected,
+        endTime: user.endTime,
       })
     );
   } catch (e) {
