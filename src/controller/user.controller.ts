@@ -30,9 +30,7 @@ export async function createUserHandler(
 ) {
   try {
     const response = await createUser(req.body);
-    return res
-      .status(response.success ? 200 : 409)
-      .send(errorObject(response.success ? 200 : 409, "", response));
+    return res.status(200).send(errorObject(200, "", response));
   } catch (e) {
     logger.error(standardizeObject(e));
     return res.status(409).send(errorObject(409, standardizeObject(e)));
@@ -45,9 +43,7 @@ export async function verifyEmailHandler(
 ) {
   try {
     const response = await verifyEmail(req.params.user, req.params.token);
-    return res
-      .status(response.verified ? 200 : 400)
-      .send(errorObject(response.verified ? 200 : 400, "", response));
+    return res.status(200).send(errorObject(200, "", response));
   } catch (e) {
     logger.error(standardizeObject(e));
     return res.status(404).send(errorObject(404, standardizeObject(e)));
