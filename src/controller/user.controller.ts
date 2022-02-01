@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { nanoid } from "nanoid";
 import { Schema } from "mongoose";
+import config from "config";
 import ccsUserModel from "../models/ccsUser.model";
 import TaskModel from "../models/task.model";
 import { UserInput } from "../models/user.model";
@@ -43,7 +44,10 @@ export async function verifyEmailHandler(
 ) {
   try {
     const response = await verifyEmail(req.params.user, req.params.token);
-    return res.status(200).send(errorObject(200, "", response));
+    const redirectUrl = new URL(config.get("email_verified_redirect"));
+    redirectUrl.searchParams.append("verified", `${response.verified}`);
+    redirectUrl.searchParams.append("msg", response.message);
+    return res.redirect(redirectUrl.href);
   } catch (e) {
     logger.error(standardizeObject(e));
     return res.status(500).send(errorObject(500, standardizeObject(e)));
