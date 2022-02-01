@@ -33,7 +33,7 @@ export async function createUserHandler(
     return res.status(200).send(errorObject(200, "", response));
   } catch (e) {
     logger.error(standardizeObject(e));
-    return res.status(409).send(errorObject(409, standardizeObject(e)));
+    return res.status(500).send(errorObject(500, standardizeObject(e)));
   }
 }
 
@@ -46,7 +46,7 @@ export async function verifyEmailHandler(
     return res.status(200).send(errorObject(200, "", response));
   } catch (e) {
     logger.error(standardizeObject(e));
-    return res.status(404).send(errorObject(404, standardizeObject(e)));
+    return res.status(500).send(errorObject(500, standardizeObject(e)));
   }
 }
 
@@ -73,7 +73,7 @@ export async function forgotPasswordHandler(
     return res.status(200).send(errorObject(200, message));
   } catch (e) {
     logger.error(standardizeObject(e));
-    return res.status(404).send(errorObject(404, standardizeObject(e)));
+    return res.status(500).send(errorObject(500, standardizeObject(e)));
   }
 }
 export async function resetPasswordHandler(
@@ -95,7 +95,7 @@ export async function resetPasswordHandler(
       user.passwordResetToken !== passwordResetCode
     ) {
       return res
-        .status(400)
+        .status(200)
         .send(errorObject(400, "Could not reset user password"));
     }
 
@@ -110,7 +110,7 @@ export async function resetPasswordHandler(
       .send(errorObject(200, "Successfully updated password"));
   } catch (e) {
     logger.error(standardizeObject(e));
-    return res.status(404).send(errorObject(404, standardizeObject(e)));
+    return res.status(500).send(errorObject(500, standardizeObject(e)));
   }
 }
 
@@ -137,7 +137,7 @@ export async function getUserHandler(req: Request, res: Response) {
     return res.status(200).send(errorObject(200, "", user));
   } catch (e) {
     logger.error(standardizeObject(e));
-    return res.status(404).send(errorObject(404, standardizeObject(e)));
+    return res.status(500).send(errorObject(500, standardizeObject(e)));
   }
 }
 
@@ -158,7 +158,7 @@ export async function addUserInfoHandler(
     return res.status(200).send(errorObject(200, "successfully updated user"));
   } catch (e) {
     logger.error(standardizeObject(e));
-    return res.status(404).send(errorObject(404, standardizeObject(e)));
+    return res.status(500).send(errorObject(500, standardizeObject(e)));
   }
 }
 export async function addUserTaskHandler(
@@ -190,7 +190,7 @@ export async function addUserTaskHandler(
       .send(errorObject(200, "successfully updated user task"));
   } catch (e) {
     logger.error(standardizeObject(e));
-    return res.status(404).send(errorObject(404, standardizeObject(e)));
+    return res.status(500).send(errorObject(500, standardizeObject(e)));
   }
 }
 

@@ -18,11 +18,11 @@ export default async function submitHandler(
 
     const user = await getCcsUserByUsername(decodedUser.username);
     if (!user) {
-      return res.status(404).send(errorObject(404, "user not found"));
+      return res.status(200).send(errorObject(404, "user not found"));
     }
 
     if (!user.domainsAttempted.map((obj) => obj.domain).includes(domain)) {
-      return res.status(403).send(errorObject(403, "domain not started"));
+      return res.status(200).send(errorObject(403, "domain not started"));
     }
 
     if (
@@ -31,7 +31,7 @@ export default async function submitHandler(
       ].endTime < new Date()
     ) {
       return res
-        .status(403)
+        .status(200)
         .send(errorObject(403, `test over for domain ${domain}`));
     }
 

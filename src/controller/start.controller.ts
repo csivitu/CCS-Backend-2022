@@ -36,7 +36,7 @@ export default async function startHandler(
     } else {
       if (user.domainsAttempted.map((obj) => obj.domain).includes(domain)) {
         return res
-          .status(403)
+          .status(200)
           .send(errorObject(403, "Domain already attempted"));
       }
       user.domainsAttempted.push({ domain, endTime: end });

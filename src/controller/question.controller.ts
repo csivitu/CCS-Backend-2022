@@ -15,7 +15,7 @@ export default async function questionHandler(
 
   try {
     if (!user.domainsAttempted.map((obj) => obj.domain).includes(domain)) {
-      return res.status(403).send(errorObject(403, "domain not started"));
+      return res.status(200).send(errorObject(403, "domain not started"));
     }
 
     if (
@@ -24,7 +24,7 @@ export default async function questionHandler(
       ].endTime < new Date()
     ) {
       return res
-        .status(403)
+        .status(200)
         .send(errorObject(403, `test over for domain ${domain}`));
     }
 

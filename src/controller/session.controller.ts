@@ -19,11 +19,11 @@ export default async function createUserSessionHandler(
     if (!user) {
       return res
         .status(200)
-        .send(errorObject(200, "Invalid email or password"));
+        .send(errorObject(403, "Invalid email or password"));
     }
 
     if (!user.verificationStatus) {
-      return res.status(200).send(errorObject(200, "Email not verified"));
+      return res.status(200).send(errorObject(403, "Email not verified"));
     }
 
     // create an access token
