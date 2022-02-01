@@ -55,7 +55,7 @@ export default async function submitHandler(
     user.save();
 
     logger.info({ username: user.username, message: "autosaved" });
-    return res.send(errorObject(200, "autosaved"));
+    return res.status(200).send(errorObject(200, "autosaved"));
   } catch (e) {
     logger.error({
       username: res.locals.user.username,

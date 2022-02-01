@@ -47,7 +47,7 @@ export const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
 export async function getUsersHandler(req: Request, res: Response) {
   try {
     const users = await getAllUsers();
-    return res.send(errorObject(200, "", users));
+    return res.status(200).send(errorObject(200, "", users));
   } catch (e) {
     logger.error(e);
     return res.status(404).send(errorObject(404, e));
@@ -108,7 +108,9 @@ export async function updateCcsUserHandler(
         break;
     }
     user.save();
-    return res.send(errorObject(200, "user round successfully saved"));
+    return res
+      .status(200)
+      .send(errorObject(200, "user round successfully saved"));
   } catch (e) {
     logger.error(standardizeObject(e));
     return res.status(404).send(errorObject(404, standardizeObject(e)));

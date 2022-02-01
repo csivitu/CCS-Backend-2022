@@ -49,7 +49,9 @@ export default async function startHandler(
         message: `Started domain ${domain}`,
       });
     }
-    return res.send(errorObject(200, `succesfully started domain ${domain}`));
+    return res
+      .status(200)
+      .send(errorObject(200, `succesfully started domain ${domain}`));
   } catch (e) {
     logger.error({
       username: res.locals.user.username,

@@ -18,7 +18,7 @@ export default async function questionHandler(
       return res.status(403).send(errorObject(403, "domain already attempted"));
     }
     if (user.questionLoaded) {
-      return res.send(errorObject(200, "", user.questionLoaded));
+      return res.status(200).send(errorObject(200, "", user.questionLoaded));
     }
     const easyquestions = await getQuestion(domain, "Easy");
     const mediumquestions = await getQuestion(domain, "Medium");
@@ -40,7 +40,7 @@ export default async function questionHandler(
     user.save();
     // const questionIds = user.questionLoaded.map((ques) => ques.quesId);
     // logger.info(success_codes.S2, { questionIds: questionIds });
-    return res.send(
+    return res.status(200).send(
       errorObject(200, "", {
         questions: selected,
       })

@@ -40,8 +40,11 @@ export default async function createUserSessionHandler(
 
     // return access & refresh tokens
 
-    return res.send(
-      errorObject(200, "Successfully logged in", { accessToken, refreshToken })
+    return res.status(200).send(
+      errorObject(200, "Successfully logged in", {
+        accessToken,
+        refreshToken,
+      })
     );
   } catch (e) {
     logger.error(standardizeObject(e));

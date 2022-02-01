@@ -54,7 +54,12 @@ export async function getAllUsers() {
       "-emailVerificationToken",
       "-passwordResetToken",
       "-verificationStatus",
-    ]);
+    ])
+    .populate("taskAssigned")
+    .populate("techAttempted.quesId")
+    .populate("managementAttempted.quesId")
+    .populate("designAttempted.quesId")
+    .populate("videoAttempted.quesId");
   return users;
 }
 

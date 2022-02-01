@@ -30,7 +30,7 @@ export async function createUserHandler(
 ) {
   try {
     const response = await createUser(req.body);
-    return res.send(errorObject(200, "", response));
+    return res.status(200).send(errorObject(200, "", response));
   } catch (e) {
     logger.error(standardizeObject(e));
     return res.status(409).send(errorObject(409, standardizeObject(e)));
@@ -43,7 +43,7 @@ export async function verifyEmailHandler(
 ) {
   try {
     const response = await verifyEmail(req.params.user, req.params.token);
-    return res.send(errorObject(200, "", response));
+    return res.status(200).send(errorObject(200, "", response));
   } catch (e) {
     logger.error(standardizeObject(e));
     return res.status(404).send(errorObject(404, standardizeObject(e)));
@@ -70,7 +70,7 @@ export async function forgotPasswordHandler(
       user.save();
       await sendResetPasswordMail(user);
     }
-    return res.send(errorObject(200, message));
+    return res.status(200).send(errorObject(200, message));
   } catch (e) {
     logger.error(standardizeObject(e));
     return res.status(404).send(errorObject(404, standardizeObject(e)));
@@ -105,7 +105,9 @@ export async function resetPasswordHandler(
 
     await user.save();
 
-    return res.send(errorObject(200, "Successfully updated password"));
+    return res
+      .status(200)
+      .send(errorObject(200, "Successfully updated password"));
   } catch (e) {
     logger.error(standardizeObject(e));
     return res.status(404).send(errorObject(404, standardizeObject(e)));
@@ -119,7 +121,9 @@ export async function resendEmailHandler(
   try {
     const user = await findUserByEmail(req.body.email);
     sendVerificationMail(user);
-    return res.send(errorObject(200, "Successfully sent mail again"));
+    return res
+      .status(200)
+      .send(errorObject(200, "Successfully sent mail again"));
   } catch (e) {
     logger.error(standardizeObject(e));
     return res.status(404).send(errorObject(404, standardizeObject(e)));
@@ -130,7 +134,7 @@ export async function getUserHandler(req: Request, res: Response) {
   try {
     const _id = res.locals.user._id as Schema.Types.ObjectId;
     const user = await getCcsUserInfo(_id);
-    return res.send(errorObject(200, "", user));
+    return res.status(200).send(errorObject(200, "", user));
   } catch (e) {
     logger.error(standardizeObject(e));
     return res.status(404).send(errorObject(404, standardizeObject(e)));
@@ -151,7 +155,7 @@ export async function addUserInfoHandler(
       user.portfolio = req.body.portfolio;
     }
     user.save();
-    return res.send(errorObject(200, "successfully updated user"));
+    return res.status(200).send(errorObject(200, "successfully updated user"));
   } catch (e) {
     logger.error(standardizeObject(e));
     return res.status(404).send(errorObject(404, standardizeObject(e)));
@@ -181,7 +185,9 @@ export async function addUserTaskHandler(
       ].task = req.body.task;
     }
     user.save();
-    return res.send(errorObject(200, "successfully updated user task"));
+    return res
+      .status(200)
+      .send(errorObject(200, "successfully updated user task"));
   } catch (e) {
     logger.error(standardizeObject(e));
     return res.status(404).send(errorObject(404, standardizeObject(e)));
@@ -191,7 +197,7 @@ export async function addUserTaskHandler(
 export async function getUserTaskHandler(req: Request, res: Response) {
   try {
     const tasks = await TaskModel.find({});
-    return res.send(errorObject(200, "", tasks));
+    return res.status(200).send(errorObject(200, "", tasks));
   } catch (e) {
     logger.error(standardizeObject(e));
     return res.status(500).send(errorObject(500, standardizeObject(e)));
