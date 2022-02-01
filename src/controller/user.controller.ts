@@ -31,8 +31,8 @@ export async function createUserHandler(
   try {
     const response = await createUser(req.body);
     return res
-      .status(response.success ? 200 : 400)
-      .send(errorObject(response.success ? 200 : 400, "", response));
+      .status(response.success ? 200 : 409)
+      .send(errorObject(response.success ? 200 : 409, "", response));
   } catch (e) {
     logger.error(standardizeObject(e));
     return res.status(409).send(errorObject(409, standardizeObject(e)));
