@@ -8,13 +8,18 @@ import logger from "./utils/logger";
 import routes from "./routes";
 import deserializeUser from "./middleware/deserializeUser";
 
-const cpus = os.cpus().length;
+const cpus = config.get("enviornment") === "production" ? os.cpus().length : 2;
 
 const port = config.get<number>("port");
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(deserializeUser);
 
