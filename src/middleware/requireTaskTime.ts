@@ -13,11 +13,11 @@ const requireTaskTime = async (
   const { user } = res.locals;
 
   if (!user) {
-    return res.status(403).send(errorObject(403, "not logged in"));
+    return res.status(200).send(errorObject(403, "not logged in"));
   }
 
   if (new Date() <= new Date(config.get<string>("taskSubmissionDate"))) {
-    return res.status(403).send(errorObject(403, "submission date exceeded"));
+    return res.status(200).send(errorObject(403, "submission date exceeded"));
   }
 
   const dbUser = await ccsUserModel.findOne({ _id: user._id });
@@ -27,7 +27,7 @@ const requireTaskTime = async (
     (dbUser.designRound >= 2 && designSubdomains.includes(req.body.subdomain))
   ) {
     return res
-      .status(403)
+      .status(200)
       .send(errorObject(403, "Not allowed to submit task for that domain"));
   }
 
