@@ -57,7 +57,8 @@ export const sendVerificationMail = async (participant: UserDocument) => {
 };
 export const sendResetPasswordMail = async (participant: UserDocument) => {
   const resetLink = new url.URL(config.get("reset_link"));
-  resetLink.pathname = `${resetLink.pathname}/${participant._id}/${participant.passwordResetToken}`;
+  resetLink.searchParams.append("id", participant._id);
+  resetLink.searchParams.append("token", participant.passwordResetToken);
   const renderedHtml = await hb.render("src/templates/reset.hbs", {
     name: participant.name,
     username: participant.username,
