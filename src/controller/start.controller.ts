@@ -43,6 +43,7 @@ export default async function startHandler(
       }
 
       if (
+        user.domainsAttempted.length > 0 &&
         user.domainsAttempted[user.domainsAttempted.length - 1].endTime &&
         user.domainsAttempted[user.domainsAttempted.length - 1].endTime >=
           new Date()
