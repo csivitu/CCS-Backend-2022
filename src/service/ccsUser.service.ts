@@ -45,7 +45,11 @@ export async function createCcsUser(
 }
 
 export async function getAllUsers() {
-  const users = await ccsUserModel.find({}).select(["username"]);
+  const users = await ccsUserModel
+    .find({})
+    .select(
+      "username domainsAttempted techRound managementRound designRound videoRound"
+    );
   return users;
 }
 
