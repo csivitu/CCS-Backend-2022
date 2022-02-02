@@ -127,7 +127,7 @@ export async function verifyEmail(id: string, token: string) {
       return {
         verified: true,
         email: participant.email,
-        message: "Succesfully Verified",
+        message: "Successfully Verified",
       };
     }
     return {
