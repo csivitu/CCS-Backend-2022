@@ -41,7 +41,7 @@ export default async function questionHandler(
 
     if (domain === "management") {
       const questions = await QuestionModel.find({}).limit(
-        config.get("no_of_questions")
+        config.get<number>("number_of_questions")
       );
       return res
         .status(200)
