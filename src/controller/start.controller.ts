@@ -65,7 +65,7 @@ export default async function startHandler(
       user.startTime = start;
       user.endTime = end;
       user.questionLoaded = null;
-      user.save();
+      await user.save();
       logger.info({
         username: user.username,
         message: `Started domain ${domain}`,

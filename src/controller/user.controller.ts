@@ -69,9 +69,7 @@ export async function forgotPasswordHandler(
     if (user && user.verificationStatus) {
       const passwordResetCode = nanoid();
       user.passwordResetToken = passwordResetCode;
-      // send forgot password mail
-      console.log(passwordResetCode);
-      user.save();
+      await user.save();
       await sendResetPasswordMail(user);
     }
     return res.status(200).send(errorObject(200, message));
@@ -158,7 +156,7 @@ export async function addUserInfoHandler(
     if (req.body.portfolio) {
       user.portfolio = req.body.portfolio;
     }
-    user.save();
+    await user.save();
     return res.status(200).send(errorObject(200, "successfully updated user"));
   } catch (e) {
     logger.error(standardizeObject(e));
@@ -188,7 +186,7 @@ export async function addUserTaskHandler(
           .indexOf(req.body.subdomain)
       ].task = req.body.task;
     }
-    user.save();
+    await user.save();
     return res
       .status(200)
       .send(errorObject(200, "successfully updated user task"));

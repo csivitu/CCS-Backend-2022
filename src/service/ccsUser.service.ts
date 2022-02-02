@@ -17,7 +17,7 @@ export async function checkTime(username: string) {
   if (user.endTime < new Date()) {
     user.startTime = null;
     user.endTime = null;
-    user.save();
+    await user.save();
     logger.warn({ username: user.username, code: 403, message: "Time over" });
     return "Test time ended";
   }

@@ -44,7 +44,7 @@ export default async function questionHandler(
         domain: "management",
       }).limit(config.get<number>("number_of_questions"));
       user.questionLoaded = questions;
-      user.save();
+      await user.save();
       return res
         .status(200)
         .send(errorObject(200, "", { questions, endTime: user.endTime }));
@@ -67,7 +67,7 @@ export default async function questionHandler(
     selected = selected.concat(mediumselected);
 
     user.questionLoaded = selected;
-    user.save();
+    await user.save();
     // const questionIds = user.questionLoaded.map((ques) => ques.quesId);
     // logger.info(success_codes.S2, { questionIds: questionIds });
     return res.status(200).send(

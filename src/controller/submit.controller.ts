@@ -74,7 +74,7 @@ export default async function submitHandler(
       user.questionLoaded = null;
     }
 
-    user.save();
+    await user.save();
 
     logger.info({
       username: user.username,

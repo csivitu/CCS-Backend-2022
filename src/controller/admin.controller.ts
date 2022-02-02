@@ -119,7 +119,7 @@ export async function updateCcsUserHandler(
       default:
         break;
     }
-    user.save();
+    await user.save();
     return res
       .status(200)
       .send(errorObject(200, "user round successfully saved"));
