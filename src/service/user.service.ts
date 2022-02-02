@@ -107,7 +107,7 @@ export async function verifyEmail(id: string, token: string) {
     if (!participant) {
       return {
         verified: false,
-        message: "cannot verify",
+        message: "Cannot Verify",
       };
     }
 
@@ -115,7 +115,7 @@ export async function verifyEmail(id: string, token: string) {
       return {
         verified: true,
         email: participant.email,
-        message: "already verified",
+        message: "Already Verified",
       };
     }
 
@@ -127,13 +127,13 @@ export async function verifyEmail(id: string, token: string) {
       return {
         verified: true,
         email: participant.email,
-        message: "succesfully verified",
+        message: "Succesfully Verified",
       };
     }
     return {
       verified: false,
       email: participant.email,
-      message: "wrong verification token",
+      message: "Wrong Verification Token",
     };
   } catch (e) {
     throw new Error(e);
