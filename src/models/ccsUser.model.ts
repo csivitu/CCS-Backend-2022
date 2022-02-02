@@ -129,6 +129,9 @@ const ccsUserSchema = new mongoose.Schema({
           },
         ],
       },
+      answer: {
+        type: String,
+      },
     },
   ],
   comments: {
@@ -230,6 +233,7 @@ export interface ccsUserInterface extends mongoose.Document {
       img: string[];
       links: string[];
     };
+    answer?: string;
   }[];
   startTime: Date;
   endTime: Date;

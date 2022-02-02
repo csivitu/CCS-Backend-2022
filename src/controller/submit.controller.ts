@@ -61,6 +61,13 @@ export default async function submitHandler(
         break;
     }
 
+    questions.map((ques) => {
+      user.questionLoaded[
+        user.questionLoaded.map((q) => q.quesId).indexOf(ques.quesId)
+      ].answer = ques.answer;
+      return ques;
+    });
+
     if (finalSubmit) {
       user.startTime = null;
       user.endTime = null;
