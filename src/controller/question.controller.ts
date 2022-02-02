@@ -40,9 +40,9 @@ export default async function questionHandler(
     }
 
     if (domain === "management") {
-      const questions = await QuestionModel.find({}).limit(
-        config.get<number>("number_of_questions")
-      );
+      const questions = await QuestionModel.find({
+        domain: "management",
+      }).limit(config.get<number>("number_of_questions"));
       return res
         .status(200)
         .send(errorObject(200, "", { questions, endTime: user.endTime }));

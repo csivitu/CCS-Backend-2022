@@ -30,7 +30,7 @@ const QuestionSchema = new mongoose.Schema({
   },
   domain: {
     type: String,
-    enum: ["Tech", "Design", "Management", "Video"],
+    enum: ["tech", "design", "management", "video"],
     required: true,
   },
 });
@@ -43,7 +43,7 @@ export interface QuestionInterface extends mongoose.Document {
     links: string[];
   };
   difficulty: "Easy" | "Medium" | "Hard";
-  domain: "Tech" | "Design" | "Management" | "Video";
+  domain: "tech" | "design" | "management" | "video";
 }
 
 const QuestionModel = mongoose.model<QuestionInterface>(
