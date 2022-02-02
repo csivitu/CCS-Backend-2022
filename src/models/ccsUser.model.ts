@@ -21,7 +21,8 @@ const ccsUserSchema = new mongoose.Schema({
     {
       domain: {
         type: String,
-        enum: ["Tech", "Design", "Management", "Video"],
+        enum: ["tech", "design", "management", "video"],
+        unique: true,
       },
       endTime: {
         type: Date,
@@ -201,7 +202,7 @@ export interface ccsUserInterface extends mongoose.Document {
   username: string;
   userId: mongoose.Schema.Types.ObjectId;
   domainsAttempted: {
-    domain: "Tech" | "Design" | "Management" | "Video";
+    domain: "tech" | "design" | "management" | "video";
     endTime: Date;
   }[];
   techAttempted: {

@@ -45,16 +45,16 @@ export default async function submitHandler(
     );
 
     switch (domain) {
-      case "Tech":
+      case "tech":
         user.techAttempted = populatedQuestions;
         break;
-      case "Management":
+      case "management":
         user.managementAttempted = populatedQuestions;
         break;
-      case "Design":
+      case "design":
         user.designAttempted = populatedQuestions;
         break;
-      case "Video":
+      case "video":
         user.videoAttempted = populatedQuestions;
         break;
       default:

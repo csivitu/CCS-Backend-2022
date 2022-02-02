@@ -8,6 +8,7 @@ const errorObject = (code: number, message?: Error | string, obj?) => {
   }
   return {
     success: true,
+    code,
     message,
     result: obj,
   };

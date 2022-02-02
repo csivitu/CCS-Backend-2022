@@ -35,9 +35,11 @@ export default async function startHandler(
       });
     } else {
       if (user.domainsAttempted.map((obj) => obj.domain).includes(domain)) {
-        return res
-          .status(200)
-          .send(errorObject(403, "Domain already attempted"));
+        return user.domainsAttempted[
+          user.domainsAttempted.map((obj) => obj.domain).indexOf(domain)
+        ].endTime < new Date()
+          ? res.status(200).send(errorObject(403, "Domain already started"))
+          : res.status(200).send(errorObject(403, "Domain already attempted"));
       }
       user.domainsAttempted.push({ domain, endTime: end });
       user.startTime = start;

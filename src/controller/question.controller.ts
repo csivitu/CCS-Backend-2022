@@ -39,7 +39,7 @@ export default async function questionHandler(
       );
     }
 
-    if (domain === "Management") {
+    if (domain === "management") {
       const questions = await QuestionModel.find({}).limit(
         config.get("no_of_questions")
       );

@@ -10,11 +10,11 @@ const requireAdmin = async (
   const { user } = res.locals;
 
   if (!user) {
-    return res.status(403).send(errorObject(403, "not logged in"));
+    return res.status(200).send(errorObject(403, "not logged in"));
   }
   const userInfo = await findUserById(user._id);
   if (!userInfo.scope.includes("admin")) {
-    return res.status(403).send(errorObject(403, "not allowed"));
+    return res.status(200).send(errorObject(403, "not allowed"));
   }
 
   return next();

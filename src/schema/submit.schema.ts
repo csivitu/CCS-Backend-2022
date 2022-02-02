@@ -20,10 +20,10 @@ export const submitSchema = object({
       .length(config.get<number>("number_of_questions")),
   }).refine(
     (data) =>
-      data.domain === "Tech" ||
-      data.domain === "Management" ||
-      data.domain === "Design" ||
-      data.domain === "Video",
+      data.domain === "tech" ||
+      data.domain === "management" ||
+      data.domain === "design" ||
+      data.domain === "video",
     {
       message: "wrong values",
       path: ["domain"],
@@ -33,7 +33,7 @@ export const submitSchema = object({
 
 export type SubmitInput = {
   finalSubmit: boolean;
-  domain: "Tech" | "Management" | "Design" | "Video";
+  domain: "tech" | "management" | "design" | "video";
   questions: {
     quesId: number;
     answer: string;

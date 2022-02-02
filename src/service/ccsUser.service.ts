@@ -27,7 +27,7 @@ export async function checkTime(username: string) {
 export async function createCcsUser(
   username: string,
   userId: Schema.Types.ObjectId,
-  domain?: "Tech" | "Management" | "Design" | "Video",
+  domain?: "tech" | "management" | "design" | "video",
   start?: Date,
   end?: Date
 ) {
@@ -45,21 +45,7 @@ export async function createCcsUser(
 }
 
 export async function getAllUsers() {
-  const users = await ccsUserModel
-    .find({})
-    .populate("userId", [
-      "-password",
-      "-createdAt",
-      "-updatedAt",
-      "-emailVerificationToken",
-      "-passwordResetToken",
-      "-verificationStatus",
-    ])
-    .populate("taskAssigned")
-    .populate("techAttempted.quesId")
-    .populate("managementAttempted.quesId")
-    .populate("designAttempted.quesId")
-    .populate("videoAttempted.quesId");
+  const users = await ccsUserModel.find({}).select(["username"]);
   return users;
 }
 
@@ -73,6 +59,30 @@ export async function getCcsUserInfo(_id: Schema.Types.ObjectId) {
       "-emailVerificationToken",
       "-passwordResetToken",
       "-verificationStatus",
-    ]);
+    ])
+    .populate("taskAssigned")
+    .populate("techAttempted.quesId")
+    .populate("managementAttempted.quesId")
+    .populate("designAttempted.quesId")
+    .populate("videoAttempted.quesId");
+  return user;
+}
+
+export async function getCcsUserInfoByUsername(username: string) {
+  const user = await ccsUserModel
+    .findOne({ username })
+    .populate("userId", [
+      "-password",
+      "-createdAt",
+      "-updatedAt",
+      "-emailVerificationToken",
+      "-passwordResetToken",
+      "-verificationStatus",
+    ])
+    .populate("taskAssigned")
+    .populate("techAttempted.quesId")
+    .populate("managementAttempted.quesId")
+    .populate("designAttempted.quesId")
+    .populate("videoAttempted.quesId");
   return user;
 }

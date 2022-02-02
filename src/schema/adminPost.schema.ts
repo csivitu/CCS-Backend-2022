@@ -15,10 +15,10 @@ export const adminPostSchema = object({
   })
     .refine(
       (data) =>
-        data.domain === "Tech" ||
-        data.domain === "Management" ||
-        data.domain === "Design" ||
-        data.domain === "Video",
+        data.domain === "tech" ||
+        data.domain === "management" ||
+        data.domain === "design" ||
+        data.domain === "video",
       {
         message: "wrong values",
         path: ["domain"],
@@ -42,10 +42,20 @@ export const adminPostSchema = object({
     ),
 });
 
+export const AdminGetUserSchema = object({
+  params: object({
+    username: string(),
+  }),
+});
+
 export type AdminPostInput = {
   username: string;
   round?: 0 | 1 | 2 | 3;
-  domain: "Tech" | "Management" | "Design" | "Video";
+  domain: "tech" | "management" | "design" | "video";
   comment?: string;
   mark?: number;
+};
+
+export type AdminGetUserInput = {
+  username?: string;
 };

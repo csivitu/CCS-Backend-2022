@@ -7,10 +7,10 @@ export const startSchema = object({
     }),
   }).refine(
     (data) =>
-      data.domain === "Tech" ||
-      data.domain === "Management" ||
-      data.domain === "Design" ||
-      data.domain === "Video",
+      data.domain === "tech" ||
+      data.domain === "management" ||
+      data.domain === "design" ||
+      data.domain === "video",
     {
       message: "wrong values",
       path: ["domain"],
@@ -18,4 +18,4 @@ export const startSchema = object({
   ),
 });
 
-export type StartInput = { domain: "Tech" | "Management" | "Design" | "Video" };
+export type StartInput = { domain: "tech" | "management" | "design" | "video" };
