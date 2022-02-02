@@ -6,7 +6,7 @@ import {
   createCcsUser,
   getCcsUserByUsername,
 } from "../service/ccsUser.service";
-import logger from "../utils/logger";
+import logger, { testLogger } from "../utils/logger";
 import errorObject from "../utils/errorObject";
 import standardizeObject from "../utils/standardizeObject";
 
@@ -47,6 +47,10 @@ export default async function startHandler(
       logger.info({
         username: user.username,
         message: `Started domain ${domain}`,
+      });
+      testLogger.info({
+        username: user.username,
+        message: `Started domain ${domain} at ${start}`,
       });
     }
     return res

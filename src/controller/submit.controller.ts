@@ -4,7 +4,7 @@ import QuestionModel from "../models/question.model";
 import { SubmitInput } from "../schema/submit.schema";
 import { getCcsUserByUsername } from "../service/ccsUser.service";
 import errorObject from "../utils/errorObject";
-import logger from "../utils/logger";
+import logger, { testLogger } from "../utils/logger";
 import standardizeObject from "../utils/standardizeObject";
 
 export default async function submitHandler(
@@ -68,7 +68,16 @@ export default async function submitHandler(
 
     user.save();
 
-    logger.info({ username: user.username, message: "autosaved" });
+    logger.info({
+      username: user.username,
+      message: finalSubmit ? "submitted" : "autosaved",
+    });
+    if (finalSubmit) {
+      testLogger.info({
+        username: user.username,
+        message: `user ended test for domain: ${domain} at ${new Date()}`,
+      });
+    }
     return res.status(200).send(errorObject(200, "autosaved"));
   } catch (e) {
     logger.error({
