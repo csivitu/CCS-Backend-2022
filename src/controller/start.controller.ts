@@ -41,6 +41,25 @@ export default async function startHandler(
           ? res.status(200).send(errorObject(200, "Domain already started"))
           : res.status(200).send(errorObject(403, "Domain already attempted"));
       }
+
+      if (
+        user.domainsAttempted[user.domainsAttempted.length - 1].endTime &&
+        user.domainsAttempted[user.domainsAttempted.length - 1].endTime >=
+          new Date()
+      ) {
+        return res.status(200).send(
+          errorObject(
+            403,
+            `User already attempting ${
+              user.domainsAttempted[user.domainsAttempted.length - 1].domain
+            }`,
+            {
+              domain:
+                user.domainsAttempted[user.domainsAttempted.length - 1].domain,
+            }
+          )
+        );
+      }
       user.domainsAttempted.push({ domain, endTime: end });
       user.startTime = start;
       user.endTime = end;

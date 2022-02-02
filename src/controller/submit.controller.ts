@@ -28,7 +28,7 @@ export default async function submitHandler(
     if (
       user.domainsAttempted[
         user.domainsAttempted.map((obj) => obj.domain).indexOf(domain)
-      ].endTime < new Date()
+      ].endTime <= new Date()
     ) {
       return res
         .status(200)
@@ -64,6 +64,7 @@ export default async function submitHandler(
     if (finalSubmit) {
       user.startTime = null;
       user.endTime = null;
+      user.questionLoaded = null;
     }
 
     user.save();
