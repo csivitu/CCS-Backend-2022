@@ -37,7 +37,6 @@ const ccsUserSchema = new mongoose.Schema({
       },
       answer: {
         type: String,
-        required: true,
       },
     },
   ],
@@ -50,7 +49,6 @@ const ccsUserSchema = new mongoose.Schema({
       },
       answer: {
         type: String,
-        required: true,
       },
     },
   ],
