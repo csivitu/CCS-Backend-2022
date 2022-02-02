@@ -43,10 +43,13 @@ export default async function questionHandler(
       const questions = await QuestionModel.find({
         domain: "management",
       }).limit(config.get<number>("number_of_questions"));
+      user.questionLoaded = questions;
+      user.save();
       return res
         .status(200)
         .send(errorObject(200, "", { questions, endTime: user.endTime }));
     }
+
     const easyquestions = await getQuestion(domain, "Easy");
     const mediumquestions = await getQuestion(domain, "Medium");
     const hardquestions = await getQuestion(domain, "Hard");
