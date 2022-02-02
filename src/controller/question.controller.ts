@@ -1,4 +1,6 @@
 import { Request, Response } from "express";
+import config from "config";
+import QuestionModel from "../models/question.model";
 import { StartInput } from "../schema/start.schema";
 import { getCcsUserByUsername } from "../service/ccsUser.service";
 import getQuestion from "../service/question.service";
@@ -36,15 +38,24 @@ export default async function questionHandler(
         })
       );
     }
+
+    if (domain === "Management") {
+      const questions = await QuestionModel.find({}).limit(
+        config.get("no_of_questions")
+      );
+      return res
+        .status(200)
+        .send(errorObject(200, "", { questions, endTime: user.endTime }));
+    }
     const easyquestions = await getQuestion(domain, "Easy");
     const mediumquestions = await getQuestion(domain, "Medium");
     const hardquestions = await getQuestion(domain, "Hard");
 
     const easyshuffled = easyquestions.sort(() => 0.5 - Math.random());
-    let selected = easyshuffled.slice(0, 2);
+    let selected = easyshuffled.slice(0, 5);
 
     const mediumshuffled = mediumquestions.sort(() => 0.5 - Math.random());
-    const mediumselected = mediumshuffled.slice(0, 2);
+    const mediumselected = mediumshuffled.slice(0, 3);
 
     const hardshuffled = hardquestions.sort(() => 0.5 - Math.random());
     const hardselected = hardshuffled.slice(0, 2);
