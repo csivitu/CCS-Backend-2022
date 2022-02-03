@@ -42,21 +42,23 @@ export default async function startHandler(
           : res.status(200).send(errorObject(403, "Domain already attempted"));
       }
 
+      const attempting =
+        user.domainsAttempted[user.domainsAttempted.length - 1];
+
       if (
         user.domainsAttempted.length > 0 &&
-        !user.domainsAttempted[user.domainsAttempted.length - 1].submitted &&
-        user.domainsAttempted[user.domainsAttempted.length - 1].endTime >=
-          new Date()
+        !attempting.submitted &&
+        attempting.endTime >= new Date()
       ) {
         return res.status(200).send(
           errorObject(
             403,
             `Hey ${user.username}! Seems like you are already attempting ${
-              user.domainsAttempted[user.domainsAttempted.length - 1].domain
+              attempting.domain.charAt(0).toUpperCase() +
+              attempting.domain.slice(1)
             } quiz.`,
             {
-              domain:
-                user.domainsAttempted[user.domainsAttempted.length - 1].domain,
+              domain: attempting.domain,
             }
           )
         );
