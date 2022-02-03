@@ -132,11 +132,30 @@ export const ccsUserSchema = object({
 export const AddUserInfoSchema = object({
   body: object({
     description: string().optional(),
-    portfolio: string().optional(),
-  }).refine((data) => data.description || data.portfolio, {
-    message: "atleast one required",
-    path: ["description", "portfolio"],
-  }),
+    portfolio: object({
+      category: string(),
+      link: string(),
+    }).optional(),
+  })
+    .refine(
+      (data) =>
+        !data.portfolio.category ||
+        data.portfolio.category === "tech" ||
+        data.portfolio.category === "management" ||
+        data.portfolio.category === "design" ||
+        data.portfolio.category === "video" ||
+        data.portfolio.category === "github" ||
+        data.portfolio.category === "linkedin" ||
+        data.portfolio.category === "instagram" ||
+        data.portfolio.category === "spotify" || {
+          message: "wrong category for portfolio",
+          path: ["portfolio"],
+        }
+    )
+    .refine((data) => data.description || data.portfolio, {
+      message: "atleast one required",
+      path: ["description", "portfolio"],
+    }),
 });
 
 export const AddUserTaskSchema = object({
@@ -156,7 +175,18 @@ export type ForgotPasswordInput = TypeOf<typeof forgotPasswordSchema>["body"];
 export type ResetPasswordInput = TypeOf<typeof resetPasswordSchema>;
 export type AddUserInfoInput = {
   description?: string;
-  portfolio?: string;
+  portfolio?: {
+    category:
+      | "tech"
+      | "design"
+      | "management"
+      | "video"
+      | "github"
+      | "linkedin"
+      | "instagram"
+      | "spotify";
+    link: string;
+  };
 };
 export type AddUserTaskInput = {
   subdomain: techSubDomainsType | designSubDomainsType;

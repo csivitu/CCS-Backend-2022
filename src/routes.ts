@@ -30,6 +30,7 @@ import requireTime from "./middleware/requireTime";
 import {
   getUserInfoHandler,
   getUsersHandler,
+  updateCcsUserHandler,
 } from "./controller/admin.controller";
 import questionHandler from "./controller/question.controller";
 import {
@@ -41,7 +42,7 @@ import {
 import { resendEmailSchema } from "./schema/resendEmail.schema";
 import requireTaskTime from "./middleware/requireTaskTime";
 import requireAdmin from "./middleware/requireAdmin";
-import { AdminGetUserSchema } from "./schema/adminPost.schema";
+import { AdminGetUserSchema, adminPostSchema } from "./schema/adminPost.schema";
 
 function routes(app: Express) {
   app.get("/healthcheck", (req: Request, res: Response) => res.sendStatus(200));
@@ -109,13 +110,13 @@ function routes(app: Express) {
     getUserInfoHandler
   );
 
-  // app.post(
-  //   "/api/admin",
-  //   apiLimiter,
-  //   requireAdmin,
-  //   validateResource(adminPostSchema),
-  //   updateCcsUserHandler
-  // );
+  app.post(
+    "/api/admin",
+    apiLimiter,
+    requireAdmin,
+    validateResource(adminPostSchema),
+    updateCcsUserHandler
+  );
 
   app.post(
     "/api/questions",

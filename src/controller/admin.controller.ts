@@ -8,6 +8,7 @@ import {
   getCcsUserByUsername,
   getCcsUserInfoByUsername,
 } from "../service/ccsUser.service";
+import { getAllQuestion } from "../service/question.service";
 import errorObject from "../utils/errorObject";
 import logger from "../utils/logger";
 import standardizeObject from "../utils/standardizeObject";
@@ -63,7 +64,8 @@ export async function getUserInfoHandler(
 ) {
   try {
     const user = await getCcsUserInfoByUsername(req.params.username);
-    return res.status(200).send(errorObject(200, "", user));
+    const questions = await getAllQuestion();
+    return res.status(200).send(errorObject(200, "", { user, questions }));
   } catch (e) {
     logger.error(e);
     return res.status(500).send(errorObject(500, e));
