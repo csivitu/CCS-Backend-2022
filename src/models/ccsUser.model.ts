@@ -27,6 +27,10 @@ const ccsUserSchema = new mongoose.Schema({
       endTime: {
         type: Date,
       },
+      submitted: {
+        type: Boolean,
+        default: false,
+      },
     },
   ],
   techAttempted: [
@@ -222,6 +226,7 @@ export interface ccsUserInterface extends mongoose.Document {
   domainsAttempted: {
     domain: "tech" | "design" | "management" | "video";
     endTime: Date;
+    submitted?: boolean;
   }[];
   techAttempted: {
     quesId: mongoose.Schema.Types.ObjectId;

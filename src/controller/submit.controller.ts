@@ -28,7 +28,10 @@ export default async function submitHandler(
     if (
       user.domainsAttempted[
         user.domainsAttempted.map((obj) => obj.domain).indexOf(domain)
-      ].endTime <= new Date()
+      ].endTime <= new Date() ||
+      user.domainsAttempted[
+        user.domainsAttempted.map((obj) => obj.domain).indexOf(domain)
+      ].submitted
     ) {
       return res
         .status(200)
@@ -65,6 +68,9 @@ export default async function submitHandler(
       user.startTime = null;
       user.endTime = null;
       user.questionLoaded = [];
+      user.domainsAttempted[
+        user.domainsAttempted.map((dom) => dom.domain).indexOf(domain)
+      ].submitted = true;
     } else {
       questions.map((ques) => {
         user.questionLoaded[
