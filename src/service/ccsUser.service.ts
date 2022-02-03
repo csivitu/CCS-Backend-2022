@@ -17,6 +17,7 @@ export async function checkTime(username: string) {
   if (user.endTime < new Date()) {
     user.startTime = null;
     user.endTime = null;
+    user.questionLoaded = [];
     await user.save();
     logger.warn({ username: user.username, code: 403, message: "Time over" });
     return "Test time ended";
@@ -40,6 +41,8 @@ export async function createCcsUser(
     designAttempted: [],
     startTime: start || null,
     endTime: end || null,
+    comments: { tech: [], management: [], design: [], video: [] },
+    marks: {},
   });
   return newUser;
 }
