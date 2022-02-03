@@ -172,7 +172,9 @@ export async function addUserInfoHandler(
       }
     }
     await user.save();
-    return res.status(200).send(errorObject(200, "successfully updated user"));
+    return res
+      .status(200)
+      .send(errorObject(200, "Successfully updated portfolio."));
   } catch (e) {
     logger.error(standardizeObject(e));
     return res.status(500).send(errorObject(500, standardizeObject(e)));
