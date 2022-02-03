@@ -68,16 +68,27 @@ export default async function startHandler(
       await user.save();
       logger.info({
         username: user.username,
-        message: `Started domain ${domain}`,
+        message: `Started domain ${
+          domain.charAt(0).toUpperCase() + domain.slice(1)
+        }`,
       });
       testLogger.info({
         username: user.username,
-        message: `Started domain ${domain} at ${start}`,
+        message: `Started domain ${
+          domain.charAt(0).toUpperCase() + domain.slice(1)
+        } at ${start}`,
       });
     }
     return res
       .status(200)
-      .send(errorObject(200, `Succesfully started domain ${domain}`));
+      .send(
+        errorObject(
+          200,
+          `Succesfully started domain ${
+            domain.charAt(0).toUpperCase() + domain.slice(1)
+          }`
+        )
+      );
   } catch (e) {
     logger.error({
       username: res.locals.user.username,

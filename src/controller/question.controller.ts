@@ -27,7 +27,14 @@ export default async function questionHandler(
     ) {
       return res
         .status(200)
-        .send(errorObject(403, `test over for domain ${domain}`));
+        .send(
+          errorObject(
+            403,
+            `Test over for domain ${
+              domain.charAt(0).toUpperCase() + domain.slice(1)
+            }`
+          )
+        );
     }
 
     if (user.questionLoaded.length > 0) {

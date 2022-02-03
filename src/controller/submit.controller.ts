@@ -36,7 +36,14 @@ export default async function submitHandler(
     ) {
       return res
         .status(200)
-        .send(errorObject(403, `test over for domain ${domain}`));
+        .send(
+          errorObject(
+            403,
+            `Test over for domain ${
+              domain.charAt(0).toUpperCase() + domain.slice(1)
+            }`
+          )
+        );
     }
 
     const populatedQuestions = await Promise.all(
@@ -95,7 +102,9 @@ export default async function submitHandler(
     if (finalSubmit) {
       testLogger.info({
         username: user.username,
-        message: `user ended test for domain: ${domain} at ${new Date()}`,
+        message: `user ended test for domain: ${
+          domain.charAt(0).toUpperCase() + domain.slice(1)
+        } at ${new Date()}`,
       });
     }
     return res
