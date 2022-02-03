@@ -86,7 +86,9 @@ export default async function submitHandler(
         message: `user ended test for domain: ${domain} at ${new Date()}`,
       });
     }
-    return res.status(200).send(errorObject(200, "autosaved"));
+    return res
+      .status(200)
+      .send(errorObject(200, finalSubmit ? "submitted" : "autosaved"));
   } catch (e) {
     logger.error({
       username: res.locals.user.username,
