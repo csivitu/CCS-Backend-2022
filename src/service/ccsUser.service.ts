@@ -43,6 +43,7 @@ export async function createCcsUser(
     endTime: end || null,
     comments: { tech: [], management: [], design: [], video: [] },
     marks: {},
+    portfolio: [],
   });
   return newUser;
 }
