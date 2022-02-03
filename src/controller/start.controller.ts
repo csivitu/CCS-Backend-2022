@@ -51,9 +51,9 @@ export default async function startHandler(
         return res.status(200).send(
           errorObject(
             403,
-            `User already attempting ${
+            `Hey ${user.username}! Seems like you are already attempting ${
               user.domainsAttempted[user.domainsAttempted.length - 1].domain
-            }`,
+            } quiz.`,
             {
               domain:
                 user.domainsAttempted[user.domainsAttempted.length - 1].domain,
@@ -77,7 +77,7 @@ export default async function startHandler(
     }
     return res
       .status(200)
-      .send(errorObject(200, `succesfully started domain ${domain}`));
+      .send(errorObject(200, `Succesfully started domain ${domain}`));
   } catch (e) {
     logger.error({
       username: res.locals.user.username,

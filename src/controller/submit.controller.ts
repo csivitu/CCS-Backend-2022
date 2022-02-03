@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import QuestionModel from "../models/question.model";
 import { SubmitInput } from "../schema/submit.schema";
 import { getCcsUserByUsername } from "../service/ccsUser.service";
+import constants from "../tools/constants";
 import errorObject from "../utils/errorObject";
 import logger, { testLogger } from "../utils/logger";
 import standardizeObject from "../utils/standardizeObject";
@@ -47,18 +48,23 @@ export default async function submitHandler(
       }))
     );
 
+    let autosaveMessage = "autosaved";
     switch (domain) {
       case "tech":
         user.techAttempted = populatedQuestions;
+        autosaveMessage = constants.techAutosavedMessage;
         break;
       case "management":
         user.managementAttempted = populatedQuestions;
+        autosaveMessage = constants.managementAutosavedMessage;
         break;
       case "design":
         user.designAttempted = populatedQuestions;
+        autosaveMessage = constants.designAutosavedMessage;
         break;
       case "video":
         user.videoAttempted = populatedQuestions;
+        autosaveMessage = constants.videoAutosavedMessage;
         break;
       default:
         break;
@@ -94,7 +100,16 @@ export default async function submitHandler(
     }
     return res
       .status(200)
-      .send(errorObject(200, finalSubmit ? "submitted" : "autosaved"));
+      .send(
+        errorObject(
+          200,
+          finalSubmit
+            ? `Your ${
+                domain.charAt(0).toUpperCase() + domain.slice(1)
+              } quiz has been successfully submitted!`
+            : autosaveMessage
+        )
+      );
   } catch (e) {
     logger.error({
       username: res.locals.user.username,

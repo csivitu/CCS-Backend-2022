@@ -41,6 +41,11 @@ export const constants = {
   sendResetMailSubject: "Reset your CSI Account Password",
   sendVerificationMailSubject: "Verify your CSI Account",
   verificationSuccess: "verificationSuccess",
+
+  techAutosavedMessage: "Successfully Compiled!",
+  managementAutosavedMessage: "managed ur mom!",
+  designAutosavedMessage: "Saved strokes!",
+  videoAutosavedMessage: "Rendered successfully!",
 };
 
 export default constants;

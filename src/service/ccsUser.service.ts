@@ -50,8 +50,9 @@ export async function createCcsUser(
 export async function getAllUsers() {
   const users = await ccsUserModel
     .find({})
+    .populate("userId", "regNo")
     .select(
-      "username domainsAttempted techRound managementRound designRound videoRound"
+      "username domainsAttempted techRound managementRound designRound videoRound userId"
     );
   return users;
 }
