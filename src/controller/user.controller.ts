@@ -148,8 +148,8 @@ export async function addUserInfoHandler(
   res: Response
 ) {
   try {
-    const { _id } = res.locals.user;
-    const user = await ccsUserModel.findOne({ _id });
+    const { username } = res.locals.user;
+    const user = await ccsUserModel.findOne({ username });
     if (req.body.description) {
       user.description = req.body.description;
     }
