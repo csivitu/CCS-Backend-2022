@@ -194,9 +194,26 @@ const ccsUserSchema = new mongoose.Schema({
       task: String,
     },
   ],
-  portfolio: {
-    type: String,
-  },
+  portfolio: [
+    {
+      category: {
+        type: String,
+        enum: [
+          "tech",
+          "design",
+          "management",
+          "video",
+          "github",
+          "linkedin",
+          "instagram",
+          "spotify",
+        ],
+      },
+      link: {
+        type: String,
+      },
+    },
+  ],
 });
 
 export interface ccsUserInterface extends mongoose.Document {
@@ -255,7 +272,18 @@ export interface ccsUserInterface extends mongoose.Document {
     subdomain: techSubDomainsType | designSubDomainsType;
     task: string;
   }[];
-  portfolio: string;
+  portfolio: {
+    category:
+      | "tech"
+      | "design"
+      | "management"
+      | "video"
+      | "github"
+      | "linkedin"
+      | "instagram"
+      | "spotify";
+    link: string;
+  }[];
 }
 
 const ccsUserModel = mongoose.model<ccsUserInterface>("CcsUser", ccsUserSchema);

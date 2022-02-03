@@ -58,7 +58,7 @@ export async function getAllUsers() {
 
 export async function getCcsUserInfo(_id: Schema.Types.ObjectId) {
   const user = await ccsUserModel
-    .findOne({ _id })
+    .findOne({ userId: _id })
     .populate("userId", [
       "-password",
       "-createdAt",
@@ -66,8 +66,7 @@ export async function getCcsUserInfo(_id: Schema.Types.ObjectId) {
       "-emailVerificationToken",
       "-passwordResetToken",
       "-verificationStatus",
-    ])
-    .populate("taskAssigned");
+    ]);
   return user;
 }
 
