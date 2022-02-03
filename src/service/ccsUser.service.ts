@@ -64,11 +64,7 @@ export async function getCcsUserInfo(_id: Schema.Types.ObjectId) {
       "-passwordResetToken",
       "-verificationStatus",
     ])
-    .populate("taskAssigned")
-    .populate("techAttempted.quesId")
-    .populate("managementAttempted.quesId")
-    .populate("designAttempted.quesId")
-    .populate("videoAttempted.quesId");
+    .populate("taskAssigned");
   return user;
 }
 
@@ -84,9 +80,11 @@ export async function getCcsUserInfoByUsername(username: string) {
       "-verificationStatus",
     ])
     .populate("taskAssigned")
-    .populate("techAttempted.quesId")
-    .populate("managementAttempted.quesId")
-    .populate("designAttempted.quesId")
-    .populate("videoAttempted.quesId");
+    .populate("techAttempted");
+
+  console.log(user);
+  // .populate("managementAttempted.quesId")
+  // .populate("designAttempted.quesId")
+  // .populate("videoAttempted.quesId");
   return user;
 }

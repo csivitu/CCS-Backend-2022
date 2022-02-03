@@ -3,7 +3,11 @@ import { Request, Response } from "express";
 // import AdminJSMongoose from "@adminjs/mongoose";
 // import AdminJSExpress from "@adminjs/express";
 import { AdminGetUserInput, AdminPostInput } from "../schema/adminPost.schema";
-import { getAllUsers, getCcsUserByUsername } from "../service/ccsUser.service";
+import {
+  getAllUsers,
+  getCcsUserByUsername,
+  getCcsUserInfoByUsername,
+} from "../service/ccsUser.service";
 import errorObject from "../utils/errorObject";
 import logger from "../utils/logger";
 import standardizeObject from "../utils/standardizeObject";
@@ -58,8 +62,8 @@ export async function getUserInfoHandler(
   res: Response
 ) {
   try {
-    const users = await getCcsUserByUsername(req.params.username);
-    return res.status(200).send(errorObject(200, "", users));
+    const user = await getCcsUserInfoByUsername(req.params.username);
+    return res.status(200).send(errorObject(200, "", user));
   } catch (e) {
     logger.error(e);
     return res.status(500).send(errorObject(500, e));
