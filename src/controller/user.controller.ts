@@ -154,10 +154,22 @@ export async function addUserInfoHandler(
       user.description = req.body.description;
     }
     if (req.body.portfolio) {
-      user.portfolio.push({
-        category: req.body.portfolio.category,
-        link: req.body.portfolio.link,
-      });
+      if (
+        !user.portfolio
+          .map((obj) => obj.category)
+          .includes(req.body.portfolio.category)
+      ) {
+        user.portfolio.push({
+          category: req.body.portfolio.category,
+          link: req.body.portfolio.link,
+        });
+      } else {
+        user.portfolio[
+          user.portfolio
+            .map((obj) => obj.category)
+            .indexOf(req.body.portfolio.category)
+        ].link = req.body.portfolio.link;
+      }
     }
     await user.save();
     return res.status(200).send(errorObject(200, "successfully updated user"));
