@@ -155,6 +155,15 @@ export const AddUserInfoSchema = object({
     .refine((data) => data.description || data.portfolio, {
       message: "atleast one required",
       path: ["description", "portfolio"],
+    })
+    .refine((data) => {
+      let url: URL;
+      try {
+        url = new URL(data.portfolio.link);
+      } catch (e) {
+        return false;
+      }
+      return url.protocol === "http:" || url.protocol === "https:";
     }),
 });
 
