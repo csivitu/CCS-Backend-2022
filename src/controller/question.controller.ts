@@ -30,7 +30,7 @@ export default async function questionHandler(
         .send(errorObject(403, `test over for domain ${domain}`));
     }
 
-    if (user.questionLoaded) {
+    if (user.questionLoaded.length > 0) {
       return res.status(200).send(
         errorObject(200, "", {
           questions: user.questionLoaded,
