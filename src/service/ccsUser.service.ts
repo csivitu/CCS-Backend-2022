@@ -79,12 +79,7 @@ export async function getCcsUserInfoByUsername(username: string) {
       "-passwordResetToken",
       "-verificationStatus",
     ])
-    .populate("taskAssigned")
-    .populate("techAttempted");
+    .populate("taskAssigned");
 
-  console.log(user);
-  // .populate("managementAttempted.quesId")
-  // .populate("designAttempted.quesId")
-  // .populate("videoAttempted.quesId");
   return user;
 }
