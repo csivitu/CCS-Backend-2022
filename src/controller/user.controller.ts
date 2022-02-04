@@ -232,6 +232,6 @@ export async function getUserTaskHandler(req: Request, res: Response) {
     return res.status(200).send(errorObject(200, "", tasks));
   } catch (e) {
     logger.error(standardizeObject(e));
-    return res.status(500).send(errorObject(500, standardizeObject(e)));
+    return res.status(500).send(errorObject(500, "", standardizeObject(e)));
   }
 }

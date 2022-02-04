@@ -30,8 +30,7 @@ export const sendMail = async (
       text: link,
       html: content,
     };
-    const response = await mg.messages.create(domain, data);
-    console.log(response);
+    await mg.messages.create(domain, data);
     logger.info(`Mail sent to ${email} successfully`);
   } catch (e) {
     logger.error(e);
