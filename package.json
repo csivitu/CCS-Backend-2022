@@ -44,6 +44,7 @@
     "typescript": "^4.5.4"
   },
   "dependencies": {
+    "@google-cloud/logging-winston": "^4.1.1",
     "axios": "^0.25.0",
     "bcrypt": "^5.0.0",
     "config": "^3.3.7",

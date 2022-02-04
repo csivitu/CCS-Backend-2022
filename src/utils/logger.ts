@@ -1,8 +1,13 @@
 import winston from "winston";
+import { LoggingWinston } from "@google-cloud/logging-winston";
 import config from "config";
+
+const loggingWinston = new LoggingWinston({ prefix: "general" });
+const testLoggingWinston = new LoggingWinston({ prefix: "quiz" });
 
 const logger = winston.createLogger({
   level: "info",
+  defaultMeta: "general-log",
   format: winston.format.combine(
     winston.format.simple(),
     winston.format.colorize(),
@@ -37,11 +42,13 @@ const logger = winston.createLogger({
         winston.format.errors({ stack: true })
       ),
     }),
+    loggingWinston,
   ],
 });
 
 export const testLogger = winston.createLogger({
   level: "info",
+  defaultMeta: "start/end",
   format: winston.format.combine(
     winston.format.simple(),
     winston.format.colorize(),
@@ -76,6 +83,7 @@ export const testLogger = winston.createLogger({
         winston.format.errors({ stack: true })
       ),
     }),
+    testLoggingWinston,
   ],
 });
 
