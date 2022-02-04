@@ -53,7 +53,7 @@ export async function getAllUsers() {
     .find({})
     .populate("userId", "regNo")
     .select(
-      "username domainsAttempted techRound managementRound designRound videoRound userId"
+      "username domainsAttempted techRound managementRound designRound videoRound userId checked"
     );
   return users;
 }
@@ -68,7 +68,8 @@ export async function getCcsUserInfo(_id: Schema.Types.ObjectId) {
       "-emailVerificationToken",
       "-passwordResetToken",
       "-verificationStatus",
-    ]);
+    ])
+    .select(["-checked"]);
   return user;
 }
 

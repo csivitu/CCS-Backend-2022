@@ -49,6 +49,9 @@ export async function updateCcsUserHandler(
         if (req.body.mark) {
           user.marks.tech = req.body.mark;
         }
+        if (!user.checked.tech) {
+          user.checked.tech = true;
+        }
         break;
       case "management":
         if (req.body.round) {
@@ -59,6 +62,9 @@ export async function updateCcsUserHandler(
         }
         if (req.body.mark) {
           user.marks.management = req.body.mark;
+        }
+        if (!user.checked.management) {
+          user.checked.management = true;
         }
         break;
       case "design":
@@ -71,6 +77,9 @@ export async function updateCcsUserHandler(
         if (req.body.mark) {
           user.marks.design = req.body.mark;
         }
+        if (!user.checked.design) {
+          user.checked.design = true;
+        }
         break;
       case "video":
         if (req.body.round) {
@@ -81,6 +90,9 @@ export async function updateCcsUserHandler(
         }
         if (req.body.mark) {
           user.marks.video = req.body.mark;
+        }
+        if (!user.checked.video) {
+          user.checked.video = true;
         }
         break;
       default:
