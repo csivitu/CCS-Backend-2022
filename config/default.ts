@@ -31,5 +31,6 @@ f7nAWWlOhIzawxMKZwIDAQAB
   mailgun_host: process.env.MAILGUN_HOST,
   sender_email: process.env.SENDER_EMAIL,
   taskSubmissionDate: process.env.TASK_SUBMISSION_DATE,
-  email_verified_redirect: "http://localhost:3000/login",
+  email_verified_redirect: `${process.env.ORIGIN_URL}/login`,
+  origin_url: process.env.ORIGIN_URL,
 };
