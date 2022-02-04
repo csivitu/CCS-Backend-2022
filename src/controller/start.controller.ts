@@ -41,7 +41,7 @@ export default async function startHandler(
           !user.domainsAttempted[
             user.domainsAttempted.map((obj) => obj.domain).indexOf(domain)
           ].submitted
-          ? res.status(200).send(errorObject(403, "Domain already started"))
+          ? res.status(200).send(errorObject(200, "Domain already started"))
           : res.status(200).send(errorObject(403, "Domain already attempted"));
       }
 
