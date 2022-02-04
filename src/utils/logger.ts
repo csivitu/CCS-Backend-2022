@@ -1,6 +1,7 @@
 import winston from "winston";
 import { LoggingWinston } from "@google-cloud/logging-winston";
 import config from "config";
+import standardizeObject from "./standardizeObject";
 
 const loggingWinston = new LoggingWinston({ prefix: "general" });
 const testLoggingWinston = new LoggingWinston({ prefix: "quiz" });
@@ -12,7 +13,8 @@ const logger = winston.createLogger({
     winston.format.simple(),
     winston.format.colorize(),
     winston.format.prettyPrint(),
-    winston.format.errors({ stack: true })
+    winston.format.errors({ stack: true }),
+    winston.format(standardizeObject)()
   ),
 
   transports: [
@@ -53,7 +55,8 @@ export const testLogger = winston.createLogger({
     winston.format.simple(),
     winston.format.colorize(),
     winston.format.prettyPrint(),
-    winston.format.errors({ stack: true })
+    winston.format.errors({ stack: true }),
+    winston.format(standardizeObject)()
   ),
 
   transports: [
