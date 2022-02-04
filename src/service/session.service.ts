@@ -12,9 +12,9 @@ export default async function reIssueAccessToken(refreshToken: string) {
   if (!decoded) return false;
 
   const userFromDB = await findUser({ _id: decoded._id });
-  const user = omit(userFromDB.toJSON(), privateFields);
-
   if (!userFromDB) return false;
+
+  const user = omit(userFromDB.toJSON(), privateFields);
 
   const accessToken = signJwt(user, "accessTokenPrivateKey", {
     expiresIn: config.get("accessTokenTtl"),
