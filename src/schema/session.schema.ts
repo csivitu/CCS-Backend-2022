@@ -3,21 +3,20 @@ import constants from "../tools/constants";
 
 export const createSessionSchema = object({
   body: object({
-    email: string().email().optional(),
-    username: string().optional(),
+    usernameOrEmail: string({
+      required_error: "Username or Email is required",
+    }),
     password: string({
       required_error: "Password is required",
     }),
   })
-    .refine((data) => data.username || data.email, {
-      message: "Username or email is required",
-      path: ["email", "username"],
-    })
     .refine(
-      (data) => !data.username || constants.usernameRegex.test(data.username),
+      (data) =>
+        constants.vitEmailRegex.test(data.usernameOrEmail) ||
+        constants.usernameRegex.test(data.usernameOrEmail),
       {
-        message: "invalid username",
-        path: ["username"],
+        message: "Invalid Username or Email",
+        path: ["usernameOrEmail"],
       }
     )
     .refine((data) => constants.passwordRegex.test(data.password), {
@@ -27,7 +26,6 @@ export const createSessionSchema = object({
 });
 
 export type SessionInput = {
-  email?: string;
-  username?: string;
+  usernameOrEmail: string;
   password: string;
 };

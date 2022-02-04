@@ -10,7 +10,7 @@ export interface UserInput {
   phone: string;
   password: string;
   regNo: string;
-  gender: string;
+  gender: "M" | "F" | "NB" | "O" | "P";
 }
 
 export const privateFields = [
@@ -65,7 +65,7 @@ const userSchema = new mongoose.Schema(
     },
     gender: {
       type: String,
-      enum: ["M", "F"],
+      enum: ["M", "F", "NB", "O", "P"],
       required: true,
     },
     emailVerificationToken: {

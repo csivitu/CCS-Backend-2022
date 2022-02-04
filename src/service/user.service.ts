@@ -73,13 +73,12 @@ export async function createUser(input: UserInput) {
 }
 
 export async function validatePassword({
-  email,
+  usernameOrEmail,
   password,
-  username,
 }: SessionInput) {
   try {
     const user = await UserModel.findOne({
-      $or: [{ email }, { username }],
+      $or: [{ email: usernameOrEmail }, { username: usernameOrEmail }],
     });
 
     if (!user) {

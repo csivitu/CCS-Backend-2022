@@ -81,10 +81,18 @@ export const createUserSchema = object({
       message: "invalid password",
       path: ["password"],
     })
-    .refine((data) => data.gender === "M" || data.gender === "F", {
-      message: "Invalid value of gender",
-      path: ["gender"],
-    }),
+    .refine(
+      (data) =>
+        data.gender === "M" ||
+        data.gender === "F" ||
+        data.gender === "NB" ||
+        data.gender === "O" ||
+        data.gender === "P",
+      {
+        message: "Invalid value of gender",
+        path: ["gender"],
+      }
+    ),
 });
 
 export const emailVerifySchema = object({
