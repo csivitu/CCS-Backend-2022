@@ -53,6 +53,6 @@ export default async function createUserSessionHandler(
     );
   } catch (e) {
     logger.error(standardizeObject(e));
-    return res.status(500).send(errorObject(500, standardizeObject(e)));
+    return res.status(500).send(errorObject(500, "", standardizeObject(e)));
   }
 }

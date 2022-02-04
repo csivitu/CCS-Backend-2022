@@ -88,6 +88,6 @@ export default async function questionHandler(
       username: res.locals.user.username,
       error: standardizeObject(e),
     });
-    return res.status(500).send(errorObject(500, standardizeObject(e)));
+    return res.status(500).send(errorObject(500, "", standardizeObject(e)));
   }
 }

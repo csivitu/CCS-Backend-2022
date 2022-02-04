@@ -16,7 +16,7 @@ export async function getUsersHandler(req: Request, res: Response) {
     return res.status(200).send(errorObject(200, "", users));
   } catch (e) {
     logger.error(e);
-    return res.status(500).send(errorObject(500, e));
+    return res.status(500).send(errorObject(500, "", standardizeObject(e)));
   }
 }
 export async function getUserInfoHandler(
@@ -29,7 +29,7 @@ export async function getUserInfoHandler(
     return res.status(200).send(errorObject(200, "", { user, questions }));
   } catch (e) {
     logger.error(e);
-    return res.status(500).send(errorObject(500, e));
+    return res.status(500).send(errorObject(500, "", standardizeObject(e)));
   }
 }
 export async function updateCcsUserHandler(
@@ -92,6 +92,6 @@ export async function updateCcsUserHandler(
       .send(errorObject(200, "user round successfully saved"));
   } catch (e) {
     logger.error(standardizeObject(e));
-    return res.status(500).send(errorObject(500, standardizeObject(e)));
+    return res.status(500).send(errorObject(500, "", standardizeObject(e)));
   }
 }
