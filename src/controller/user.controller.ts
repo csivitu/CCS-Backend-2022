@@ -31,6 +31,10 @@ export async function createUserHandler(
 ) {
   try {
     const response = await createUser(req.body);
+    logger.warn({
+      message: `${res.locals.user.username} registered`,
+      username: res.locals.user.username,
+    });
     return res.status(200).send(errorObject(200, "", response));
   } catch (e) {
     logger.error(standardizeObject(e));
@@ -47,6 +51,10 @@ export async function verifyEmailHandler(
     const redirectUrl = new URL(config.get("email_verified_redirect"));
     redirectUrl.searchParams.append("verified", `${response.verified}`);
     redirectUrl.searchParams.append("msg", response.message);
+    logger.warn({
+      message: `${res.locals.user.username} verified email`,
+      username: res.locals.user.username,
+    });
     return res.redirect(redirectUrl.href);
   } catch (e) {
     logger.error(standardizeObject(e));
@@ -106,6 +114,11 @@ export async function resetPasswordHandler(
     user.password = password;
 
     await user.save();
+
+    logger.warn({
+      message: `${res.locals.user.username} reset password`,
+      username: res.locals.user.username,
+    });
 
     return res
       .status(200)

@@ -40,6 +40,11 @@ export default async function createUserSessionHandler(
 
     // return access & refresh tokens
 
+    logger.warn({
+      message: `${user.username} logged in`,
+      username: user.username,
+    });
+
     return res.status(200).send(
       errorObject(200, "Successfully logged in", {
         accessToken,
