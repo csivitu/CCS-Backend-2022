@@ -1,7 +1,11 @@
 version: '3'
+volumes:
+    logs:
 services:
     db:
         build: .
-        restart: unless-stopped
+        restart: always
         ports: 
             - "3001:3001"
+        volumes:
+            - /home/ccs_logs:/app/logs

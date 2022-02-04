@@ -42,10 +42,10 @@ export const constants = {
   sendVerificationMailSubject: "Verify your CSI Account",
   verificationSuccess: "verificationSuccess",
 
-  techAutosavedMessage: "Successfully Compiled!",
-  managementAutosavedMessage: "managed ur mom!",
-  designAutosavedMessage: "Saved strokes!",
-  videoAutosavedMessage: "Rendered successfully!",
+  techAutosavedMessage: "Your answers are being autosaved.",
+  managementAutosavedMessage: "Your answers are being autosaved.",
+  designAutosavedMessage: "Your answers are being autosaved.",
+  videoAutosavedMessage: "Your answers are being autosaved.",
 };
 
 export default constants;

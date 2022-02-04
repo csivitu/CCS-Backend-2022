@@ -37,7 +37,10 @@ export default async function startHandler(
       if (user.domainsAttempted.map((obj) => obj.domain).includes(domain)) {
         return user.domainsAttempted[
           user.domainsAttempted.map((obj) => obj.domain).indexOf(domain)
-        ].endTime >= new Date()
+        ].endTime >= new Date() &&
+          !user.domainsAttempted[
+            user.domainsAttempted.map((obj) => obj.domain).indexOf(domain)
+          ].submitted
           ? res.status(200).send(errorObject(200, "Domain already started"))
           : res.status(200).send(errorObject(403, "Domain already attempted"));
       }
