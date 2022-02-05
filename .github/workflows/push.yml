@@ -35,7 +35,6 @@ jobs:
         key: ${{ secrets.KEY }}
         script: |
           cd CCS/CCS-Backend-2022
-          git reset --hard
           git pull
           cd ..
           docker-compose up --build -d

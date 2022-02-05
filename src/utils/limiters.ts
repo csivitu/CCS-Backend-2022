@@ -10,7 +10,7 @@ export const apiLimiter = rateLimit({
 
 export const quizLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: config.get("enviornment") === "production" ? 250 : 10000,
+  max: config.get("enviornment") === "production" ? 600 : 10000,
   standardHeaders: true,
   legacyHeaders: false,
 });
