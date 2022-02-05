@@ -50,7 +50,12 @@ export async function createCcsUser(
 
 export async function getAllUsers() {
   const users = await ccsUserModel
-    .find({})
+    .find({
+      $and: [
+        { $or: [{ endTime: { $lt: new Date() } }, { endTime: null }] },
+        { domainsAttempted: { $exists: true, $not: { $size: 0 } } },
+      ],
+    })
     .populate("userId", "regNo")
     .select(
       "username domainsAttempted techRound managementRound designRound videoRound userId checked isChecking"
