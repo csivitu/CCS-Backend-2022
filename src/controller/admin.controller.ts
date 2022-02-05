@@ -1,5 +1,10 @@
 import { Request, Response } from "express";
-import { AdminGetUserInput, AdminPostInput } from "../schema/adminPost.schema";
+import ccsUserModel from "../models/ccsUser.model";
+import {
+  AdminGetUserInput,
+  AdminPostInput,
+  AdminPutInput,
+} from "../schema/adminPost.schema";
 import {
   getAllUsers,
   getCcsUserByUsername,
@@ -38,6 +43,10 @@ export async function updateCcsUserHandler(
 ) {
   try {
     const user = await getCcsUserByUsername(req.body.username);
+    if (!user) {
+      return res.status(200).send(errorObject(404, "User not found"));
+    }
+    user.checkedBy = res.locals.user.username;
     switch (req.body.domain) {
       case "tech":
         if (req.body.round) {
@@ -104,6 +113,53 @@ export async function updateCcsUserHandler(
       .send(errorObject(200, "user round successfully saved"));
   } catch (e) {
     logger.error(standardizeObject(e));
+    return res.status(500).send(errorObject(500, "", standardizeObject(e)));
+  }
+}
+
+export async function isCheckingHandler(
+  req: Request<Record<string, never>, Record<string, never>, AdminPutInput>,
+  res: Response
+) {
+  try {
+    const user = await ccsUserModel.findOne({
+      username: req.body.username,
+    });
+
+    if (!user) {
+      res.status(200).send(errorObject(404, "User not found"));
+    }
+
+    switch (req.body.domain) {
+      case "tech":
+        if (!user.isChecking.tech) {
+          user.isChecking.tech = true;
+        }
+        break;
+      case "management":
+        if (!user.isChecking.management) {
+          user.isChecking.management = true;
+        }
+        break;
+      case "design":
+        if (!user.isChecking.design) {
+          user.isChecking.design = true;
+        }
+        break;
+      case "video":
+        if (!user.isChecking.video) {
+          user.isChecking.video = true;
+        }
+        break;
+      default:
+        break;
+    }
+
+    user.save();
+
+    return res.status(200).send(errorObject(200, "Updated"));
+  } catch (e) {
+    logger.error(e);
     return res.status(500).send(errorObject(500, "", standardizeObject(e)));
   }
 }

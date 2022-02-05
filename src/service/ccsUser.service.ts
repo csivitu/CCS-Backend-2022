@@ -53,7 +53,7 @@ export async function getAllUsers() {
     .find({})
     .populate("userId", "regNo")
     .select(
-      "username domainsAttempted techRound managementRound designRound videoRound userId checked"
+      "username domainsAttempted techRound managementRound designRound videoRound userId checked isChecking"
     );
   return users;
 }

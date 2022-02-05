@@ -47,6 +47,24 @@ export const AdminGetUserSchema = object({
     username: string(),
   }),
 });
+export const AdminPutSchema = object({
+  body: object({
+    username: string({ required_error: "username is required" }),
+    domain: string({
+      required_error: "domain is required",
+    }),
+  }).refine(
+    (data) =>
+      data.domain === "tech" ||
+      data.domain === "management" ||
+      data.domain === "design" ||
+      data.domain === "video",
+    {
+      message: "wrong values",
+      path: ["domain"],
+    }
+  ),
+});
 
 export type AdminPostInput = {
   username: string;
@@ -58,4 +76,8 @@ export type AdminPostInput = {
 
 export type AdminGetUserInput = {
   username?: string;
+};
+export type AdminPutInput = {
+  username: string;
+  domain: "tech" | "management" | "design" | "video";
 };

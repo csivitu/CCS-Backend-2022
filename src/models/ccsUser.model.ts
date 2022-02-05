@@ -236,6 +236,28 @@ const ccsUserSchema = new mongoose.Schema({
       default: false,
     },
   },
+  isChecking: {
+    tech: {
+      type: Boolean,
+      default: false,
+    },
+    management: {
+      type: Boolean,
+      default: false,
+    },
+    design: {
+      type: Boolean,
+      default: false,
+    },
+    video: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  checkedBy: {
+    type: String,
+    default: "",
+  },
 });
 
 export interface ccsUserInterface extends mongoose.Document {
@@ -313,6 +335,13 @@ export interface ccsUserInterface extends mongoose.Document {
     design: boolean;
     video: boolean;
   };
+  isChecking: {
+    tech: boolean;
+    management: boolean;
+    design: boolean;
+    video: boolean;
+  };
+  checkedBy: string;
 }
 
 const ccsUserModel = mongoose.model<ccsUserInterface>("CcsUser", ccsUserSchema);
