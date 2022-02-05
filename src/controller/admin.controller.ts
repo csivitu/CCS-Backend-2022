@@ -46,7 +46,7 @@ export async function updateCcsUserHandler(
     if (!user) {
       return res.status(200).send(errorObject(404, "User not found"));
     }
-    user.checkedBy = res.locals.user.username;
+    user.checkedBy.push(res.locals.user.username);
     switch (req.body.domain) {
       case "tech":
         if (req.body.round) {

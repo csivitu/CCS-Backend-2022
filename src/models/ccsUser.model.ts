@@ -254,10 +254,12 @@ const ccsUserSchema = new mongoose.Schema({
       default: false,
     },
   },
-  checkedBy: {
-    type: String,
-    default: "",
-  },
+  checkedBy: [
+    {
+      type: String,
+      default: "",
+    },
+  ],
 });
 
 export interface ccsUserInterface extends mongoose.Document {
@@ -341,7 +343,7 @@ export interface ccsUserInterface extends mongoose.Document {
     design: boolean;
     video: boolean;
   };
-  checkedBy: string;
+  checkedBy: string[];
 }
 
 const ccsUserModel = mongoose.model<ccsUserInterface>("CcsUser", ccsUserSchema);
