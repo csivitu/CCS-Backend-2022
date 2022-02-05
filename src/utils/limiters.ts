@@ -8,6 +8,13 @@ export const apiLimiter = rateLimit({
   legacyHeaders: false,
 });
 
+export const quizLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: config.get("enviornment") === "production" ? 250 : 10000,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 export const createAccountLimiter = rateLimit({
   windowMs: 30 * 60 * 1000,
   max: config.get("enviornment") === "production" ? 10 : 10000,

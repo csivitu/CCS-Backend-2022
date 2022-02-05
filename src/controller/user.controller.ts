@@ -4,7 +4,7 @@ import { Schema } from "mongoose";
 import config from "config";
 import ccsUserModel from "../models/ccsUser.model";
 import TaskModel from "../models/task.model";
-import { UserInput } from "../models/user.model";
+import { UserDocument, UserInput } from "../models/user.model";
 import { ResendEmailInput } from "../schema/resendEmail.schema";
 import {
   AddUserInfoInput,
@@ -230,6 +230,26 @@ export async function getUserTaskHandler(req: Request, res: Response) {
   try {
     const tasks = await TaskModel.find({});
     return res.status(200).send(errorObject(200, "", tasks));
+  } catch (e) {
+    logger.error(standardizeObject(e));
+    return res.status(500).send(errorObject(500, "", standardizeObject(e)));
+  }
+}
+
+export async function userStatsHandler(req: Request, res: Response) {
+  try {
+    const users = await ccsUserModel.find().populate("userId");
+    const nonCSI = users.filter(
+      (user) =>
+        !(user.userId as unknown as UserDocument).scope.includes("admin")
+    );
+    const userCount = nonCSI.length;
+    const activeUserCount = nonCSI.filter(
+      (user) => user.domainsAttempted.length > 0
+    ).length;
+    return res
+      .status(200)
+      .send(errorObject(200, "", { userCount, activeUserCount }));
   } catch (e) {
     logger.error(standardizeObject(e));
     return res.status(500).send(errorObject(500, "", standardizeObject(e)));

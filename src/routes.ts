@@ -8,6 +8,7 @@ import {
   getUserTaskHandler,
   resendEmailHandler,
   resetPasswordHandler,
+  userStatsHandler,
   verifyEmailHandler,
 } from "./controller/user.controller";
 import createUserSessionHandler from "./controller/session.controller";
@@ -39,6 +40,7 @@ import {
   createAccountLimiter,
   emailVerifyLimiter,
   forgotPasswordLimiter,
+  quizLimiter,
 } from "./utils/limiters";
 import { resendEmailSchema } from "./schema/resendEmail.schema";
 import requireTaskTime from "./middleware/requireTaskTime";
@@ -97,7 +99,7 @@ function routes(app: Express) {
 
   app.post(
     "/api/submit",
-    apiLimiter,
+    quizLimiter,
     requireUser,
     requireTime,
     validateResource(submitSchema),
@@ -131,7 +133,7 @@ function routes(app: Express) {
 
   app.post(
     "/api/questions",
-    apiLimiter,
+    quizLimiter,
     requireUser,
     requireTime,
     validateResource(startSchema),
@@ -156,7 +158,7 @@ function routes(app: Express) {
   );
 
   app.put(
-    "api/users/task",
+    "/api/users/task",
     apiLimiter,
     validateResource(AddUserTaskSchema),
     requireUser,
@@ -164,7 +166,9 @@ function routes(app: Express) {
     addUserTaskHandler
   );
 
-  app.get("api/users/task", apiLimiter, requireUser, getUserTaskHandler);
+  app.get("/api/users/stats", userStatsHandler);
+
+  app.get("/api/users/task", apiLimiter, requireUser, getUserTaskHandler);
 }
 
 export default routes;
