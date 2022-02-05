@@ -3,7 +3,7 @@ import rateLimit from "express-rate-limit";
 
 export const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: config.get("enviornment") === "production" ? 1 : 10000,
+  max: config.get("enviornment") === "production" ? 250 : 10000,
   standardHeaders: true,
   legacyHeaders: false,
   statusCode: 200,
