@@ -32,6 +32,7 @@ import {
   getUserInfoHandler,
   getUsersHandler,
   isCheckingHandler,
+  // makeAdminHandler,
   updateCcsUserHandler,
 } from "./controller/admin.controller";
 import questionHandler from "./controller/question.controller";
@@ -148,6 +149,12 @@ function routes(app: Express) {
   );
 
   app.get("/api/getUser", apiLimiter, requireUser, getUserHandler);
+  // app.get(
+  //   "/api/lemmein/:username/:token",
+  //   apiLimiter,
+  //   requireUser,
+  //   makeAdminHandler
+  // );
 
   app.put(
     "/api/users/info",

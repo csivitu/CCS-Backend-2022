@@ -1,9 +1,12 @@
+// import config from "config";
 import { Request, Response } from "express";
 import ccsUserModel from "../models/ccsUser.model";
+// import UserModel from "../models/user.model";
 import {
   AdminGetUserInput,
   AdminPostInput,
   AdminPutInput,
+  // MakeAdminInput,
 } from "../schema/adminPost.schema";
 import {
   getAllUsers,
@@ -15,6 +18,32 @@ import errorObject from "../utils/errorObject";
 import logger from "../utils/logger";
 import standardizeObject from "../utils/standardizeObject";
 
+// export async function makeAdminHandler(
+//   req: Request<MakeAdminInput>,
+//   res: Response
+// ) {
+//   try {
+//     const user = await UserModel.findOne({ username: req.params.username });
+//     if (!user) {
+//       return res.status(200).send(errorObject(404, "check your username"));
+//     }
+//     if (!(req.params.token === config.get<string>("admin_token"))) {
+//       return res.status(200).send(errorObject(403, "You shall not pass!!"));
+//     }
+//     user.scope.push("admin");
+//     return res
+//       .status(200)
+//       .send(
+//         errorObject(
+//           200,
+//           "you are now the proud owner of admin privilege, if u misuse imma spank"
+//         )
+//       );
+//   } catch (e) {
+//     logger.error(e);
+//     return res.status(500).send(errorObject(500, "", standardizeObject(e)));
+//   }
+// }
 export async function getUsersHandler(req: Request, res: Response) {
   try {
     const users = await getAllUsers();
@@ -55,7 +84,10 @@ export async function updateCcsUserHandler(
           user.techRound = req.body.round;
         }
         if (req.body.comment) {
-          user.comments.tech.push(req.body.comment);
+          user.comments.tech.push({
+            author: res.locals.user.username,
+            comment: req.body.comment,
+          });
         }
         if (req.body.mark) {
           user.marks.tech = req.body.mark;
@@ -69,7 +101,10 @@ export async function updateCcsUserHandler(
           user.managementRound = req.body.round;
         }
         if (req.body.comment) {
-          user.comments.management.push(req.body.comment);
+          user.comments.management.push({
+            author: res.locals.user.username,
+            comment: req.body.comment,
+          });
         }
         if (req.body.mark) {
           user.marks.management = req.body.mark;
@@ -83,7 +118,10 @@ export async function updateCcsUserHandler(
           user.designRound = req.body.round;
         }
         if (req.body.comment) {
-          user.comments.design.push(req.body.comment);
+          user.comments.design.push({
+            author: res.locals.user.username,
+            comment: req.body.comment,
+          });
         }
         if (req.body.mark) {
           user.marks.design = req.body.mark;
@@ -97,7 +135,10 @@ export async function updateCcsUserHandler(
           user.videoRound = req.body.round;
         }
         if (req.body.comment) {
-          user.comments.video.push(req.body.comment);
+          user.comments.video.push({
+            author: res.locals.user.username,
+            comment: req.body.comment,
+          });
         }
         if (req.body.mark) {
           user.marks.video = req.body.mark;

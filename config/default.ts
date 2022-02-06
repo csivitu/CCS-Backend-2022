@@ -33,4 +33,5 @@ f7nAWWlOhIzawxMKZwIDAQAB
   taskSubmissionDate: process.env.TASK_SUBMISSION_DATE,
   email_verified_redirect: `${process.env.ORIGIN_URL}/login`,
   origin_url: process.env.ORIGIN_URL,
+  // admin_token: process.env.ADMIN_TOKEN,
 };

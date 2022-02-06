@@ -1,5 +1,6 @@
 import { Schema } from "mongoose";
 import ccsUserModel from "../models/ccsUser.model";
+import { UserDocument } from "../models/user.model";
 import logger from "../utils/logger";
 
 export async function getCcsUserByUsername(username: string) {
@@ -49,7 +50,7 @@ export async function createCcsUser(
 }
 
 export async function getAllUsers() {
-  const users = await ccsUserModel
+  let users = await ccsUserModel
     .find({
       $and: [
         { $or: [{ endTime: { $lt: new Date() } }, { endTime: null }] },
@@ -60,6 +61,10 @@ export async function getAllUsers() {
     .select(
       "username domainsAttempted techRound managementRound designRound videoRound userId checked isChecking"
     );
+  users = users.filter(
+    (user) =>
+      (user.userId as unknown as UserDocument).regNo.slice(0, 2) === "21"
+  );
   return users;
 }
 

@@ -141,22 +141,26 @@ const ccsUserSchema = new mongoose.Schema({
   comments: {
     tech: [
       {
-        type: String,
+        author: { type: String },
+        comment: { type: String },
       },
     ],
     management: [
       {
-        type: String,
+        author: { type: String },
+        comment: { type: String },
       },
     ],
     design: [
       {
-        type: String,
+        author: { type: String },
+        comment: { type: String },
       },
     ],
     video: [
       {
-        type: String,
+        author: { type: String },
+        comment: { type: String },
       },
     ],
   },
@@ -302,10 +306,10 @@ export interface ccsUserInterface extends mongoose.Document {
   startTime: Date;
   endTime: Date;
   comments: {
-    tech: string[];
-    management: string[];
-    design: string[];
-    video: string[];
+    tech: { author: string; comment: string }[];
+    management: { author: string; comment: string }[];
+    design: { author: string; comment: string }[];
+    video: { author: string; comment: string }[];
   };
   marks: {
     tech: number;

@@ -81,3 +81,7 @@ export type AdminPutInput = {
   username: string;
   domain: "tech" | "management" | "design" | "video";
 };
+export type MakeAdminInput = {
+  username: string;
+  token: string;
+};
