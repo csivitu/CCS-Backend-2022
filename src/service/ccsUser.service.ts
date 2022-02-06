@@ -59,7 +59,7 @@ export async function getAllUsers() {
     })
     .populate("userId", "regNo")
     .select(
-      "username domainsAttempted techRound managementRound designRound videoRound userId checked isChecking"
+      "username domainsAttempted techRound managementRound marks designRound videoRound userId checked isChecking"
     );
   users = users.filter(
     (user) =>
