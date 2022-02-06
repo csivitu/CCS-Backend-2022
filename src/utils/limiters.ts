@@ -6,6 +6,7 @@ export const apiLimiter = rateLimit({
   max: config.get("enviornment") === "production" ? 250 : 10000,
   standardHeaders: true,
   legacyHeaders: false,
+  statusCode: 200,
 });
 
 export const quizLimiter = rateLimit({
@@ -13,6 +14,7 @@ export const quizLimiter = rateLimit({
   max: config.get("enviornment") === "production" ? 600 : 10000,
   standardHeaders: true,
   legacyHeaders: false,
+  statusCode: 200,
 });
 
 export const createAccountLimiter = rateLimit({
@@ -22,6 +24,7 @@ export const createAccountLimiter = rateLimit({
     "Too many accounts created from this IP, please try again after some time",
   standardHeaders: true,
   legacyHeaders: false,
+  statusCode: 200,
 });
 
 export const forgotPasswordLimiter = rateLimit({
@@ -31,6 +34,7 @@ export const forgotPasswordLimiter = rateLimit({
     "Too many attempts to reset password from this IP, please try again after some time",
   standardHeaders: true,
   legacyHeaders: false,
+  statusCode: 200,
 });
 
 export const emailVerifyLimiter = rateLimit({
@@ -40,4 +44,5 @@ export const emailVerifyLimiter = rateLimit({
     "Too many attempts to send verification mail from this IP, please try again after some time",
   standardHeaders: true,
   legacyHeaders: false,
+  statusCode: 200,
 });
