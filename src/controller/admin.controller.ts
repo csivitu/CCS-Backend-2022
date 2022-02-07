@@ -1,8 +1,10 @@
 // import config from "config";
 import { Request, Response } from "express";
 import ccsUserModel from "../models/ccsUser.model";
+import UserModel from "../models/user.model";
 // import UserModel from "../models/user.model";
 import {
+  AdminDeleteUserInput,
   AdminGetUserInput,
   AdminPostInput,
   AdminPutInput,
@@ -66,6 +68,41 @@ export async function getUserInfoHandler(
     return res.status(500).send(errorObject(500, "", standardizeObject(e)));
   }
 }
+
+export async function deleteUserHandler(
+  req: Request<
+    Record<string, never>,
+    Record<string, never>,
+    AdminDeleteUserInput
+  >,
+  res: Response
+) {
+  try {
+    const admin = await UserModel.findOne({
+      username: res.locals.user.username,
+    });
+    if (!admin.scope.includes("super admin"))
+      return res
+        .status(200)
+        .send(
+          errorObject(
+            403,
+            "This is a super admin only route, please contact tech team"
+          )
+        );
+    await ccsUserModel.deleteOne({
+      username: req.body.username,
+    });
+    await UserModel.deleteOne({ username: req.body.username });
+    return res
+      .status(200)
+      .send(errorObject(200, `${req.body.username} has been deleted`));
+  } catch (e) {
+    logger.error(e);
+    return res.status(500).send(errorObject(500, "", standardizeObject(e)));
+  }
+}
+
 export async function updateCcsUserHandler(
   req: Request<Record<string, never>, Record<string, never>, AdminPostInput>,
   res: Response

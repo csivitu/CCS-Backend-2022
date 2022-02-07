@@ -80,7 +80,6 @@ export default async function submitHandler(
     if (finalSubmit) {
       user.startTime = null;
       user.endTime = null;
-      user.questionLoaded = [];
       user.domainsAttempted[
         user.domainsAttempted.map((dom) => dom.domain).indexOf(domain)
       ].submitted = true;

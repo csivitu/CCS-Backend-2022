@@ -1,17 +1,19 @@
 const standardizeObject = <T>(err: T) => {
   if (typeof err === "object" && err !== null) {
-    const allKeys = [
-      ...Object.getOwnPropertyNames(err),
-      ...Object.getOwnPropertySymbols(err).map((s) => `[${s.toString()}]`),
-    ];
+    if (Array.isArray(err)) {
+      const error = err.map(
+        (e) => <unknown>standardizeObject(e)
+      ) as unknown as T;
 
-    const error = allKeys.reduce(
-      (prev, curr) => ({
-        ...prev,
-        [curr]: standardizeObject(err[curr as keyof T]),
-      }),
-      {}
-    ) as T;
+      return error;
+    }
+
+    const error = {} as T;
+    const allKeys = Object.getOwnPropertyNames(err);
+
+    allKeys.forEach((key) => {
+      error[key as keyof T] = standardizeObject(err[key as keyof T]);
+    });
 
     return error;
   }

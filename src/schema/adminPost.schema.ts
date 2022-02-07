@@ -47,6 +47,7 @@ export const AdminGetUserSchema = object({
     username: string(),
   }),
 });
+
 export const AdminPutSchema = object({
   body: object({
     username: string({ required_error: "username is required" }),
@@ -66,6 +67,12 @@ export const AdminPutSchema = object({
   ),
 });
 
+export const AdminDeleteUserSchema = object({
+  body: object({
+    username: string({ required_error: "username is required" }),
+  }),
+});
+
 export type AdminPostInput = {
   username: string;
   round?: 0 | 1 | 2 | 3;
@@ -81,7 +88,12 @@ export type AdminPutInput = {
   username: string;
   domain: "tech" | "management" | "design" | "video";
 };
-export type MakeAdminInput = {
+
+export type AdminDeleteUserInput = {
   username: string;
-  token: string;
 };
+
+// export type MakeAdminInput = {
+//   username: string;
+//   token: string;
+// };
