@@ -60,7 +60,11 @@ export async function getUserInfoHandler(
   res: Response
 ) {
   try {
-    const user = await getCcsUserInfoByUsername(req.params.username);
+    const user = await getCcsUserInfoByUsername(
+      (
+        await UserModel.findOne({ regNo: req.params.regNo })
+      ).username
+    );
     const questions = await getAllQuestion();
     return res.status(200).send(errorObject(200, "", { user, questions }));
   } catch (e) {

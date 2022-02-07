@@ -44,7 +44,7 @@ export const adminPostSchema = object({
 
 export const AdminGetUserSchema = object({
   params: object({
-    username: string(),
+    regNo: string(),
   }),
 });
 
@@ -82,7 +82,7 @@ export type AdminPostInput = {
 };
 
 export type AdminGetUserInput = {
-  username?: string;
+  regNo?: string;
 };
 export type AdminPutInput = {
   username: string;

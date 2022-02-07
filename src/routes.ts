@@ -111,7 +111,7 @@ function routes(app: Express) {
 
   app.get("/api/admin", apiLimiter, requireAdmin, getUsersHandler);
   app.get(
-    "/api/admin/:username",
+    "/api/admin/:regNo",
     apiLimiter,
     validateResource(AdminGetUserSchema),
     requireAdmin,
