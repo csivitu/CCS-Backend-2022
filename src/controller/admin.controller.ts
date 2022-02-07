@@ -47,7 +47,7 @@ import standardizeObject from "../utils/standardizeObject";
 export async function getUsersHandler(req: Request, res: Response) {
   try {
     const users = await getAllUsers();
-    return res.status(200).send(errorObject(200, "", users));
+    return res.status(200).send(errorObject(200, "", users.reverse()));
   } catch (e) {
     logger.error(e);
     return res.status(500).send(errorObject(500, "", standardizeObject(e)));
