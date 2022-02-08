@@ -247,9 +247,28 @@ export async function userStatsHandler(req: Request, res: Response) {
     const activeUserCount = nonCSI.filter(
       (user) => user.domainsAttempted.length > 0
     ).length;
-    return res
-      .status(200)
-      .send(errorObject(200, "", { userCount, activeUserCount }));
+    const tech = nonCSI.filter((user) =>
+      user.domainsAttempted.map((dom) => dom.domain).includes("tech")
+    ).length;
+    const management = nonCSI.filter((user) =>
+      user.domainsAttempted.map((dom) => dom.domain).includes("management")
+    ).length;
+    const design = nonCSI.filter((user) =>
+      user.domainsAttempted.map((dom) => dom.domain).includes("design")
+    ).length;
+    const video = nonCSI.filter((user) =>
+      user.domainsAttempted.map((dom) => dom.domain).includes("video")
+    ).length;
+    return res.status(200).send(
+      errorObject(200, "", {
+        userCount,
+        activeUserCount,
+        tech,
+        management,
+        design,
+        video,
+      })
+    );
   } catch (e) {
     logger.error(standardizeObject(e));
     return res.status(500).send(errorObject(500, "", standardizeObject(e)));
