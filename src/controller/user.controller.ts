@@ -245,29 +245,47 @@ export async function userStatsHandler(req: Request, res: Response) {
     );
     const userCount = nonCSI.length;
     const activeUserCount = nonCSI.filter(
-      (user) => user.domainsAttempted.length > 0
+      (user) =>
+        user.domainsAttempted.length > 0 &&
+        user.techAttempted
+          .concat(user.managementAttempted)
+          .concat(user.designAttempted)
+          .concat(user.videoAttempted)
+          .filter((ques) => ques.answer !== "").length > 0
     ).length;
-    const tech = nonCSI.filter((user) =>
-      user.domainsAttempted.map((dom) => dom.domain).includes("tech")
+    const tech = nonCSI.filter(
+      (user) =>
+        user.domainsAttempted.map((dom) => dom.domain).includes("tech") &&
+        user.techAttempted.filter((ques) => ques.answer !== "").length > 0
     ).length;
-    const management = nonCSI.filter((user) =>
-      user.domainsAttempted.map((dom) => dom.domain).includes("management")
+    const management = nonCSI.filter(
+      (user) =>
+        user.domainsAttempted.map((dom) => dom.domain).includes("management") &&
+        user.managementAttempted.filter((ques) => ques.answer !== "").length > 0
     ).length;
-    const design = nonCSI.filter((user) =>
-      user.domainsAttempted.map((dom) => dom.domain).includes("design")
+    const design = nonCSI.filter(
+      (user) =>
+        user.domainsAttempted.map((dom) => dom.domain).includes("design") &&
+        user.designAttempted.filter((ques) => ques.answer !== "").length > 0
     ).length;
-    const video = nonCSI.filter((user) =>
-      user.domainsAttempted.map((dom) => dom.domain).includes("video")
+    const video = nonCSI.filter(
+      (user) =>
+        user.domainsAttempted.map((dom) => dom.domain).includes("video") &&
+        user.videoAttempted.filter((ques) => ques.answer !== "").length > 0
     ).length;
     return res.status(200).send(
-      errorObject(200, "", {
-        userCount,
-        activeUserCount,
-        tech,
-        management,
-        design,
-        video,
-      })
+      errorObject(
+        200,
+        "These are the stats for the users excluding CSI peeps and excluding ppl who have attempted the quiz and not given any answers, basically only absolutely legit users",
+        {
+          userCount,
+          activeUserCount,
+          tech,
+          management,
+          design,
+          video,
+        }
+      )
     );
   } catch (e) {
     logger.error(standardizeObject(e));
