@@ -257,22 +257,34 @@ export async function userStatsHandler(req: Request, res: Response) {
       (user) =>
         user.domainsAttempted.map((dom) => dom.domain).includes("tech") &&
         user.techAttempted.filter((ques) => ques.answer !== "").length > 0
-    ).length;
+    );
     const management = nonCSI.filter(
       (user) =>
         user.domainsAttempted.map((dom) => dom.domain).includes("management") &&
         user.managementAttempted.filter((ques) => ques.answer !== "").length > 0
-    ).length;
+    );
     const design = nonCSI.filter(
       (user) =>
         user.domainsAttempted.map((dom) => dom.domain).includes("design") &&
         user.designAttempted.filter((ques) => ques.answer !== "").length > 0
-    ).length;
+    );
     const video = nonCSI.filter(
       (user) =>
         user.domainsAttempted.map((dom) => dom.domain).includes("video") &&
         user.videoAttempted.filter((ques) => ques.answer !== "").length > 0
-    ).length;
+    );
+
+    const [
+      techCorrected,
+      managementCorrected,
+      designCorrected,
+      videoCorrected,
+    ] = [
+      tech.filter((user) => user.checked.tech),
+      management.filter((user) => user.checked.management),
+      design.filter((user) => user.checked.design),
+      video.filter((user) => user.checked.video),
+    ];
     return res.status(200).send(
       errorObject(
         200,
@@ -280,10 +292,14 @@ export async function userStatsHandler(req: Request, res: Response) {
         {
           userCount,
           activeUserCount,
-          tech,
-          management,
-          design,
-          video,
+          tech: tech.length,
+          techCorrected: techCorrected.length,
+          management: management.length,
+          managementCorrected: managementCorrected.length,
+          design: design.length,
+          designCorrected: designCorrected.length,
+          video: video.length,
+          videoCorrected: videoCorrected.length,
         }
       )
     );
