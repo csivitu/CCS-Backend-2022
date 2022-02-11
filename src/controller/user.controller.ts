@@ -285,6 +285,19 @@ export async function userStatsHandler(req: Request, res: Response) {
       design.filter((user) => user.checked.design),
       video.filter((user) => user.checked.video),
     ];
+
+    const techSelected = tech.filter(
+      (user) => user.marks.tech >= config.get<number>("tech_cutoff")
+    ).length;
+    const managementSelected = management.filter(
+      (user) => user.marks.management >= config.get<number>("management_cutoff")
+    ).length;
+    const designSelected = design.filter(
+      (user) => user.marks.design >= config.get<number>("design_cutoff")
+    ).length;
+    const videoSelected = video.filter(
+      (user) => user.marks.video >= config.get<number>("video_cutoff")
+    ).length;
     return res.status(200).send(
       errorObject(
         200,
@@ -292,14 +305,28 @@ export async function userStatsHandler(req: Request, res: Response) {
         {
           userCount,
           activeUserCount,
-          tech: tech.length,
-          techCorrected: techCorrected.length,
-          management: management.length,
-          managementCorrected: managementCorrected.length,
-          design: design.length,
-          designCorrected: designCorrected.length,
-          video: video.length,
-          videoCorrected: videoCorrected.length,
+          tech: {
+            attempted: tech.length,
+            corrected: techCorrected.length,
+            selected: techSelected,
+          },
+          management: {
+            attempted: management.length,
+            corrected: managementCorrected.length,
+            selected: managementSelected,
+          },
+          design: {
+            attempted: design.length,
+            corrected: designCorrected.length,
+            selected: designSelected,
+          },
+          video: {
+            attempted: video.length,
+            corrected: videoCorrected.length,
+            selected: videoSelected,
+          },
+          totalSelected:
+            techSelected + managementSelected + designSelected + videoSelected,
         }
       )
     );

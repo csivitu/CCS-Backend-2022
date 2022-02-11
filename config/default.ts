@@ -34,4 +34,8 @@ f7nAWWlOhIzawxMKZwIDAQAB
   email_verified_redirect: `${process.env.ORIGIN_URL}/login`,
   origin_url: process.env.ORIGIN_URL,
   // admin_token: process.env.ADMIN_TOKEN,
+  tech_cutoff: 7,
+  management_cutoff: 7,
+  design_cutoff: 7,
+  video_cutoff: 7,
 };
