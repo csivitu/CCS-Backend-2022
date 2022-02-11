@@ -142,7 +142,7 @@ export const AddUserInfoSchema = object({
     description: string().optional(),
     portfolio: object({
       category: string(),
-      link: string(),
+      link: string().url({ message: "Not a valid url" }),
     }).optional(),
   })
     .refine(
@@ -163,22 +163,15 @@ export const AddUserInfoSchema = object({
     .refine((data) => data.description || data.portfolio, {
       message: "atleast one required",
       path: ["description", "portfolio"],
-    })
-    .refine((data) => {
-      let url: URL;
-      try {
-        url = new URL(data.portfolio.link);
-      } catch (e) {
-        return false;
-      }
-      return url.protocol === "http:" || url.protocol === "https:";
     }),
 });
 
 export const AddUserTaskSchema = object({
   body: object({
     subdomain: string({ required_error: "sub domain is required" }),
-    task: string({ required_error: "task link is required" }),
+    task: string({ required_error: "task link is required" }).url({
+      message: "not a valid url",
+    }),
   }).refine(
     (data) =>
       techSubdomains.includes(data.subdomain) ||

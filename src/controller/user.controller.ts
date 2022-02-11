@@ -198,8 +198,9 @@ export async function addUserTaskHandler(
   res: Response
 ) {
   try {
-    const { _id } = res.locals.user;
-    const user = await ccsUserModel.findOne({ _id });
+    const { username } = res.locals.user;
+    const user = await ccsUserModel.findOne({ username });
+
     if (
       !user.taskSubmitted
         .map((tsk) => tsk.subdomain)
@@ -217,6 +218,7 @@ export async function addUserTaskHandler(
       ].task = req.body.task;
     }
     await user.save();
+    logger.warn({ username: user.username, message: "Task saved for user" });
     return res
       .status(200)
       .send(errorObject(200, "successfully updated user task"));
