@@ -186,7 +186,13 @@ function routes(app: Express) {
 
   app.get("/api/users/stats", userStatsHandler);
 
-  app.get("/api/users/task", apiLimiter, requireUser, getUserTaskHandler);
+  app.get(
+    "/api/users/task",
+    apiLimiter,
+    requireUser,
+    requireTaskTime,
+    getUserTaskHandler
+  );
 }
 
 export default routes;
