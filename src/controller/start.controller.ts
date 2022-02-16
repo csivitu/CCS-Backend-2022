@@ -21,6 +21,11 @@ export default async function startHandler(
     .add(config.get<number>("test_duration"), "m")
     .toDate();
   try {
+    if (new Date() > new Date(config.get("task_start_date"))) {
+      return res
+        .status(200)
+        .send(errorObject(403, "https://www.youtube.com/watch?v=dQw4w9WgXcQ"));
+    }
     if (!user) {
       const newUser = await createCcsUser(
         res.locals.user.username as string,
