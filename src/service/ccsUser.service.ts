@@ -78,7 +78,7 @@ export async function getCcsUserInfo(_id: Schema.Types.ObjectId) {
       "-passwordResetToken",
       "-verificationStatus",
     ])
-    .select(["-checked"]);
+    .select(["-checked", "-comments", "-isChecking", "-marks"]);
   return user;
 }
 
