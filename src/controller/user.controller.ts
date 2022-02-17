@@ -24,12 +24,6 @@ import { sendResetPasswordMail, sendVerificationMail } from "../tools/sendMail";
 import errorObject from "../utils/errorObject";
 import logger from "../utils/logger";
 import standardizeObject from "../utils/standardizeObject";
-import {
-  designSubdomains,
-  designSubDomainsType,
-  techSubdomains,
-  techSubDomainsType,
-} from "../types/subdomainTypes";
 
 export async function createUserHandler(
   req: Request<Record<string, never>, Record<string, never>, UserInput>,
@@ -238,16 +232,16 @@ export async function getUserTaskHandler(req: Request, res: Response) {
   try {
     const { username } = res.locals.user as UserDocument;
     const user = await ccsUserModel.findOne({ username });
-    const domains = [] as (techSubDomainsType | designSubDomainsType)[];
+    const domains = [] as ("tech" | "design")[];
     user.domainsAttempted.forEach((dom) => {
       if (dom.domain === "tech") {
-        domains.concat(techSubdomains as unknown as techSubDomainsType);
+        domains.push("tech");
       }
       if (dom.domain === "design") {
-        domains.concat(designSubdomains as unknown as designSubDomainsType);
+        domains.push("design");
       }
     });
-    const tasks = await TaskModel.find({ subDomain: { $in: domains } });
+    const tasks = await TaskModel.find({ domain: { $in: domains } });
     return res.status(200).send(errorObject(200, "", tasks));
   } catch (e) {
     logger.error(standardizeObject(e));
