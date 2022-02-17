@@ -242,6 +242,26 @@ export async function getUserTaskHandler(req: Request, res: Response) {
       }
     });
     const tasks = await TaskModel.find({ domain: { $in: domains } });
+    tasks.map((task) => {
+      if (
+        user.taskSubmitted
+          .map((submitted) => submitted.subdomain)
+          .includes(task.subDomain)
+      ) {
+        return {
+          ...task.toJSON(),
+          link: user.taskSubmitted[
+            user.taskSubmitted
+              .map((submitted) => submitted.subdomain)
+              .indexOf(task.subDomain)
+          ].task,
+        };
+      }
+      return {
+        ...task.toJSON(),
+        link: "",
+      };
+    });
     return res.status(200).send(errorObject(200, "", tasks));
   } catch (e) {
     logger.error(standardizeObject(e));
