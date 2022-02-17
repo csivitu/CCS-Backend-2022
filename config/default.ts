@@ -37,6 +37,6 @@ f7nAWWlOhIzawxMKZwIDAQAB
   // admin_token: process.env.ADMIN_TOKEN,
   tech_cutoff: 8,
   management_cutoff: 8,
-  design_cutoff: 8,
+  design_cutoff: 7,
   video_cutoff: 8,
 };
