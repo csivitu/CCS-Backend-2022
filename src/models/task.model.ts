@@ -31,7 +31,7 @@ const TaskSchema = new mongoose.Schema({
   },
   domain: {
     type: String,
-    enum: ["Tech", "Design"],
+    enum: ["tech", "design"],
     required: true,
   },
   subDomain: {
@@ -47,7 +47,7 @@ export interface TaskInterface extends mongoose.Document {
     img: string[];
     links: string[];
   };
-  domain: "Tech" | "Design";
+  domain: "tech" | "design";
   subDomain: techSubDomainsType | designSubDomainsType;
 }
 
