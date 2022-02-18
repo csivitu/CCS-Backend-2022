@@ -17,7 +17,6 @@ export function verifyJwt<T>(
   token: string,
   keyName: "accessTokenPublicKey" | "refreshTokenPublicKey"
 ): T | null {
-  // console.log(token)
   const publicKey = config.get<string>(keyName);
 
   try {

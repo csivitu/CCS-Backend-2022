@@ -19,7 +19,6 @@ const requireTaskTime = async (
   if (new Date() > new Date(config.get<string>("task_submission_date"))) {
     return res.status(200).send(errorObject(403, "submission date exceeded"));
   }
-  console.log(new Date(config.get<string>("task_start_date")));
   if (new Date() < new Date(config.get<string>("task_start_date"))) {
     return res
       .status(200)
