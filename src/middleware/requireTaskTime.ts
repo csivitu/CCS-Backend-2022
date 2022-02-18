@@ -31,12 +31,11 @@ const requireTaskTime = async (
     (dbUser.techRound >= 2 && techSubdomains.includes(req.body.subdomain)) ||
     (dbUser.designRound >= 2 && designSubdomains.includes(req.body.subdomain))
   ) {
-    return res
-      .status(200)
-      .send(errorObject(403, "Not allowed to submit task for that domain"));
+    return next();
   }
-
-  return next();
+  return res
+    .status(200)
+    .send(errorObject(403, "Not allowed to submit task for that domain"));
 };
 
 export default requireTaskTime;
