@@ -264,6 +264,12 @@ const ccsUserSchema = new mongoose.Schema({
       default: "",
     },
   ],
+  emailR2: {
+    tech: { type: Boolean, default: false },
+    management: { type: Boolean, default: false },
+    design: { type: Boolean, default: false },
+    video: { type: Boolean, default: false },
+  },
 });
 
 export interface ccsUserInterface extends mongoose.Document {
