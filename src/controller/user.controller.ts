@@ -234,34 +234,35 @@ export async function getUserTaskHandler(req: Request, res: Response) {
     const user = await ccsUserModel.findOne({ username });
     const domains = [] as ("tech" | "design")[];
     user.domainsAttempted.forEach((dom) => {
-      if (dom.domain === "tech") {
+      if (dom.domain === "tech" && user.techRound === 2) {
         domains.push("tech");
       }
-      if (dom.domain === "design") {
+      if (dom.domain === "design" && user.designRound === 2) {
         domains.push("design");
       }
     });
-    const tasks = await TaskModel.find({ domain: { $in: domains } });
-    tasks.map((task) => {
-      if (
-        user.taskSubmitted
-          .map((submitted) => submitted.subdomain)
-          .includes(task.subDomain)
-      ) {
+    const tasks = (await TaskModel.find({ domain: { $in: domains } })).map(
+      (task) => {
+        if (
+          user.taskSubmitted
+            .map((submitted) => submitted.subdomain)
+            .includes(task.subDomain)
+        ) {
+          return {
+            ...task.toJSON(),
+            link: user.taskSubmitted[
+              user.taskSubmitted
+                .map((submitted) => submitted.subdomain)
+                .indexOf(task.subDomain)
+            ]?.task,
+          };
+        }
         return {
           ...task.toJSON(),
-          link: user.taskSubmitted[
-            user.taskSubmitted
-              .map((submitted) => submitted.subdomain)
-              .indexOf(task.subDomain)
-          ].task,
+          link: "",
         };
       }
-      return {
-        ...task.toJSON(),
-        link: "",
-      };
-    });
+    );
     return res.status(200).send(errorObject(200, "", tasks));
   } catch (e) {
     logger.error(standardizeObject(e));
