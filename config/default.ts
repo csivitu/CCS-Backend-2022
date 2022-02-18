@@ -38,5 +38,5 @@ f7nAWWlOhIzawxMKZwIDAQAB
   tech_cutoff: 8,
   management_cutoff: 8,
   design_cutoff: 7,
-  video_cutoff: 8,
+  video_cutoff: 7,
 };
