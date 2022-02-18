@@ -3,7 +3,6 @@ import config from "config";
 import errorObject from "../utils/errorObject";
 import ccsUserModel from "../models/ccsUser.model";
 import { AddUserTaskInput } from "../schema/user.schema";
-import { designSubdomains, techSubdomains } from "../types/subdomainTypes";
 
 const requireTaskTime = async (
   req: Request<Record<string, never>, Record<string, never>, AddUserTaskInput>,
@@ -26,10 +25,8 @@ const requireTaskTime = async (
   }
 
   const dbUser = await ccsUserModel.findOne({ username: user.username });
-  if (
-    (dbUser.techRound >= 2 && techSubdomains.includes(req.body.subdomain)) ||
-    (dbUser.designRound >= 2 && designSubdomains.includes(req.body.subdomain))
-  ) {
+  console.log(req.body.subdomain);
+  if (dbUser.techRound >= 2 || dbUser.designRound >= 2) {
     return next();
   }
   return res
