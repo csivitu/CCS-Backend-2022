@@ -276,6 +276,9 @@ export async function userStatsHandler(req: Request, res: Response) {
       (user) =>
         !(user.userId as unknown as UserDocument).scope.includes("admin")
     );
+    const CSI = users.filter((user) =>
+      (user.userId as unknown as UserDocument).scope.includes("admin")
+    );
     const userCount = nonCSI.length;
     const activeUserCount = nonCSI.filter(
       (user) =>
@@ -331,6 +334,17 @@ export async function userStatsHandler(req: Request, res: Response) {
     const videoSelected = video.filter(
       (user) => user.marks.video >= config.get<number>("video_cutoff")
     ).length;
+
+    const corrections = CSI.map((csi) => ({
+      username: csi.username,
+      correctionCount: nonCSI.filter((user) =>
+        user.checkedBy.includes(csi.username)
+      ).length,
+    })).sort(
+      (correction1, correction2) =>
+        correction2.correctionCount - correction1.correctionCount
+    );
+
     return res.status(200).send(
       errorObject(
         200,
@@ -360,6 +374,7 @@ export async function userStatsHandler(req: Request, res: Response) {
           },
           totalSelected:
             techSelected + managementSelected + designSelected + videoSelected,
+          corrections,
         }
       )
     );
