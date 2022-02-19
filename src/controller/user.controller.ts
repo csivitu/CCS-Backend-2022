@@ -272,7 +272,11 @@ export async function getUserTaskHandler(req: Request, res: Response) {
 
 export async function userStatsHandler(req: Request, res: Response) {
   try {
-    const users = await ccsUserModel.find().populate("userId");
+    const users = (await ccsUserModel.find().populate("userId")).filter(
+      (user) =>
+        (user.userId as unknown as UserDocument).regNo.slice(0, 2) === "21"
+    );
+
     const nonCSI = users.filter(
       (user) =>
         !(user.userId as unknown as UserDocument).scope.includes("admin")
