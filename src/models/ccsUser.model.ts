@@ -354,6 +354,12 @@ export interface ccsUserInterface extends mongoose.Document {
     video: boolean;
   };
   checkedBy: string[];
+  emailR2: {
+    tech: boolean;
+    management: boolean;
+    design: boolean;
+    video: boolean;
+  };
 }
 
 const ccsUserModel = mongoose.model<ccsUserInterface>("CcsUser", ccsUserSchema);
