@@ -56,7 +56,7 @@ export async function getAllUsers() {
         { domainsAttempted: { $exists: true, $not: { $size: 0 } } },
       ],
     })
-    .populate("userId", "regNo")
+    .populate("userId", ["regNo", "name"])
     .select(
       "username domainsAttempted techRound managementRound marks designRound videoRound userId checked isChecking"
     );
