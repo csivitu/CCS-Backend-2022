@@ -1,6 +1,7 @@
 // import config from "config";
 import { Request, Response } from "express";
 import ccsUserModel from "../models/ccsUser.model";
+import TaskModel from "../models/task.model";
 import UserModel from "../models/user.model";
 // import UserModel from "../models/user.model";
 import {
@@ -65,8 +66,41 @@ export async function getUserInfoHandler(
         await UserModel.findOne({ regNo: req.params.regNo })
       ).username
     );
+    const domains = [] as ("tech" | "design")[];
+    user.domainsAttempted.forEach((dom) => {
+      if (dom.domain === "tech" && user.techRound === 2) {
+        domains.push("tech");
+      }
+      if (dom.domain === "design" && user.designRound === 2) {
+        domains.push("design");
+      }
+    });
+    const tasks = (await TaskModel.find({ domain: { $in: domains } })).map(
+      (task) => {
+        if (
+          user.taskSubmitted
+            .map((submitted) => submitted.subdomain)
+            .includes(task.subDomain)
+        ) {
+          return {
+            ...task.toJSON(),
+            link: user.taskSubmitted[
+              user.taskSubmitted
+                .map((submitted) => submitted.subdomain)
+                .indexOf(task.subDomain)
+            ]?.task,
+          };
+        }
+        return {
+          ...task.toJSON(),
+          link: "",
+        };
+      }
+    );
     const questions = await getAllQuestion();
-    return res.status(200).send(errorObject(200, "", { user, questions }));
+    return res
+      .status(200)
+      .send(errorObject(200, "", { user, questions, tasks }));
   } catch (e) {
     logger.error(e);
     return res.status(500).send(errorObject(500, "", standardizeObject(e)));
