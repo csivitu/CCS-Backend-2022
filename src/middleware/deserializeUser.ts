@@ -13,7 +13,7 @@ const deserializeUser = async (
     ""
   );
 
-  const refreshToken = get(req, "headers.x-refresh");
+  const refreshToken = <string>get(req, "headers.x-refresh");
 
   if (!accessToken && !refreshToken) {
     return next();

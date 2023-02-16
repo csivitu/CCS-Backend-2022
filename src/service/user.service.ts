@@ -1,5 +1,4 @@
 import { FilterQuery } from "mongoose";
-import { omit } from "lodash";
 import crypto from "crypto";
 import UserModel, {
   privateFields,
@@ -89,7 +88,16 @@ export async function validatePassword({
 
     if (!isValid) return false;
 
-    return omit(user.toJSON(), privateFields);
+    return {
+      _id: user._id,
+      name: user.name,
+      username: user.username,
+      email: user.email,
+      phone: user.phone,
+      regNo: user.regNo,
+      gender: user.gender,
+      verificationStatus: user.verificationStatus,
+    };
   } catch (e) {
     throw new Error(e);
   }
