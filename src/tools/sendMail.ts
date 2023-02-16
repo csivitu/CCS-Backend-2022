@@ -3,6 +3,7 @@ import Mailgun from "mailgun.js";
 import config from "config";
 import url from "url";
 import { create } from "express-handlebars";
+import https from "https";
 import { constants } from "./constants";
 import { UserDocument } from "../models/user.model";
 import logger from "../utils/logger";
@@ -24,13 +25,36 @@ export const sendMail = async (
 ) => {
   try {
     const data = {
-      from: `CSI-VIT <${senderEmail}>`,
       to: email,
-      subject,
       text: link,
+      subject,
       html: content,
+      auth: config.get<string>("emailer_auth"),
     };
-    await mg.messages.create(domain, data);
+
+    const postOptions = {
+      host: config.get<string>("emailer_host"),
+      port: "443",
+      path: config.get<string>("emailer_path"),
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Content-Length": Buffer.byteLength(JSON.stringify(data)),
+      },
+    };
+
+    // Set up the request
+    const postReq = https.request(postOptions, (res) => {
+      res.setEncoding("utf8");
+      res.on("data", (chunk) => {
+        logger.info(`mail sent to ${email} Response: `, chunk);
+      });
+    });
+
+    // post the data
+    postReq.write(JSON.stringify(data));
+    postReq.end();
+    // await mg.messages.create(domain, data);
     logger.info(`Mail sent to ${email} successfully`);
   } catch (e) {
     logger.error(e);
