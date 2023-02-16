@@ -22,7 +22,6 @@ const ccsUserSchema = new mongoose.Schema({
       domain: {
         type: String,
         enum: ["tech", "design", "management", "video"],
-        unique: true,
       },
       endTime: {
         type: Date,
