@@ -54,14 +54,6 @@ export async function getAllUsers() {
       $and: [
         { $or: [{ endTime: { $lt: new Date() } }, { endTime: null }] },
         { domainsAttempted: { $exists: true, $not: { $size: 0 } } },
-        {
-          $or: [
-            { "marks.tech": { $gte: 8 } },
-            { "marks.management": { $gte: 8 } },
-            { "marks.design": { $gte: 7 } },
-            { "marks.video": { $gte: 7 } },
-          ],
-        },
       ],
     })
     .populate("userId", ["regNo", "name"])
