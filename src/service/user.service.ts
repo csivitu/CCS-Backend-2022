@@ -62,7 +62,7 @@ export async function createUser(input: UserInput) {
       username: ccsUser.username,
       message: "User created in accounts and ccs DB",
     });
-    sendVerificationMail(user);
+    // sendVerificationMail(user);
     jsonResponse.success = true;
     jsonResponse.message = constants.registrationSuccess;
     return jsonResponse;
