@@ -1,10 +1,15 @@
 import questionModel from "../models/question.model";
+import { AdminAddQuestionInput } from "../schema/adminPost.schema";
 
 export default async function getQuestion(domain: string, difficulty: string) {
   return questionModel.find({ domain, difficulty }).select("quesId question");
 }
 export async function getAllQuestion() {
   return questionModel.find({}).select("_id quesId question");
+}
+
+export async function inputAllQuestion(input: AdminAddQuestionInput) {
+  return questionModel.insertMany(input.questions);
 }
 
 // export async function final(easyquestions, mediumquestions, hardquestions) {

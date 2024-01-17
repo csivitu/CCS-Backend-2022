@@ -48,6 +48,25 @@ export const AdminGetUserSchema = object({
   }),
 });
 
+export const AdminAddQuestionsSchema = object({
+  body: object({
+    auth: string(),
+    questions: object(
+      {
+        quesId: number(),
+        question: object({
+          text: string(),
+          img: string().array(),
+          links: string().array(),
+        }),
+        difficulty: string(),
+        domain: string(),
+      },
+      { required_error: "questions object is required" }
+    ).array(),
+  }),
+});
+
 export const AdminPutSchema = object({
   body: object({
     username: string({ required_error: "username is required" }),
@@ -81,6 +100,20 @@ export type AdminPostInput = {
   mark?: number;
 };
 
+export type AdminAddQuestionInput = {
+  auth: string;
+  questions: {
+    quesId: number;
+    question: {
+      text: string;
+      img: string[];
+      links: string[];
+    };
+    difficulty: "Easy" | "Medium" | "Hard";
+    domain: "tech" | "design" | "management" | "video";
+  }[];
+};
+
 export type AdminGetUserInput = {
   regNo?: string;
 };
@@ -93,7 +126,7 @@ export type AdminDeleteUserInput = {
   username: string;
 };
 
-// export type MakeAdminInput = {
-//   username: string;
-//   token: string;
-// };
+export type MakeAdminInput = {
+  username: string;
+  token: string;
+};

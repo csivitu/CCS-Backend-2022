@@ -1,5 +1,6 @@
 // import config from "config";
 import { Request, Response } from "express";
+import config from "config";
 import ccsUserModel from "../models/ccsUser.model";
 import TaskModel from "../models/task.model";
 import UserModel from "../models/user.model";
@@ -9,44 +10,45 @@ import {
   AdminGetUserInput,
   AdminPostInput,
   AdminPutInput,
-  // MakeAdminInput,
+  AdminAddQuestionInput,
+  MakeAdminInput,
 } from "../schema/adminPost.schema";
 import {
   getAllUsers,
   getCcsUserByUsername,
   getCcsUserInfoByUsername,
 } from "../service/ccsUser.service";
-import { getAllQuestion } from "../service/question.service";
+import { getAllQuestion, inputAllQuestion } from "../service/question.service";
 import errorObject from "../utils/errorObject";
 import logger from "../utils/logger";
 import standardizeObject from "../utils/standardizeObject";
 
-// export async function makeAdminHandler(
-//   req: Request<MakeAdminInput>,
-//   res: Response
-// ) {
-//   try {
-//     const user = await UserModel.findOne({ username: req.params.username });
-//     if (!user) {
-//       return res.status(200).send(errorObject(404, "check your username"));
-//     }
-//     if (!(req.params.token === config.get<string>("admin_token"))) {
-//       return res.status(200).send(errorObject(403, "You shall not pass!!"));
-//     }
-//     user.scope.push("admin");
-//     return res
-//       .status(200)
-//       .send(
-//         errorObject(
-//           200,
-//           "you are now the proud owner of admin privilege, if u misuse imma spank"
-//         )
-//       );
-//   } catch (e) {
-//     logger.error(e);
-//     return res.status(500).send(errorObject(500, "", standardizeObject(e)));
-//   }
-// }
+export async function makeAdminHandler(
+  req: Request<MakeAdminInput>,
+  res: Response
+) {
+  try {
+    const user = await UserModel.findOne({ username: req.params.username });
+    if (!user) {
+      return res.status(200).send(errorObject(404, "check your username"));
+    }
+    if (!(req.params.token === config.get<string>("admin_token"))) {
+      return res.status(200).send(errorObject(403, "You shall not pass!!"));
+    }
+    user.scope.push("admin");
+    return res
+      .status(200)
+      .send(
+        errorObject(
+          200,
+          "you are now the proud owner of admin privilege, if u misuse imma spank"
+        )
+      );
+  } catch (e) {
+    logger.error(e);
+    return res.status(500).send(errorObject(500, "", standardizeObject(e)));
+  }
+}
 export async function getUsersHandler(req: Request, res: Response) {
   try {
     const users = await getAllUsers();
@@ -56,6 +58,27 @@ export async function getUsersHandler(req: Request, res: Response) {
     return res.status(500).send(errorObject(500, "", standardizeObject(e)));
   }
 }
+
+export async function addAllQuestions(
+  req: Request<
+    Record<string, never>,
+    Record<string, never>,
+    AdminAddQuestionInput
+  >,
+  res: Response
+) {
+  try {
+    if (req.body.auth !== config.get<string>("admin_token")) {
+      return res.status(200).send(errorObject(403, "Unauthorized!"));
+    }
+    const result = await inputAllQuestion(req.body);
+    return res.status(200).send(errorObject(200, "", result));
+  } catch (e) {
+    logger.error(e);
+    return res.status(500).send(errorObject(500, "", standardizeObject(e)));
+  }
+}
+
 export async function getUserInfoHandler(
   req: Request<AdminGetUserInput>,
   res: Response

@@ -37,7 +37,7 @@ f7nAWWlOhIzawxMKZwIDAQAB
   task_start_date: process.env.TASK_START_DATE,
   email_verified_redirect: `${process.env.ORIGIN_URL}/login`,
   origin_url: process.env.ORIGIN_URL,
-  // admin_token: process.env.ADMIN_TOKEN,
+  admin_token: process.env.ADMIN_TOKEN,
   tech_cutoff: 8,
   management_cutoff: 8,
   design_cutoff: 7,

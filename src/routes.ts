@@ -29,11 +29,12 @@ import { submitSchema } from "./schema/submit.schema";
 import submitHandler from "./controller/submit.controller";
 import requireTime from "./middleware/requireTime";
 import {
+  addAllQuestions,
   deleteUserHandler,
   getUserInfoHandler,
   getUsersHandler,
   isCheckingHandler,
-  // makeAdminHandler,
+  makeAdminHandler,
   updateCcsUserHandler,
 } from "./controller/admin.controller";
 import questionHandler from "./controller/question.controller";
@@ -48,6 +49,7 @@ import { resendEmailSchema } from "./schema/resendEmail.schema";
 import requireTaskTime from "./middleware/requireTaskTime";
 import requireAdmin from "./middleware/requireAdmin";
 import {
+  AdminAddQuestionsSchema,
   AdminDeleteUserSchema,
   AdminGetUserSchema,
   adminPostSchema,
@@ -126,6 +128,12 @@ function routes(app: Express) {
     updateCcsUserHandler
   );
 
+  app.post(
+    "/api/admin/addQuestions",
+    validateResource(AdminAddQuestionsSchema),
+    addAllQuestions
+  );
+
   app.delete(
     "/api/admin/deleteUser",
     apiLimiter,
@@ -160,12 +168,12 @@ function routes(app: Express) {
 
   app.get("/api/getUser", apiLimiter, requireUser, getUserHandler);
 
-  // app.get(
-  //   "/api/lemmein/:username/:token",
-  //   apiLimiter,
-  //   requireUser,
-  //   makeAdminHandler
-  // );
+  app.get(
+    "/api/lemmein/:username/:token",
+    apiLimiter,
+    requireUser,
+    makeAdminHandler
+  );
 
   app.put(
     "/api/users/info",
