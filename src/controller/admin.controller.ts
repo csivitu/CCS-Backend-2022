@@ -4,7 +4,6 @@ import config from "config";
 import ccsUserModel from "../models/ccsUser.model";
 import TaskModel from "../models/task.model";
 import UserModel from "../models/user.model";
-// import UserModel from "../models/user.model";
 import {
   AdminDeleteUserInput,
   AdminGetUserInput,

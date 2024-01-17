@@ -84,6 +84,14 @@ export async function getCcsUserInfo(_id: Schema.Types.ObjectId) {
   return user;
 }
 
+export async function getCcsUserDomains(_id: Schema.Types.ObjectId) {
+  const user = await ccsUserModel
+    .findOne({ userId: _id })
+    .select(["domainsAttempted"]);
+
+  return user;
+}
+
 export async function getCcsUserInfoByUsername(username: string) {
   const user = await ccsUserModel
     .findOne({ username })
