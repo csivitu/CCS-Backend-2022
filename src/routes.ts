@@ -56,6 +56,7 @@ import {
   AdminPutSchema,
 } from "./schema/adminPost.schema";
 import limitDomains from "./middleware/limitDomains";
+import checkEnrolled from "./middleware/checkEnrolled";
 
 function routes(app: Express) {
   app.get("/healthcheck", (req: Request, res: Response) => res.sendStatus(200));
@@ -64,6 +65,7 @@ function routes(app: Express) {
     "/api/users",
     validateResource(createUserSchema),
     createAccountLimiter,
+    checkEnrolled,
     createUserHandler
   );
 
