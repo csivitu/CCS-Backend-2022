@@ -60,7 +60,6 @@ export async function getAllUsers() {
     .select(
       "username domainsAttempted techRound managementRound marks designRound videoRound userId checked isChecking"
     );
-  console.log(users);
   users = users.filter((user) =>
     ["20", "21", "22"].includes(
       (user.userId as unknown as UserDocument).regNo.slice(0, 2)
