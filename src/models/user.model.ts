@@ -74,7 +74,7 @@ const userSchema = new mongoose.Schema(
     },
     verificationStatus: {
       type: Boolean,
-      default: true,
+      default: false,
       required: true,
     },
     passwordResetToken: {
