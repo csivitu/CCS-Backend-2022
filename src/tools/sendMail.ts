@@ -17,7 +17,6 @@ const SES_CONFIG = {
 };
 
 const ses = new AWS.SES(SES_CONFIG);
-
 const mailgun = new Mailgun(formData);
 const mg = mailgun.client({
   username: "api",
@@ -43,7 +42,7 @@ export const sendMail = async (
     // };
 
     const params = {
-      Source: senderEmail,
+      Source: "Team CSI <askcsivit@gmail.com>",
       Destination: {
         ToAddresses: [email],
       },
@@ -52,16 +51,13 @@ export const sendMail = async (
           Data: subject,
         },
         Body: {
-          Text: {
-            Data: link,
-          },
           Html: {
             Data: content,
           },
         },
       },
     };
-    ses.sendEmail(params);
+    await ses.sendEmail(params).promise();
 
     // const postOptions = {
     //   host: config.get<string>("emailer_host"),
