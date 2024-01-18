@@ -38,7 +38,7 @@ const checkEnrolled = (
     return res.status(200).send(errorObject(403, "Not an Vit Email id"));
   }
 
-  if (email.match(universityEmailRegex)[1] !== "2023") {
+  if (email.match(universityEmailRegex)[2] !== "2023") {
     return res.status(200).send(errorObject(403, "Not a Fresher"));
   }
 

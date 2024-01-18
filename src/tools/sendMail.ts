@@ -4,9 +4,19 @@ import config from "config";
 import url from "url";
 import { create } from "express-handlebars";
 import https from "https";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import AWS from "aws-sdk";
 import { constants } from "./constants";
 import { UserDocument } from "../models/user.model";
 import logger from "../utils/logger";
+
+const SES_CONFIG = {
+  accessKeyId: config.get<string>("access_key"),
+  secretAccessKey: config.get<string>("secret_key"),
+  region: "ap-south-1",
+};
+
+const ses = new AWS.SES(SES_CONFIG);
 
 const mailgun = new Mailgun(formData);
 const mg = mailgun.client({
@@ -24,36 +34,59 @@ export const sendMail = async (
   link: string
 ) => {
   try {
-    const data = {
-      to: email,
-      text: link,
-      subject,
-      html: content,
-      auth: config.get<string>("emailer_auth"),
-    };
+    // const data = {
+    //   from: senderEmail,
+    //   to: email,
+    //   text: link,
+    //   subject,
+    //   html: content,
+    // };
 
-    const postOptions = {
-      host: config.get<string>("emailer_host"),
-      port: "443",
-      path: config.get<string>("emailer_path"),
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Content-Length": Buffer.byteLength(JSON.stringify(data)),
+    const params = {
+      Source: senderEmail,
+      Destination: {
+        ToAddresses: [email],
+      },
+      Message: {
+        Subject: {
+          Data: subject,
+        },
+        Body: {
+          Text: {
+            Data: link,
+          },
+          Html: {
+            Data: content,
+          },
+        },
       },
     };
+    ses.sendEmail(params);
+
+    // const postOptions = {
+    //   host: config.get<string>("emailer_host"),
+    //   port: "443",
+    //   path: config.get<string>("emailer_path"),
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     "Content-Length": Buffer.byteLength(JSON.stringify(data)),
+    //   },
+    // };
 
     // Set up the request
-    const postReq = https.request(postOptions, (res) => {
-      res.setEncoding("utf8");
-      res.on("data", (chunk) => {
-        logger.info(`mail sent to ${email} Response: `, chunk);
-      });
-    });
+    // const postReq = https.request(postOptions, (res) => {
+    //   res.setEncoding("utf8");
+    //   res.on("data", (chunk) => {
+    //     logger.info(`mail sent to ${email} Response: `, chunk);
+    //   });
+    // });
 
     // post the data
-    postReq.write(JSON.stringify(data));
-    postReq.end();
+    // postReq.write(JSON.stringify(data));
+    // postReq.end();
+    // await mg.messages.create(domain, data);
+    // console.log(data);
     // await mg.messages.create(domain, data);
     logger.info(`Mail sent to ${email} successfully`);
   } catch (e) {
