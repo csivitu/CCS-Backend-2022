@@ -32,7 +32,7 @@ const checkEnrolled = (
   }
 
   const universityEmailRegex =
-    /^[a-zA-Z]+\.([a-zA-Z]+\.)?[a-zA-Z]+(20(20|21|22|23))[a-z]*@vitstudent\.ac\.in$/;
+    /^[a-zA-Z]+\.([a-zA-Z]+\.)?[a-zA-Z]*(20(20|21|22|23))[a-z]*@vitstudent\.ac\.in$/;
 
   if (!universityEmailRegex.test(email)) {
     return res.status(200).send(errorObject(403, "Not an Vit Email id"));
