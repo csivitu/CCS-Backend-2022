@@ -61,7 +61,7 @@ export async function getAllUsers() {
       "username domainsAttempted techRound managementRound marks designRound videoRound userId checked isChecking"
     );
   users = users.filter((user) =>
-    ["20", "21", "22"].includes(
+    ["20", "21", "22", "23"].includes(
       (user.userId as unknown as UserDocument).regNo.slice(0, 2)
     )
   );
