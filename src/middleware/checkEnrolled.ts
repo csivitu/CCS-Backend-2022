@@ -38,9 +38,9 @@ const checkEnrolled = (
     return res.status(200).send(errorObject(403, "Not an Vit Email id"));
   }
 
-  if (email.match(universityEmailRegex)[2] !== "2023") {
-    return res.status(200).send(errorObject(403, "Not a Fresher"));
-  }
+  // if (email.match(universityEmailRegex)[2] !== "2023") {
+  //   return res.status(200).send(errorObject(403, "Not a Fresher"));
+  // }
 
   if (!isStringPresentInJsonFile(email, "enrolledlist.json")) {
     return res.status(200).send(errorObject(403, "Not enrolled in CSI"));
