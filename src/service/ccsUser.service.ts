@@ -51,17 +51,14 @@ export async function createCcsUser(
 export async function getAllUsers() {
   let users = await ccsUserModel
     .find({
-      $and: [
-        { $or: [{ endTime: { $lt: new Date() } }, { endTime: null }] },
-        { domainsAttempted: { $exists: true, $not: { $size: 0 } } },
-      ],
+      domainsAttempted: { $elemMatch: { submitted: true } },
     })
     .populate("userId", ["regNo", "name"])
     .select(
       "username domainsAttempted techRound managementRound marks designRound videoRound userId checked isChecking"
     );
   users = users.filter((user) =>
-    ["20", "21", "22", "23"].includes(
+    ["22", "23"].includes(
       (user.userId as unknown as UserDocument).regNo.slice(0, 2)
     )
   );
