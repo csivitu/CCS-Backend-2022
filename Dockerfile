@@ -1,7 +1,14 @@
-FROM node:16.6.2
+FROM node:20-alpine
+
 WORKDIR /app
-COPY package.json /app
+
+COPY package*.json ./
+
 RUN npm install
-COPY . /app
+
+COPY . .
+
 RUN npm run build
-CMD ["npm", "start"]
+EXPOSE 3001
+CMD ["node", "dist/src/app.js"]
+

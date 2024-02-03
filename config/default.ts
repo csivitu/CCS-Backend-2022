@@ -25,7 +25,7 @@ f7nAWWlOhIzawxMKZwIDAQAB
   verify_link: process.env.VERIFY_LINK,
   reset_link: process.env.RESET_LINK,
   number_of_questions: 10,
-  test_duration: 35,
+  test_duration: 8640,
   mailgun_api_key: process.env.MAILGUN_API_KEY,
   email_domain: process.env.EMAIL_DOMAIN,
   mailgun_host: process.env.MAILGUN_HOST,
@@ -42,4 +42,6 @@ f7nAWWlOhIzawxMKZwIDAQAB
   management_cutoff: 8,
   design_cutoff: 7,
   video_cutoff: 7,
+  access_key: process.env.ACCESSKEY,
+  secret_key: process.env.SECRETKEY,
 };

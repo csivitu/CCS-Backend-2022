@@ -36,7 +36,6 @@ export const sendR2Mail = async () => {
         .filter(([, value]) => value >= 8)
         .map(([key]) => key),
     }));
-    console.log(reducedUsers);
     // const data = {
     //   from: `CSI-VIT <${senderEmail}>`,
     //   to: email,

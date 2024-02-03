@@ -13,7 +13,15 @@ const limitDomains = async (
     return res.status(200).send(errorObject(403, "not logged in"));
   }
   const userInfo = await getCcsUserDomains(user._id);
-  if (userInfo.domainsAttempted.length >= 2) {
+  let attemptedDomains = 0;
+
+  userInfo.domainsAttempted.forEach((domain) => {
+    if (domain.submitted) {
+      attemptedDomains += 1;
+    }
+  });
+
+  if (attemptedDomains >= 2) {
     return res
       .status(200)
       .send(errorObject(403, "2 domain quizes already filled"));

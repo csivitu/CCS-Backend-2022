@@ -32,15 +32,15 @@ const checkEnrolled = (
   }
 
   const universityEmailRegex =
-    /^[a-zA-Z]+\.([a-zA-Z]+\.)?[a-zA-Z]+(20(20|21|22|23))@vitstudent\.ac\.in$/;
+    /^[a-zA-Z]+\.([a-zA-Z]+\.)?[a-zA-Z]*(20(20|21|22|23))[a-z]*@vitstudent\.ac\.in$/;
 
   if (!universityEmailRegex.test(email)) {
     return res.status(200).send(errorObject(403, "Not an Vit Email id"));
   }
 
-  if (email.match(universityEmailRegex)[1] !== "2023") {
-    return res.status(200).send(errorObject(403, "Not a Fresher"));
-  }
+  // if (email.match(universityEmailRegex)[2] !== "2023") {
+  //   return res.status(200).send(errorObject(403, "Not a Fresher"));
+  // }
 
   if (!isStringPresentInJsonFile(email, "enrolledlist.json")) {
     return res.status(200).send(errorObject(403, "Not enrolled in CSI"));

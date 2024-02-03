@@ -58,28 +58,28 @@ export default async function questionHandler(
     }
 
     const easyquestions = await getQuestion(domain, "Easy");
-    const mediumquestions = await getQuestion(domain, "Medium");
-    const hardquestions = await getQuestion(domain, "Hard");
+    // const mediumquestions = await getQuestion(domain, "Medium");
+    // const hardquestions = await getQuestion(domain, "Hard");
 
-    const easyshuffled = easyquestions.sort(() => 0.5 - Math.random());
-    let selected = easyshuffled.slice(0, 5);
+    // const easyshuffled = easyquestions.sort(() => 0.5 - Math.random());
+    // let selected = easyshuffled.slice(0, 5);
 
-    const mediumshuffled = mediumquestions.sort(() => 0.5 - Math.random());
-    const mediumselected = mediumshuffled.slice(0, 3);
+    // const mediumshuffled = mediumquestions.sort(() => 0.5 - Math.random());
+    // const mediumselected = mediumshuffled.slice(0, 3);
 
-    const hardshuffled = hardquestions.sort(() => 0.5 - Math.random());
-    const hardselected = hardshuffled.slice(0, 2);
+    // const hardshuffled = hardquestions.sort(() => 0.5 - Math.random());
+    // const hardselected = hardshuffled.slice(0, 2);
 
-    selected = selected.concat(hardselected);
-    selected = selected.concat(mediumselected);
+    // selected = selected.concat(hardselected);
+    // selected = selected.concat(mediumselected);
 
-    user.questionLoaded = selected;
+    user.questionLoaded = easyquestions;
     await user.save();
     // const questionIds = user.questionLoaded.map((ques) => ques.quesId);
     // logger.info(success_codes.S2, { questionIds: questionIds });
     return res.status(200).send(
       errorObject(200, "", {
-        questions: selected,
+        questions: easyquestions,
         endTime: user.endTime,
       })
     );
