@@ -4,6 +4,8 @@ import {
   designSubDomainsType,
   techSubdomains,
   techSubDomainsType,
+  videoSubdomains,
+  videoSubDomainsType,
 } from "../types/subdomainTypes";
 
 const TaskSchema = new mongoose.Schema({
@@ -36,7 +38,7 @@ const TaskSchema = new mongoose.Schema({
   },
   subDomain: {
     type: String,
-    enum: techSubdomains.concat(designSubdomains),
+    enum: techSubdomains.concat(designSubdomains, videoSubdomains),
   },
 });
 
@@ -48,7 +50,7 @@ export interface TaskInterface extends mongoose.Document {
     links: string[];
   };
   domain: "tech" | "design";
-  subDomain: techSubDomainsType | designSubDomainsType;
+  subDomain: techSubDomainsType | designSubDomainsType | videoSubDomainsType;
 }
 
 const TaskModel = mongoose.model<TaskInterface>("Task", TaskSchema);

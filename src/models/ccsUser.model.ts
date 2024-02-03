@@ -4,6 +4,8 @@ import {
   designSubDomainsType,
   techSubdomains,
   techSubDomainsType,
+  videoSubdomains,
+  videoSubDomainsType,
 } from "../types/subdomainTypes";
 
 const ccsUserSchema = new mongoose.Schema({
@@ -196,7 +198,7 @@ const ccsUserSchema = new mongoose.Schema({
     {
       subdomain: {
         type: String,
-        enum: techSubdomains.concat(designSubdomains),
+        enum: techSubdomains.concat(designSubdomains, videoSubdomains),
       },
       task: String,
     },
@@ -325,7 +327,7 @@ export interface ccsUserInterface extends mongoose.Document {
   description: string;
   taskAssigned: mongoose.Schema.Types.ObjectId;
   taskSubmitted: {
-    subdomain: techSubDomainsType | designSubDomainsType;
+    subdomain: techSubDomainsType | designSubDomainsType | videoSubDomainsType;
     task: string;
   }[];
   portfolio: {

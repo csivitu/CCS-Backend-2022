@@ -26,12 +26,7 @@ const requireTaskTime = async (
 
   const dbUser = await ccsUserModel.findOne({ username: user.username });
   console.log(req.body.subdomain);
-  if (dbUser.techRound >= 2 || dbUser.designRound >= 2) {
-    return next();
-  }
-  return res
-    .status(200)
-    .send(errorObject(403, "Not allowed to submit task for that domain"));
+  return next();
 };
 
 export default requireTaskTime;

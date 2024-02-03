@@ -232,13 +232,16 @@ export async function getUserTaskHandler(req: Request, res: Response) {
   try {
     const { username } = res.locals.user as UserDocument;
     const user = await ccsUserModel.findOne({ username });
-    const domains = [] as ("tech" | "design")[];
+    const domains = [] as ("tech" | "design" | "video")[];
     user.domainsAttempted.forEach((dom) => {
-      if (dom.domain === "tech" && user.techRound === 2) {
+      if (dom.domain === "tech") {
         domains.push("tech");
       }
-      if (dom.domain === "design" && user.designRound === 2) {
+      if (dom.domain === "design") {
         domains.push("design");
+      }
+      if (dom.domain === "video") {
+        domains.push("video");
       }
     });
     const tasks = (await TaskModel.find({ domain: { $in: domains } })).map(

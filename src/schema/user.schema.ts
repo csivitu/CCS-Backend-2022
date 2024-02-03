@@ -7,6 +7,8 @@ import {
   designSubDomainsType,
   techSubdomains,
   techSubDomainsType,
+  videoSubdomains,
+  videoSubDomainsType,
 } from "../types/subdomainTypes";
 
 export const createUserSchema = object({
@@ -175,7 +177,8 @@ export const AddUserTaskSchema = object({
   }).refine(
     (data) =>
       techSubdomains.includes(data.subdomain) ||
-      designSubdomains.includes(data.subdomain),
+      designSubdomains.includes(data.subdomain) ||
+      videoSubdomains.includes(data.subdomain),
     { message: "wrong subdomain value", path: ["subdomain"] }
   ),
 });
@@ -199,6 +202,6 @@ export type AddUserInfoInput = {
   };
 };
 export type AddUserTaskInput = {
-  subdomain: techSubDomainsType | designSubDomainsType;
+  subdomain: techSubDomainsType | designSubDomainsType | videoSubDomainsType;
   task: string;
 };
