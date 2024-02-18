@@ -57,6 +57,7 @@ import {
 } from "./schema/adminPost.schema";
 import limitDomains from "./middleware/limitDomains";
 import checkEnrolled from "./middleware/checkEnrolled";
+import checkTaskEnrolled from "./middleware/checkTaskEnrolled";
 
 function routes(app: Express) {
   app.get("/healthcheck", (req: Request, res: Response) => res.sendStatus(200));
@@ -205,6 +206,7 @@ function routes(app: Express) {
     apiLimiter,
     requireUser,
     requireTaskTime,
+    checkTaskEnrolled,
     getUserTaskHandler
   );
 }

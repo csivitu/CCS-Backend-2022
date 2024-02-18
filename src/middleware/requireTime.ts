@@ -10,11 +10,11 @@ const requireTime = async (req: Request, res: Response, next: NextFunction) => {
     return res.status(200).send(errorObject(403, "not logged in"));
   }
 
-  if (new Date() > new Date(config.get("task_start_date"))) {
-    return res
-      .status(200)
-      .send(errorObject(403, "https://www.youtube.com/watch?v=dQw4w9WgXcQ"));
-  }
+  // if (new Date() > new Date(config.get("task_start_date"))) {
+  //   return res
+  //     .status(200)
+  //     .send(errorObject(403, "https://www.youtube.com/watch?v=dQw4w9WgXcQ"));
+  // }
 
   const valid = await checkTime(user.username);
   if (valid !== true) {
