@@ -103,3 +103,13 @@ export async function getCcsUserInfoByUsername(username: string) {
 
   return user;
 }
+
+export async function getCcsUserEmail(
+  _id: Schema.Types.ObjectId
+): Promise<string> {
+  const user = await ccsUserModel
+    .findOne({ userId: _id })
+    .populate("userId", ["email"]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (user.userId as any).email;
+}

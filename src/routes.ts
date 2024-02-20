@@ -56,8 +56,8 @@ import {
   AdminPutSchema,
 } from "./schema/adminPost.schema";
 import limitDomains from "./middleware/limitDomains";
-import checkEnrolled from "./middleware/checkEnrolled";
-import checkTaskEnrolled from "./middleware/checkTaskEnrolled";
+import checkNewEnrolled from "./middleware/checkNewEnrolled";
+import checkOldEnrolled from "./middleware/checkOldEnrolled";
 
 function routes(app: Express) {
   app.get("/healthcheck", (req: Request, res: Response) => res.sendStatus(200));
@@ -66,7 +66,7 @@ function routes(app: Express) {
     "/api/users",
     validateResource(createUserSchema),
     createAccountLimiter,
-    checkEnrolled,
+    checkNewEnrolled,
     createUserHandler
   );
 
@@ -103,6 +103,7 @@ function routes(app: Express) {
     apiLimiter,
     requireUser,
     limitDomains,
+    checkNewEnrolled,
     validateResource(startSchema),
     startHandler
   );
@@ -113,6 +114,7 @@ function routes(app: Express) {
     requireUser,
     requireTime,
     limitDomains,
+    checkNewEnrolled,
     validateResource(submitSchema),
     submitHandler
   );
@@ -162,6 +164,7 @@ function routes(app: Express) {
     requireUser,
     requireTime,
     limitDomains,
+    checkNewEnrolled,
     validateResource(startSchema),
     questionHandler
   );
@@ -196,6 +199,7 @@ function routes(app: Express) {
     validateResource(AddUserTaskSchema),
     requireUser,
     requireTaskTime,
+    checkOldEnrolled,
     addUserTaskHandler
   );
 
@@ -206,7 +210,7 @@ function routes(app: Express) {
     apiLimiter,
     requireUser,
     requireTaskTime,
-    checkTaskEnrolled,
+    checkOldEnrolled,
     getUserTaskHandler
   );
 }

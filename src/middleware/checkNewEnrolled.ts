@@ -3,6 +3,7 @@ import * as fs from "fs";
 import errorObject from "../utils/errorObject";
 import { UserInput } from "../models/user.model";
 import logger from "../utils/logger";
+import { getCcsUserEmail } from "../service/ccsUser.service";
 
 function isStringPresentInJsonFile(
   targetString: string,
@@ -20,12 +21,21 @@ function isStringPresentInJsonFile(
   }
 }
 
-const checkEnrolled = (
+const checkNewEnrolled = async (
   req: Request<Record<string, never>, Record<string, never>, UserInput>,
   res: Response,
   next: NextFunction
 ) => {
-  const { email } = req.body;
+  let { email } = req.body;
+
+  if (email === undefined) {
+    const { user } = res.locals;
+
+    if (!user) {
+      return res.status(200).send(errorObject(403, "not logged in"));
+    }
+    email = await getCcsUserEmail(user._id);
+  }
 
   if (isStringPresentInJsonFile(email, "adminlist.json")) {
     return next();
@@ -42,11 +52,11 @@ const checkEnrolled = (
   //   return res.status(200).send(errorObject(403, "Not a Fresher"));
   // }
 
-  if (!isStringPresentInJsonFile(email, "enrolledlist.json")) {
-    return res.status(200).send(errorObject(403, "Not enrolled in CSI"));
+  if (!isStringPresentInJsonFile(email, "enrollednewlist.json")) {
+    return res.status(200).send(errorObject(403, "You can give tasks now!"));
   }
 
   return next();
 };
 
-export default checkEnrolled;
+export default checkNewEnrolled;
