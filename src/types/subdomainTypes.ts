@@ -5,6 +5,7 @@ export type techSubDomainsType =
   | "CC"
   | "ML"
   | "AR/VR"
+  | "GameDev"
   | "Tools";
 export type designSubDomainsType = "UI/UX" | "Graphics" | "UI/UX|Graphics";
 
@@ -16,6 +17,7 @@ export const techSubdomains: string[] = [
   "CyberSec",
   "CC",
   "ML",
+  "GameDev",
   "AR/VR",
   "Tools",
 ];
